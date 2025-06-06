@@ -147,31 +147,6 @@
         .slide.active {
             opacity: 1;
         }
-		
-		/* Add to your existing CSS */
-		.carousel-container {
-		    perspective: 1000px;
-		}
-
-		.track {
-		    transform-origin: center center;
-		    will-change: transform;
-		    transition: transform 0.1s linear;
-		}
-
-		/* Animation for the orbital motion */
-		@keyframes orbit {
-		    from { transform: rotate(0deg) translateX(130px) rotate(0deg); }
-		    to { transform: rotate(360deg) translateX(130px) rotate(-360deg); }
-		}
-
-		/* Mobile responsive orbit radius */
-		@media only screen and (max-width: 600px) {
-		    @keyframes orbit {
-		        from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
-		        to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
-		    }
-		}
         
         /* Top Right Images */
         .top-right-images {
@@ -552,10 +527,6 @@
         let isDragging = false;
         let isDraggingFloatingImage = false;
         let progressUpdateInterval = null;
-		
-		let orbitAnimation = null;
-		let isOrbiting = false;
-		let orbitSpeed = 60; // seconds for full rotation (higher = slower)
         
         // Floating Image Variables
         let lastX = 0;
@@ -712,41 +683,6 @@
                 }
             }, flashInterval);
         }
-		
-		function toggleOrbit() {
-		    const tracks = document.querySelectorAll('.track');
-    
-		    if (isOrbiting) {
-		        // Stop orbiting
-		        tracks.forEach(track => {
-		            track.style.animation = 'none';
-		        });
-		        isOrbiting = false;
-		    } else {
-		        // Start orbiting
-		        tracks.forEach((track, index) => {
-		            // Calculate delay based on position to maintain staggered look
-		            const delay = -index * (orbitSpeed / tracks.length);
-		            track.style.animation = `orbit ${orbitSpeed}s linear infinite`;
-		            track.style.animationDelay = `${delay}s`;
-		        });
-		        isOrbiting = true;
-		    }
-		}
-		
-		function positionTracks() {
-		    const tracks = document.querySelectorAll('.track');
-		    const radius = window.innerWidth <= 600 ? 100 : 130;
-		    const angleStep = (2 * Math.PI) / tracks.length;
-    
-		    tracks.forEach((track, index) => {
-		        const angle = index * angleStep;
-		        const x = Math.cos(angle) * radius;
-		        const y = Math.sin(angle) * radius;
-        
-		        track.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-		    });
-		}
 
         // Progress Bar Functions
         function updateProgressBar() {
@@ -833,85 +769,55 @@
         }
 
         // Initialize Carousel
-		function initCarousel() {
-		    audioFiles.forEach((track, index) => {
-		        const trackElement = document.createElement('div');
-		        trackElement.className = `track track-${index % 8}`;
-		        trackElement.textContent = track.name;
-		        trackElement.dataset.index = index;
-		        carousel.appendChild(trackElement);
-        
-		        // Add click handler for orbit toggle on double-click
-		        trackElement.addEventListener('dblclick', toggleOrbit);
-        
-		        // Your existing click handler for audio playback
-		        trackElement.addEventListener('click', async () => {
-		            try {
-		                if (currentPlayingTrack === index) {
-		                    if (currentAudio.paused) {
-		                        await currentAudio.play();
-		                        animateCharacter(track.duration);
-		                    } else {
-		                        currentAudio.pause();
-		                        cleanupCharacterAnimation();
-		                    }
-		                    return;
-		                }
+        function initCarousel() {
+            audioFiles.forEach((track, index) => {
+                const trackElement = document.createElement('div');
+                trackElement.className = `track track-${index % 8}`;
+                trackElement.textContent = track.name;
+                trackElement.dataset.index = index;
+                carousel.appendChild(trackElement);
                 
-		                if (currentAudio) {
-		                    currentAudio.pause();
-		                    cleanupCharacterAnimation();
-		                }
-                
-		                currentAudio = new Audio(track.file);
-		                currentPlayingTrack = index;
-                
-		                currentAudio.onplay = () => {
-		                    animateCharacter(track.duration);
-		                };
-                
-		                currentAudio.onended = () => {
-		                    document.querySelector('.track.playing')?.classList.remove('playing');
-		                    currentPlayingTrack = null;
-		                    cleanupCharacterAnimation();
-		                };
-                
-		                await currentAudio.play();
-                
-		                document.querySelector('.track.playing')?.classList.remove('playing');
-		                trackElement.classList.add('playing');
-		            } catch (e) {
-		                console.error("Playback error:", e);
-		            }
-		        });
-		    });
-    
-		    // Position tracks in initial circle
-		    positionTracks();
-    
-		    // Add resize handler with debouncing
-		    let resizeTimeout;
-		    window.addEventListener('resize', function() {
-		        clearTimeout(resizeTimeout);
-		        resizeTimeout = setTimeout(() => {
-		            if (!isOrbiting) {
-		                positionTracks();
-		            } else {
-		                // If orbiting, restart animation to adapt to new size
-		                const tracks = document.querySelectorAll('.track');
-		                tracks.forEach(track => {
-		                    track.style.animation = 'none';
-		                });
-		                setTimeout(() => {
-		                    if (isOrbiting) {
-		                        toggleOrbit(); // First stop
-		                        toggleOrbit(); // Then restart with new positions
-		                    }
-		                }, 10);
-		            }
-		        }, 100); // 100ms debounce delay
-		    });
-		}
+                trackElement.addEventListener('click', async () => {
+                    try {
+                        if (currentPlayingTrack === index) {
+                            if (currentAudio.paused) {
+                                await currentAudio.play();
+                                animateCharacter(track.duration);
+                            } else {
+                                currentAudio.pause();
+                                cleanupCharacterAnimation();
+                            }
+                            return;
+                        }
+                        
+                        if (currentAudio) {
+                            currentAudio.pause();
+                            cleanupCharacterAnimation();
+                        }
+                        
+                        currentAudio = new Audio(track.file);
+                        currentPlayingTrack = index;
+                        
+                        currentAudio.onplay = () => {
+                            animateCharacter(track.duration);
+                        };
+                        
+                        currentAudio.onended = () => {
+                            document.querySelector('.track.playing')?.classList.remove('playing');
+                            currentPlayingTrack = null;
+                            cleanupCharacterAnimation();
+                        };
+                        
+                        await currentAudio.play();
+                        
+                        document.querySelector('.track.playing')?.classList.remove('playing');
+                        trackElement.classList.add('playing');
+                    } catch (e) {
+                        console.error("Playback error:", e);
+                    }
+                });
+            });
+        }
         
         // Create smoke trail effect
         function createSmokeTrail(x, y) {
