@@ -1,3 +1,6 @@
+
+
+Interactive Music Portfolio Website Analysis
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -385,33 +388,39 @@
             }
         }
 		
-		/* Replace the previous .carousel-container and .track animation styles with this: */
+		/* Add this at the end of your existing CSS, before the @media queries */
 		.carousel-container {
 		    animation: orbit-rotation 30s linear infinite;
-		    animation-play-state: running;
-		    transform-origin: center;
+		    animation-play-state: running; /* Initial state */
 		}
 
 		.track {
 		    animation: counter-rotate 30s linear infinite;
-		    animation-play-state: running;
+		    animation-play-state: running; /* Initial state */
 		    transform-origin: center;
-		    will-change: transform;
-		    width: 80px; /* Fixed width for consistent spacing */
-		    text-align: center; /* Keep text centered */
+		    will-change: transform; /* Optimize animations */
 		}
 
 		@keyframes orbit-rotation {
-		    0% { transform: translate(-50%, -50%) rotate(0deg); }
-		    100% { transform: translate(-50%, -50%) rotate(360deg); }
+		    0% {
+		        transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(0deg);
+		    }
+		    100% {
+		        transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(360deg);
+		    }
 		}
 
 		@keyframes counter-rotate {
-		    0% { transform: rotate(0deg); }
-		    100% { transform: rotate(-360deg); }
+		    0% {
+		        transform: rotate(0deg);
+		    }
+		    100% {
+		        transform: rotate(-360deg);
+		    }
 		}
         
-
+        /* Mobile Responsive */
+        @media only screen and (max-width: 600px) {
             #emoji {
                 font-size: 100px;
                 width: 100px;
@@ -540,10 +549,6 @@
         const progressFill = document.getElementById('progressFill');
         const spinner = document.querySelector('.spinner');
         const floatingImage = document.getElementById('floatingImage');
-		
-		// Add these right after your existing state variables
-		let isOrbitPaused = false;
-		let orbitAnimationSpeed = 30; // seconds per full rotation
         
         // State Variables
         let currentAudio = null;
@@ -556,6 +561,9 @@
         let isDragging = false;
         let isDraggingFloatingImage = false;
         let progressUpdateInterval = null;
+		// Add these right after your existing state variables
+		let isOrbitPaused = false;
+		let orbitAnimationSpeed = 30; // seconds per full rotation
         
         // Floating Image Variables
         let lastX = 0;
@@ -799,6 +807,7 @@
         }
 
         // Initialize Carousel
+		// COMPLETELY REPLACE your existing initCarousel function with this:
 		function initCarousel() {
 		    const radius = 100; // Reduced from 130 for tighter circle
 		    const centerX = 195; // Half of carousel width (390/2)
