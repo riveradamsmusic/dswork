@@ -385,39 +385,58 @@
             }
         }
 		
-		/* Add this at the end of your existing CSS, before the @media queries */
+		/* Replace the previous .carousel-container and .track animation styles with this: */
 		.carousel-container {
 		    animation: orbit-rotation 30s linear infinite;
-		    animation-play-state: running; /* Initial state */
+		    animation-play-state: running;
+		    transform-origin: center;
 		}
 
 		.track {
 		    animation: counter-rotate 30s linear infinite;
-		    animation-play-state: running; /* Initial state */
+		    animation-play-state: running;
 		    transform-origin: center;
-		    will-change: transform; /* Optimize animations */
+		    will-change: transform;
+		    width: 80px; /* Fixed width for consistent spacing */
+		    text-align: center; /* Keep text centered */
 		}
 
 		@keyframes orbit-rotation {
-		    0% {
-		        transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(0deg);
-		    }
-		    100% {
-		        transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(360deg);
-		    }
+		    0% { transform: translate(-50%, -50%) rotate(0deg); }
+		    100% { transform: translate(-50%, -50%) rotate(360deg); }
 		}
 
 		@keyframes counter-rotate {
-		    0% {
-		        transform: rotate(0deg);
-		    }
-		    100% {
-		        transform: rotate(-360deg);
-		    }
+		    0% { transform: rotate(0deg); }
+		    100% { transform: rotate(-360deg); }
 		}
         
         /* Mobile Responsive */
         @media only screen and (max-width: 600px) {
+		    .carousel-container {
+		        width: 300px;
+		        height: 300px;
+		    }
+    
+		    .track {
+		        width: 60px;
+		        font-size: 12px;
+		    }
+    
+		    /* Adjust track positions for smaller circle */
+		    .track-0 { top: 20px; left: 120px; }
+		    .track-1 { top: 50px; left: 50px; }
+		    .track-2 { top: 120px; left: 20px; }
+		    .track-3 { top: 190px; left: 50px; }
+		    .track-4 { top: 220px; left: 120px; }
+		    .track-5 { top: 190px; left: 190px; }
+		    .track-6 { top: 120px; left: 200px; }
+		    .track-7 { top: 50px; left: 190px; }
+    
+		    /* Adjust animation transforms for mobile */
+		    @keyframes orbit-rotation {
+		        0% { transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(0deg); }
+		        100% { transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(360deg); }
             #emoji {
                 font-size: 100px;
                 width: 100px;
@@ -806,27 +825,31 @@
 
         // Initialize Carousel
 		function initCarousel() {
-		    const radius = 130; // Circle size - adjust as needed
+		    const radius = 100; // Reduced from 130 for tighter circle
 		    const centerX = 195; // Half of carousel width (390/2)
 		    const centerY = 195; // Half of carousel height (390/2)
+		    const trackWidth = 80; // Fixed width for all tracks
     
 		    audioFiles.forEach((track, index) => {
+		        // Calculate even distribution around circle
 		        const angle = (index / audioFiles.length) * Math.PI * 2;
-		        const x = centerX + radius * Math.cos(angle) - 40; // 40 is half track width
-		        const y = centerY + radius * Math.sin(angle) - 20; // 20 is half track height
+		        const x = centerX + radius * Math.cos(angle) - (trackWidth/2);
+		        const y = centerY + radius * Math.sin(angle) - 15; // 15 is half track height
         
 		        const trackElement = document.createElement('div');
 		        trackElement.className = `track track-${index}`;
 		        trackElement.textContent = track.name;
 		        trackElement.dataset.index = index;
         
-		        // Position tracks in a circle
+		        // Position tracks in tight circle
 		        trackElement.style.position = 'absolute';
 		        trackElement.style.left = `${x}px`;
 		        trackElement.style.top = `${y}px`;
+		        trackElement.style.width = `${trackWidth}px`;
         
 		        carousel.appendChild(trackElement);
         
+		        // Rest of your existing click handler...
 		        trackElement.addEventListener('click', async () => {
 		            try {
 		                if (currentPlayingTrack === index) {
