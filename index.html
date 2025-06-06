@@ -147,6 +147,31 @@
         .slide.active {
             opacity: 1;
         }
+		
+		/* Add to your existing CSS */
+		.carousel-container {
+		    perspective: 1000px;
+		}
+
+		.track {
+		    transform-origin: center center;
+		    will-change: transform;
+		    transition: transform 0.1s linear;
+		}
+
+		/* Animation for the orbital motion */
+		@keyframes orbit {
+		    from { transform: rotate(0deg) translateX(130px) rotate(0deg); }
+		    to { transform: rotate(360deg) translateX(130px) rotate(-360deg); }
+		}
+
+		/* Mobile responsive orbit radius */
+		@media only screen and (max-width: 600px) {
+		    @keyframes orbit {
+		        from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+		        to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+		    }
+		}
         
         /* Top Right Images */
         .top-right-images {
@@ -238,33 +263,15 @@
             color: #00ff00;
         }
         
-		/* Track Positions (REPLACEMENT - keeps staggered layout but makes it rotatable) */
-		.track {
-		  position: absolute;
-		  will-change: transform;
-		  backface-visibility: hidden;
-		}
-
-		/* Convert original positions to transform-based coordinates */
-		.track-0 { --x: 130px; --y: 26px; font-family: 'Press Start 2P', cursive; }
-		.track-1 { --x: 65px; --y: 65px; font-family: 'Rubik Doodle Shadow', cursive; }
-		.track-2 { --x: 26px; --y: 130px; font-family: 'Comic Neue', cursive; }
-		.track-3 { --x: 65px; --y: 221px; font-family: 'Permanent Marker', cursive; }
-		.track-4 { --x: 130px; --y: 260px; font-family: 'Caveat', cursive; }
-		.track-5 { --x: 195px; --y: 221px; font-family: 'Press Start 2P', cursive; }
-		.track-6 { --x: 234px; --y: 130px; font-family: 'Rubik Doodle Shadow', cursive; }
-		.track-7 { --x: 195px; --y: 65px; font-family: 'Comic Neue', cursive; }
-
-		/* Animation that preserves staggered layout */
-		@keyframes staggered-orbit {
-		  0% { transform: translate(calc(var(--x) - 50%), calc(var(--y) - 50%)) rotate(0deg); }
-		  100% { transform: translate(calc(var(--x) - 50%), calc(var(--y) - 50%)) rotate(-360deg); }
-		}
-
-		.carousel-rotating .track {
-		  animation: staggered-orbit 40s linear infinite;
-		  transform-origin: center calc(50% + 1.0cm); /* Matches your original offset */
-		}
+        /* Track Positions */
+        .track-0 { font-family: 'Press Start 2P', cursive; top: 26px; left: 130px; }
+        .track-1 { font-family: 'Rubik Doodle Shadow', cursive; top: 65px; left: 65px; }
+        .track-2 { font-family: 'Comic Neue', cursive; top: 130px; left: 26px; }
+        .track-3 { font-family: 'Permanent Marker', cursive; top: 221px; left: 65px; }
+        .track-4 { font-family: 'Caveat', cursive; top: 260px; left: 130px; }
+        .track-5 { font-family: 'Press Start 2P', cursive; top: 221px; left: 195px; }
+        .track-6 { font-family: 'Rubik Doodle Shadow', cursive; top: 130px; left: 234px; }
+        .track-7 { font-family: 'Comic Neue', cursive; top: 65px; left: 195px; }
         
         /* Platform Links */
         .platform-links {
@@ -545,6 +552,10 @@
         let isDragging = false;
         let isDraggingFloatingImage = false;
         let progressUpdateInterval = null;
+		
+		let orbitAnimation = null;
+		let isOrbiting = false;
+		let orbitSpeed = 60; // seconds for full rotation (higher = slower)
         
         // Floating Image Variables
         let lastX = 0;
@@ -701,6 +712,41 @@
                 }
             }, flashInterval);
         }
+		
+		function toggleOrbit() {
+		    const tracks = document.querySelectorAll('.track');
+    
+		    if (isOrbiting) {
+		        // Stop orbiting
+		        tracks.forEach(track => {
+		            track.style.animation = 'none';
+		        });
+		        isOrbiting = false;
+		    } else {
+		        // Start orbiting
+		        tracks.forEach((track, index) => {
+		            // Calculate delay based on position to maintain staggered look
+		            const delay = -index * (orbitSpeed / tracks.length);
+		            track.style.animation = `orbit ${orbitSpeed}s linear infinite`;
+		            track.style.animationDelay = `${delay}s`;
+		        });
+		        isOrbiting = true;
+		    }
+		}
+		
+		function positionTracks() {
+		    const tracks = document.querySelectorAll('.track');
+		    const radius = window.innerWidth <= 600 ? 100 : 130;
+		    const angleStep = (2 * Math.PI) / tracks.length;
+    
+		    tracks.forEach((track, index) => {
+		        const angle = index * angleStep;
+		        const x = Math.cos(angle) * radius;
+		        const y = Math.sin(angle) * radius;
+        
+		        track.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+		    });
+		}
 
         // Progress Bar Functions
         function updateProgressBar() {
@@ -788,40 +834,19 @@
 
         // Initialize Carousel
 		function initCarousel() {
-		    carousel.classList.add('carousel-rotating');
-    
-		    // Original staggered positions (converted to CSS transforms)
-		    const trackPositions = [
-		        { x: 130, y: 26, font: 'Press Start 2P' },      // track-0
-		        { x: 65, y: 65, font: 'Rubik Doodle Shadow' },  // track-1
-		        { x: 26, y: 130, font: 'Comic Neue' },          // track-2
-		        { x: 65, y: 221, font: 'Permanent Marker' },    // track-3
-		        { x: 130, y: 260, font: 'Caveat' },             // track-4
-		        { x: 195, y: 221, font: 'Press Start 2P' },     // track-5
-		        { x: 234, y: 130, font: 'Rubik Doodle Shadow' },// track-6
-		        { x: 195, y: 65, font: 'Comic Neue' }           // track-7
-		    ];
-
 		    audioFiles.forEach((track, index) => {
 		        const trackElement = document.createElement('div');
-		        const pos = trackPositions[index % 8];
-        
-		        trackElement.className = `track track-${index}`;
+		        trackElement.className = `track track-${index % 8}`;
 		        trackElement.textContent = track.name;
 		        trackElement.dataset.index = index;
-        
-		        // Set CSS custom properties for position
-		        trackElement.style.setProperty('--x', `${pos.x}px`);
-		        trackElement.style.setProperty('--y', `${pos.y}px`);
-		        trackElement.style.fontFamily = `'${pos.font}', cursive`;
-        
 		        carousel.appendChild(trackElement);
         
+		        // Add click handler for orbit toggle on double-click
+		        trackElement.addEventListener('dblclick', toggleOrbit);
+        
+		        // Your existing click handler for audio playback
 		        trackElement.addEventListener('click', async () => {
 		            try {
-		                // Stop rotation when any track is clicked
-		                carousel.classList.remove('carousel-rotating');
-                
 		                if (currentPlayingTrack === index) {
 		                    if (currentAudio.paused) {
 		                        await currentAudio.play();
@@ -849,8 +874,6 @@
 		                    document.querySelector('.track.playing')?.classList.remove('playing');
 		                    currentPlayingTrack = null;
 		                    cleanupCharacterAnimation();
-		                    // Restart rotation when song ends
-		                    carousel.classList.add('carousel-rotating');
 		                };
                 
 		                await currentAudio.play();
@@ -859,10 +882,34 @@
 		                trackElement.classList.add('playing');
 		            } catch (e) {
 		                console.error("Playback error:", e);
-		                // Restart rotation if error occurs
-		                carousel.classList.add('carousel-rotating');
 		            }
 		        });
+		    });
+    
+		    // Position tracks in initial circle
+		    positionTracks();
+    
+		    // Add resize handler with debouncing
+		    let resizeTimeout;
+		    window.addEventListener('resize', function() {
+		        clearTimeout(resizeTimeout);
+		        resizeTimeout = setTimeout(() => {
+		            if (!isOrbiting) {
+		                positionTracks();
+		            } else {
+		                // If orbiting, restart animation to adapt to new size
+		                const tracks = document.querySelectorAll('.track');
+		                tracks.forEach(track => {
+		                    track.style.animation = 'none';
+		                });
+		                setTimeout(() => {
+		                    if (isOrbiting) {
+		                        toggleOrbit(); // First stop
+		                        toggleOrbit(); // Then restart with new positions
+		                    }
+		                }, 10);
+		            }
+		        }, 100); // 100ms debounce delay
 		    });
 		}
         
