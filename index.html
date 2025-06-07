@@ -210,7 +210,7 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(calc(-50% - 3.0cm), calc(-50% - 3.0cm));
+            transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm));
             width: 390px;
             height: 390px;
             z-index: 15;
@@ -385,34 +385,32 @@
             }
         }
 		
-		/* Add this at the end of your existing CSS, before the @media queries */
-		.carousel-container {
-		    animation: orbit-rotation 30s linear infinite;
-		    animation-play-state: running; /* Initial state */
+		/* Video Container Styles */
+		.video-container {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    width: 400px;
+		    height: 300px;
+		    z-index: 20;
+		    background: #000;
+		    border-radius: 8px;
+		    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+		    display: none;
+		    overflow: hidden;
 		}
 
-		.track {
-		    animation: counter-rotate 30s linear infinite;
-		    animation-play-state: running; /* Initial state */
-		    transform-origin: center;
-		    will-change: transform; /* Optimize animations */
+		.video-container video {
+		    object-fit: contain;
+		    background: #000;
 		}
 
-		@keyframes orbit-rotation {
-		    0% {
-		        transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(0deg);
-		    }
-		    100% {
-		        transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm)) rotate(360deg);
-		    }
-		}
-
-		@keyframes counter-rotate {
-		    0% {
-		        transform: rotate(0deg);
-		    }
-		    100% {
-		        transform: rotate(-360deg);
+		/* Mobile responsive */
+		@media only screen and (max-width: 600px) {
+		    .video-container {
+		        width: 320px;
+		        height: 240px;
 		    }
 		}
         
@@ -546,6 +544,8 @@
         const progressFill = document.getElementById('progressFill');
         const spinner = document.querySelector('.spinner');
         const floatingImage = document.getElementById('floatingImage');
+		const videoContainer = document.getElementById('videoContainer');
+		const afeegoVideo = document.getElementById('afeegoVideo');
         
         // State Variables
         let currentAudio = null;
@@ -558,9 +558,7 @@
         let isDragging = false;
         let isDraggingFloatingImage = false;
         let progressUpdateInterval = null;
-		// Add these right after your existing state variables
-		let isOrbitPaused = false;
-		let orbitAnimationSpeed = 30; // seconds per full rotation
+		let isVideoPlaying = false;
         
         // Floating Image Variables
         let lastX = 0;
@@ -800,83 +798,73 @@
             document.removeEventListener('mousemove', handleScrub);
             document.removeEventListener('touchmove', handleScrub);
             isDragging = false;
-			pauseOrbitAnimation();
         }
 
         // Initialize Carousel
-		// COMPLETELY REPLACE your existing initCarousel function with this:
 		function initCarousel() {
-		    const radius = 100; // Reduced from 130 for tighter circle
-		    const centerX = 195; // Half of carousel width (390/2)
-		    const centerY = 195; // Half of carousel height (390/2)
-		    const trackWidth = 80; // Fixed width for all tracks
-    
 		    audioFiles.forEach((track, index) => {
-		        // Calculate even distribution around circle
-		        const angle = (index / audioFiles.length) * Math.PI * 2;
-		        const x = centerX + radius * Math.cos(angle) - (trackWidth/2);
-		        const y = centerY + radius * Math.sin(angle) - 15; // 15 is half track height
-        
 		        const trackElement = document.createElement('div');
-		        trackElement.className = `track track-${index}`;
+		        trackElement.className = `track track-${index % 8}`;
 		        trackElement.textContent = track.name;
 		        trackElement.dataset.index = index;
-        
-		        // Position tracks in tight circle
-		        trackElement.style.position = 'absolute';
-		        trackElement.style.left = `${x}px`;
-		        trackElement.style.top = `${y}px`;
-		        trackElement.style.width = `${trackWidth}px`;
-        
 		        carousel.appendChild(trackElement);
         
-		        // Rest of your existing click handler...
 		        trackElement.addEventListener('click', async () => {
 		            try {
-		                if (currentPlayingTrack === index) {
-		                    if (currentAudio.paused) {
-		                        await currentAudio.play();
-		                        animateCharacter(track.duration);
-		                        resumeOrbitAnimation();
-		                    } else {
-		                        currentAudio.pause();
-		                        cleanupCharacterAnimation();
-		                        pauseOrbitAnimation();
-		                    }
+		                // Stop if already playing
+		                if (currentPlayingTrack === index && currentAudio && !currentAudio.paused) {
+		                    currentAudio.pause();
+		                    cleanupCharacterAnimation();
 		                    return;
 		                }
                 
-		                if (currentAudio) {
-		                    currentAudio.pause();
-		                    cleanupCharacterAnimation();
+		                // Stop current audio
+		                if (currentAudio) currentAudio.pause();
+                
+		                // Special case for AFEEGO track
+		                if (track.name.includes("AFEEGO")) {
+		                    const video = document.getElementById('afeegoVideo');
+		                    const videoContainer = document.getElementById('afeegoVideoContainer');
+                    
+		                    // Show video
+		                    videoContainer.style.display = 'block';
+		                    video.currentTime = 0;
+                    
+		                    // Play video then audio
+		                    await video.play();
+		                    video.onended = () => {
+		                        videoContainer.style.display = 'none';
+		                        playTrack(track, index, trackElement);
+		                    };
+		                } else {
+		                    // Normal track
+		                    playTrack(track, index, trackElement);
 		                }
-                
-		                currentAudio = new Audio(track.file);
-		                currentPlayingTrack = index;
-                
-		                currentAudio.onplay = () => {
-		                    animateCharacter(track.duration);
-		                    resumeOrbitAnimation();
-		                };
-                
-		                currentAudio.onended = () => {
-		                    document.querySelector('.track.playing')?.classList.remove('playing');
-		                    currentPlayingTrack = null;
-		                    cleanupCharacterAnimation();
-		                    pauseOrbitAnimation();
-		                };
-                
-		                await currentAudio.play();
-                
-		                document.querySelector('.track.playing')?.classList.remove('playing');
-		                trackElement.classList.add('playing');
 		            } catch (e) {
 		                console.error("Playback error:", e);
 		            }
 		        });
 		    });
+		}
+		
+		// Helper function to play audio tracks
+		function playTrack(track, index, element) {
+		    currentAudio = new Audio(track.file);
+		    currentPlayingTrack = index;
     
-		    carousel.style.display = 'block';
+		    currentAudio.onplay = () => {
+		        animateCharacter(track.duration);
+		        document.querySelector('.track.playing')?.classList.remove('playing');
+		        element.classList.add('playing');
+		    };
+    
+		    currentAudio.onended = () => {
+		        document.querySelector('.track.playing')?.classList.remove('playing');
+		        currentPlayingTrack = null;
+		        cleanupCharacterAnimation();
+		    };
+    
+		    currentAudio.play();
 		}
         
         // Create smoke trail effect
@@ -1017,29 +1005,6 @@
 
             updateFloatingImage();
         }
-		
-		// Add these new functions right before your emojiWrapper event listener
-		function pauseOrbitAnimation() {
-		    isOrbitPaused = true;
-		    document.querySelectorAll('.carousel-container, .track').forEach(el => {
-		        el.style.animationPlayState = 'paused';
-		    });
-		}
-
-		function resumeOrbitAnimation() {
-		    isOrbitPaused = false;
-		    document.querySelectorAll('.carousel-container, .track').forEach(el => {
-		        el.style.animationPlayState = 'running';
-		    });
-		}
-
-		// Optional speed control (add if you want adjustable speed)
-		function setOrbitSpeed(speed) {
-		    orbitAnimationSpeed = speed;
-		    document.querySelectorAll('.carousel-container, .track').forEach(el => {
-		        el.style.animationDuration = `${speed}s`;
-		    });
-		}
         
         // Event Listeners
         emojiWrapper.addEventListener('click', async () => {
@@ -1056,5 +1021,10 @@
             }, 500);
         });
     </script>
+	<div id="afeegoVideoContainer" style="display: none; position: 	fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 	400px; height: 300px; background: black; z-index: 100;">
+  		<video id="afeegoVideo" width="100%" height="100%" controls>
+    		<source src="AFEEGO/1.mp4" type="video/mp4">
+  	  	</video>
+	</div>
 </body>
 </html>
