@@ -387,7 +387,20 @@
 		
 		/* Add this with your other styles */
 		#afeegoVideoContainer {
-		  /* Container just holds positioning - video handles its own sizing */
+		    display: none;
+		    position: fixed;
+		    left: 20px;
+		    bottom: 20px;
+		    z-index: 100;
+		    /* Removed background and padding */
+		}
+
+		#afeegoVideo {
+		    /* Remove border-radius and shadow if you want pure video */
+		    width: auto;
+		    height: auto;
+		    max-width: 100%;
+		    max-height: 80vh; /* Prevent it from being too tall */
 		}
 
 		@media only screen and (max-width: 600px) {
@@ -791,7 +804,7 @@
 		        trackElement.textContent = track.name;
 		        trackElement.dataset.index = index;
 		        carousel.appendChild(trackElement);
-        
+
 		        trackElement.addEventListener('click', async () => {
 		            try {
 		                // Stop if already playing
@@ -800,27 +813,45 @@
 		                    cleanupCharacterAnimation();
 		                    return;
 		                }
-                
+
 		                // Stop current audio
 		                if (currentAudio) currentAudio.pause();
-                
+
 		                // Special case for AFEEGO track
 		                if (track.name.includes("AFEEGO")) {
 		                    const video = document.getElementById('afeegoVideo');
 		                    const videoContainer = document.getElementById('afeegoVideoContainer');
                     
-		                    // Show video
-		                    videoContainer.style.display = 'block';
+		                    // Reset video and show container
 		                    video.currentTime = 0;
+		                    videoContainer.style.display = 'block';
                     
-		                    // Play video then audio
-		                    await video.play();
+		                    // Let video maintain natural dimensions
+		                    video.style.width = 'auto';
+		                    video.style.height = 'auto';
+                    
+		                    // Clean up previous event listeners
+		                    video.onended = null;
+		                    video.onerror = null;
+                    
 		                    video.onended = () => {
 		                        videoContainer.style.display = 'none';
 		                        playTrack(track, index, trackElement);
 		                    };
+                    
+		                    video.onerror = () => {
+		                        videoContainer.style.display = 'none';
+		                        playTrack(track, index, trackElement);
+		                    };
+                    
+		                    try {
+		                        await video.play();
+		                    } catch (e) {
+		                        videoContainer.style.display = 'none';
+		                        playTrack(track, index, trackElement);
+		                    }
 		                } else {
-		                    // Normal track
+		                    // Normal track handling
 		                    playTrack(track, index, trackElement);
 		                }
 		            } catch (e) {
