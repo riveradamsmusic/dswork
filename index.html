@@ -403,7 +403,14 @@
 		    max-height: 80vh; /* Prevent it from being too tall */
 		}
 
+		/* Single consolidated media query */
 		@media only screen and (max-width: 600px) {
+		    /* Original mobile styles */
+		    #emoji { font-size: 100px; }
+		    #text { font-size: 32px; }
+		    /* ... other existing mobile styles ... */
+
+		    /* Video-specific mobile styles */
 		    #afeegoVideoContainer {
 		        width: 100% !important;
 		        left: 0 !important;
@@ -416,14 +423,6 @@
 		        height: auto !important;
 		    }
 		}
-        
-        /* Mobile Responsive */
-        @media only screen and (max-width: 600px) {
-            #emoji {
-                font-size: 100px;
-                width: 100px;
-                height: 100px;
-            }
             
             #text {
                 font-size: 32px;
@@ -833,38 +832,40 @@
 		                    video.currentTime = 0;
 		                    videoContainer.style.display = 'block';
                     
-		                    // Mobile-specific setup
-		                    if (window.innerWidth <= 600) {
-		                        video.style.width = '100%';
-		                        video.style.height = 'auto';
-		                        videoContainer.style.width = '100%';
-		                        videoContainer.style.left = '0';
-		                        videoContainer.style.bottom = '0';
-		                        videoContainer.style.padding = '0';
-		                    } else {
-		                        video.style.width = 'auto';
-		                        video.style.height = 'auto';
-		                    }
-                    
 		                    // Clean up previous event listeners
 		                    video.onended = null;
 		                    video.onerror = null;
                     
-		                    // Mobile-friendly close handler
+		                    // Universal close handler for both desktop and mobile
 		                    const closeVideo = () => {
 		                        videoContainer.style.display = 'none';
 		                        playTrack(track, index, trackElement);
 		                    };
                     
+		                    // Add event listeners
 		                    video.onended = closeVideo;
 		                    video.onerror = closeVideo;
                     
-		                    // Add tap-to-close for mobile
-		                    videoContainer.addEventListener('click', closeVideo);
+		                    // Mobile-specific setup
+		                    if (window.innerWidth <= 600) {
+		                        videoContainer.style.width = '100%';
+		                        videoContainer.style.left = '0';
+		                        videoContainer.style.bottom = '0';
+		                        videoContainer.style.padding = '0';
+		                        video.style.width = '100%';
+		                        video.style.height = 'auto';
+                        
+		                        // Add touch handler to close on tap (optional)
+		                        videoContainer.addEventListener('click', closeVideo, { once: true });
+		                    } else {
+		                        video.style.width = '320px';
+		                        video.style.height = '180px';
+		                    }
                     
 		                    try {
 		                        await video.play();
 		                    } catch (e) {
+		                        console.error("Video play failed:", e);
 		                        closeVideo();
 		                    }
 		                } else {
