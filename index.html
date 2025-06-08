@@ -731,10 +731,12 @@
 		                initCarousel();
 		                initFloatingImage();
                 
-		                // Show flick instruction after everything is set up
-		                setTimeout(() => {
-		                    document.getElementById('flickInstruction').style.display = 'flex';
-		                }, 500);
+		                // Position flick instruction above floating image
+		                const flickInstruction = document.getElementById('flickInstruction');
+		                flickInstruction.style.display = 'flex';
+		                flickInstruction.style.left = '15%'; // Position in upper-left quadrant
+		                flickInstruction.style.top = '15%';  // A couple cm above the image
+		                flickInstruction.style.transform = 'translate(0, 0)'; // Remove centering
 		            }, 300);
 		        }
 		    }, flashInterval);
@@ -929,9 +931,9 @@
         // Floating Image Functions
 		function initFloatingImage() {
 		    floatingImage.style.display = 'block';
-		    // Position in upper left center (10% from left, 20% from top)
-		    currentX = window.innerWidth * 0.1;
-		    currentY = window.innerHeight * 0.2;
+		    // Position in upper left center (15% from left, 20% from top)
+		    currentX = window.innerWidth * 0.15;
+		    currentY = window.innerHeight * 0.20;
 		    floatingImage.style.left = `${currentX}px`;
 		    floatingImage.style.top = `${currentY}px`;
 
@@ -969,6 +971,13 @@
 
 		            floatingImage.style.left = `${currentX}px`;
 		            floatingImage.style.top = `${currentY}px`;
+
+		            // Update flick instruction position to follow the image
+		            const flickInstruction = document.getElementById('flickInstruction');
+		            if (flickInstruction.style.display === 'flex') {
+		                flickInstruction.style.left = `${currentX - 20}px`;
+		                flickInstruction.style.top = `${currentY - 60}px`;
+		            }
 
 		            // Create smoke trail when moving
 		            if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
@@ -1041,6 +1050,13 @@
 		        currentY += throwVector.y;
 		        floatingImage.style.left = `${currentX}px`;
 		        floatingImage.style.top = `${currentY}px`;
+
+		        // Update flick instruction position during drag
+		        const flickInstruction = document.getElementById('flickInstruction');
+		        if (flickInstruction.style.display === 'flex') {
+		            flickInstruction.style.left = `${currentX - 20}px`;
+		            flickInstruction.style.top = `${currentY - 60}px`;
+		        }
 
 		        lastX = clientX;
 		        lastY = clientY;
