@@ -206,7 +206,7 @@
 		
 		.flick-instruction {
 		    position: fixed;
-		    top: 20%;
+		    top: calc(20% - 3cm);
 		    left: 10%;
 		    font-family: 'Caveat', cursive;
 		    color: white;
@@ -727,6 +727,8 @@
                         createSlideshow();
                         initCarousel();
                         initFloatingImage();
+						const flickInstruction = document.getElementById('flickInstruction');
+						flickInstruction.style.display = 'flex';
                     }, 300);
                 }
             }, flashInterval);
@@ -927,9 +929,7 @@
 		    floatingImage.style.left = `${currentX}px`;
 		    floatingImage.style.top = `${currentY}px`;
 
-		    // Show instruction initially
-		    const flickInstruction = document.getElementById('flickInstruction');
-		    flickInstruction.style.display = 'flex';
+		    
 
 		    // Physics parameters
 		    const throwPower = 2.2;
