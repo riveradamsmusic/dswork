@@ -793,6 +793,8 @@
 
         // Initialize Carousel
 		function initCarousel() {
+		    let afeegoVideoPlayed = false; // Track if AFEEGO video has been played
+    
 		    audioFiles.forEach((track, index) => {
 		        const trackElement = document.createElement('div');
 		        trackElement.className = `track track-${index % 8}`;
@@ -802,46 +804,47 @@
 
 		        trackElement.addEventListener('click', async () => {
 		            try {
-		                // Stop if already playing
-		                if (currentPlayingTrack === index && currentAudio && !currentAudio.paused) {
-		                    currentAudio.pause();
-		                    cleanupCharacterAnimation();
+		                // Pause/resume logic for all tracks
+		                if (currentPlayingTrack === index && currentAudio) {
+		                    if (currentAudio.paused) {
+		                        await currentAudio.play();
+		                        document.querySelector('.track.playing')?.classList.add('playing');
+		                    } else {
+		                        currentAudio.pause();
+		                        document.querySelector('.track.playing')?.classList.remove('playing');
+		                    }
 		                    return;
 		                }
 
 		                // Stop current audio
 		                if (currentAudio) currentAudio.pause();
 
-		                // Special case for AFEEGO track (only show video on first play)
-		                if (track.name.includes("AFEEGO") && !hasAfeegoVideoPlayed) {
+		                // AFEEGO video handling (only first time)
+		                if (track.name.includes("AFEEGO") && !afeegoVideoPlayed) {
 		                    const video = document.getElementById('afeegoVideo');
 		                    const videoContainer = document.getElementById('afeegoVideoContainer');
                     
 		                    video.currentTime = 0;
 		                    videoContainer.style.display = 'block';
-		                    hasAfeegoVideoPlayed = true; // Mark as played
+		                    afeegoVideoPlayed = true;
                     
 		                    video.onended = () => {
 		                        videoContainer.style.display = 'none';
 		                        playTrack(track, index, trackElement);
 		                    };
                     
-		                    video.onerror = () => {
-		                        videoContainer.style.display = 'none';
-		                        playTrack(track, index, trackElement);
-		                    };
-                    
 		                    try {
 		                        await video.play();
-		                        return; // Exit early, let onended handle audio
+		                        return;
 		                    } catch (e) {
+		                        console.error("Video play failed:", e);
 		                        videoContainer.style.display = 'none';
-		                        playTrack(track, index, trackElement);
 		                    }
-		                } else {
-		                    // Normal track handling (or AFEEGO after first play)
-		                    playTrack(track, index, trackElement);
 		                }
+
+		                // Normal track play
+		                playTrack(track, index, trackElement);
+                
 		            } catch (e) {
 		                console.error("Playback error:", e);
 		            }
@@ -851,21 +854,24 @@
 		
 		// Helper function to play audio tracks
 		function playTrack(track, index, element) {
-		    currentAudio = new Audio(track.file);
-		    currentPlayingTrack = index;
-    
+		    // If we're switching tracks, create new audio
+		    if (currentPlayingTrack !== index || !currentAudio) {
+		        currentAudio = new Audio(track.file);
+		        currentPlayingTrack = index;
+		    }
+
 		    currentAudio.onplay = () => {
 		        animateCharacter(track.duration);
-		        document.querySelector('.track.playing')?.classList.remove('playing');
+		        document.querySelectorAll('.track').forEach(t => t.classList.remove('playing'));
 		        element.classList.add('playing');
 		    };
-    
+
 		    currentAudio.onended = () => {
-		        document.querySelector('.track.playing')?.classList.remove('playing');
+		        element.classList.remove('playing');
 		        currentPlayingTrack = null;
 		        cleanupCharacterAnimation();
 		    };
-    
+
 		    currentAudio.play();
 		}
         
