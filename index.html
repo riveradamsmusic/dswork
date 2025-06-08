@@ -403,26 +403,20 @@
 		    max-height: 80vh; /* Prevent it from being too tall */
 		}
 
-		/* Single consolidated media query */
 		@media only screen and (max-width: 600px) {
-		    /* Original mobile styles */
-		    #emoji { font-size: 100px; }
-		    #text { font-size: 32px; }
-		    /* ... other existing mobile styles ... */
-
-		    /* Video-specific mobile styles */
-		    #afeegoVideoContainer {
-		        width: 100% !important;
-		        left: 0 !important;
-		        bottom: 0 !important;
-		        padding: 0 !important;
-		        background: rgba(0,0,0,0.9) !important;
-		    }
-		    #afeegoVideo {
-		        width: 100% !important;
-		        height: auto !important;
-		    }
+		  #afeegoVideo {
+		    width: 240px !important;
+		    height: 135px !important;
+		  }
 		}
+        
+        /* Mobile Responsive */
+        @media only screen and (max-width: 600px) {
+            #emoji {
+                font-size: 100px;
+                width: 100px;
+                height: 100px;
+            }
             
             #text {
                 font-size: 32px;
@@ -832,41 +826,29 @@
 		                    video.currentTime = 0;
 		                    videoContainer.style.display = 'block';
                     
+		                    // Let video maintain natural dimensions
+		                    video.style.width = 'auto';
+		                    video.style.height = 'auto';
+                    
 		                    // Clean up previous event listeners
 		                    video.onended = null;
 		                    video.onerror = null;
                     
-		                    // Universal close handler for both desktop and mobile
-		                    const closeVideo = () => {
+		                    video.onended = () => {
 		                        videoContainer.style.display = 'none';
 		                        playTrack(track, index, trackElement);
 		                    };
                     
-		                    // Add event listeners
-		                    video.onended = closeVideo;
-		                    video.onerror = closeVideo;
-                    
-		                    // Mobile-specific setup
-		                    if (window.innerWidth <= 600) {
-		                        videoContainer.style.width = '100%';
-		                        videoContainer.style.left = '0';
-		                        videoContainer.style.bottom = '0';
-		                        videoContainer.style.padding = '0';
-		                        video.style.width = '100%';
-		                        video.style.height = 'auto';
-                        
-		                        // Add touch handler to close on tap (optional)
-		                        videoContainer.addEventListener('click', closeVideo, { once: true });
-		                    } else {
-		                        video.style.width = '320px';
-		                        video.style.height = '180px';
-		                    }
+		                    video.onerror = () => {
+		                        videoContainer.style.display = 'none';
+		                        playTrack(track, index, trackElement);
+		                    };
                     
 		                    try {
 		                        await video.play();
 		                    } catch (e) {
-		                        console.error("Video play failed:", e);
-		                        closeVideo();
+		                        videoContainer.style.display = 'none';
+		                        playTrack(track, index, trackElement);
 		                    }
 		                } else {
 		                    // Normal track handling
