@@ -206,9 +206,9 @@
 		
 	    .flick-instruction {
 	        position: fixed;
-	        top: 15%; /* Changed from 20% to be higher up */
-	        left: 50%;
-	        transform: translateX(-50%);
+	        top: 5%; /* Changed from 20% to be higher up */
+	        left: 10%;
+	        transform: none;
 	        font-family: 'Caveat', cursive;
 	        color: white;
 	        font-size: 24px;
@@ -432,7 +432,11 @@
 		}
 
 		@media only screen and (max-width: 600px) {
-		    #afeegoVideoContainer {
+			.flick-instruction {
+			        left: 15%; /* Matches mobile starting position */
+			        top: 8%;
+			}
+			#afeegoVideoContainer {
 		        left: 10px;
 		        bottom: 10px;
 		        max-width: 60%; /* Slightly larger on mobile but not full-width */
@@ -929,9 +933,17 @@
         // Floating Image Functions
 		function initFloatingImage() {
 		    floatingImage.style.display = 'block';
-		    // Position in upper left center (10% from left, 20% from top)
-		    currentX = window.innerWidth * 0.1;
-		    currentY = window.innerHeight * 0.2;
+    
+		    // Set initial position to match flick instruction (10% from left, 5% + space from top)
+		    currentX = window.innerWidth * 0.1; // 10% from left (desktop)
+		    currentY = window.innerHeight * 0.15; // 15% from top (below instruction)
+    
+		    // Adjust for mobile
+		    if (window.innerWidth <= 600) {
+		        currentX = window.innerWidth * 0.15; // 15% from left (mobile)
+		        currentY = window.innerHeight * 0.18; // 18% from top (mobile)
+		    }
+    
 		    floatingImage.style.left = `${currentX}px`;
 		    floatingImage.style.top = `${currentY}px`;
 
