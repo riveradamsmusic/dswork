@@ -207,7 +207,7 @@
 	    .flick-instruction {
 	        position: fixed;
 	        top: 5%; /* Changed from 20% to be higher up */
-	        left: 10%;
+	        left: 5%;
 	        transform: none;
 	        font-family: 'Caveat', cursive;
 	        color: white;
@@ -433,7 +433,7 @@
 
 		@media only screen and (max-width: 600px) {
 			.flick-instruction {
-			        left: 15%; /* Matches mobile starting position */
+			        left: 8%; /* Matches mobile starting position */
 			        top: 8%;
 			}
 			#afeegoVideoContainer {
@@ -934,20 +934,20 @@
 		function initFloatingImage() {
 		    floatingImage.style.display = 'block';
     
-		    // Set initial position to match flick instruction (10% from left, 5% + space from top)
-		    currentX = window.innerWidth * 0.1; // 10% from left (desktop)
-		    currentY = window.innerHeight * 0.15; // 15% from top (below instruction)
+		    // Adjusted position - moved left (5% from left), kept vertical position (15% from top)
+		    currentX = window.innerWidth * 0.05; // 5% from left (desktop)
+		    currentY = window.innerHeight * 0.15; // 15% from top (good vertical position)
     
-		    // Adjust for mobile
+		    // Mobile adjustment - moved left (8% from left)
 		    if (window.innerWidth <= 600) {
-		        currentX = window.innerWidth * 0.15; // 15% from left (mobile)
+		        currentX = window.innerWidth * 0.08; // 8% from left (mobile)
 		        currentY = window.innerHeight * 0.18; // 18% from top (mobile)
 		    }
     
 		    floatingImage.style.left = `${currentX}px`;
 		    floatingImage.style.top = `${currentY}px`;
 
-		    // Physics parameters
+		    // Physics parameters (unchanged)
 		    const throwPower = 2.2;
 		    const friction = 0.98;
 		    const bounceFactor = 0.7;
