@@ -392,15 +392,38 @@
 		    left: 20px;
 		    bottom: 20px;
 		    z-index: 100;
-		    /* Removed background and padding */
+		    background: transparent;
+		    padding: 0;
+		    margin: 0;
+		    width: auto;
+		    height: auto;
+		    max-width: 50vw; /* Adjust based on your needs */
 		}
 
 		#afeegoVideo {
-		    /* Remove border-radius and shadow if you want pure video */
-		    width: auto;
+		    width: 100%;
 		    height: auto;
-		    max-width: 100%;
-		    max-height: 80vh; /* Prevent it from being too tall */
+		    max-height: 30vh;
+		    object-fit: contain;
+		    background: black;
+		    border-radius: 8px;
+		    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+		}
+
+		/* iOS-specific video fullscreen prevention */
+		@media (max-width: 768px) {
+		    #afeegoVideo {
+		        -webkit-overflow-scrolling: touch;
+		        overflow: hidden;
+		    }
+    
+		    video::-webkit-media-controls {
+		        display: none !important;
+		    }
+    
+		    video::-webkit-media-controls-enclosure {
+		        display: none !important;
+		    }
 		}
 
 		@media only screen and (max-width: 600px) {
@@ -542,7 +565,25 @@
         const floatingImage = document.getElementById('floatingImage');
 		const videoContainer = document.getElementById('videoContainer');
 		const afeegoVideo = document.getElementById('afeegoVideo');
-        
+// Detect iOS early to adjust behavior
+		const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+        	(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+		if (isIOS) {
+			// Force inline playback (redundant but ensures compliance)
+			const video = document.getElementById('afeegoVideo');
+			video.setAttribute('playsinline', 'true');
+			video.setAttribute('webkit-playsinline', 'true');
+			video.setAttribute('x-webkit-airplay', 'allow');
+    
+			// iOS often requires muted autoplay
+			video.muted = true;
+    
+			// Optional: Hide native controls if using custom UI
+			video.controls = false;
+		}
+		
+		
         // State Variables
         let currentAudio = null;
         let currentPlayingTrack = null;
@@ -555,6 +596,8 @@
         let isDraggingFloatingImage = false;
         let progressUpdateInterval = null;
 		let isVideoPlaying = false;
+		let hasPlayedAfeegoVideo = false;
+		let isAfeegoVideoPlaying = false;
         
         // Floating Image Variables
         let lastX = 0;
@@ -807,52 +850,80 @@
 
 		        trackElement.addEventListener('click', async () => {
 		            try {
-		                // Stop if already playing
-		                if (currentPlayingTrack === index && currentAudio && !currentAudio.paused) {
-		                    currentAudio.pause();
-		                    cleanupCharacterAnimation();
-		                    return;
-		                }
-
-		                // Stop current audio
-		                if (currentAudio) currentAudio.pause();
-
 		                // Special case for AFEEGO track
 		                if (track.name.includes("AFEEGO")) {
+		                    if (hasPlayedAfeegoVideo && currentAudio && !currentAudio.paused) {
+		                        // Toggle audio playback if video already played
+		                        if (currentAudio.paused) {
+		                            currentAudio.play();
+		                            trackElement.classList.add('playing');
+		                        } else {
+		                            currentAudio.pause();
+		                            trackElement.classList.remove('playing');
+		                        }
+		                        return;
+		                    }
+
+		                    // Show and play the video
 		                    const video = document.getElementById('afeegoVideo');
 		                    const videoContainer = document.getElementById('afeegoVideoContainer');
                     
-		                    // Reset video and show container
-		                    video.currentTime = 0;
-		                    videoContainer.style.display = 'block';
+		                    // iOS-specific setup
+		                    video.setAttribute('playsinline', '');
+		                    video.setAttribute('webkit-playsinline', '');
+		                    video.setAttribute('muted', 'false'); // Important for autoplay
                     
-		                    // Let video maintain natural dimensions
+		                    videoContainer.style.display = 'block';
 		                    video.style.width = 'auto';
 		                    video.style.height = 'auto';
+                    
+		                    // Reset video and mark state
+		                    video.currentTime = 0;
+		                    hasPlayedAfeegoVideo = true;
+		                    isAfeegoVideoPlaying = true;
                     
 		                    // Clean up previous event listeners
 		                    video.onended = null;
 		                    video.onerror = null;
                     
 		                    video.onended = () => {
+		                        isAfeegoVideoPlaying = false;
 		                        videoContainer.style.display = 'none';
-		                        playTrack(track, index, trackElement);
+		                        // Only play audio if not already playing
+		                        if (!currentAudio || currentAudio.paused) {
+		                            playTrack(track, index, trackElement);
+		                        }
 		                    };
                     
 		                    video.onerror = () => {
+		                        isAfeegoVideoPlaying = false;
 		                        videoContainer.style.display = 'none';
 		                        playTrack(track, index, trackElement);
 		                    };
                     
 		                    try {
+		                        // Muted autoplay is more likely to work on iOS
+		                        video.muted = true;
 		                        await video.play();
+		                        // Unmute after playback starts if needed
+		                        if (!video.requiresUserInteraction) {
+		                            video.muted = false;
+		                        }
 		                    } catch (e) {
+		                        console.log("Video play failed, falling back to audio", e);
 		                        videoContainer.style.display = 'none';
 		                        playTrack(track, index, trackElement);
 		                    }
 		                } else {
 		                    // Normal track handling
-		                    playTrack(track, index, trackElement);
+		                    if (currentPlayingTrack === index && currentAudio && !currentAudio.paused) {
+		                        currentAudio.pause();
+		                        trackElement.classList.remove('playing');
+		                        cleanupCharacterAnimation();
+		                    } else {
+		                        if (currentAudio) currentAudio.pause();
+		                        playTrack(track, index, trackElement);
+		                    }
 		                }
 		            } catch (e) {
 		                console.error("Playback error:", e);
@@ -1040,5 +1111,13 @@
 				<source src="AFEEGO/1.mp4" type="video/mp4">
 		</video>
 	</div>
+	<video id="afeegoVideo" 
+    	playsinline 
+    	webkit-playsinline 
+    	x-webkit-airplay="allow" 
+    	preload="auto"
+    	controls>
+		<source src="AFEEGO/1.mp4" type="video/mp4">
+	</video>	
 </body>
 </html>
