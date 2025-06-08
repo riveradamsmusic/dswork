@@ -204,25 +204,28 @@
             100% { width: 100%; }
         }
 		
-		.flick-instruction {
-		    position: fixed;
-		    top: 20%;
-		    left: 10%;
-		    font-family: 'Caveat', cursive;
-		    color: white;
-		    font-size: 24px;
-		    display: flex;
-		    flex-direction: column;
-		    align-items: center;
-		    z-index: 25;
-		    pointer-events: none;
-		}
+	    .flick-instruction {
+	        position: fixed;
+	        top: 15%; /* Changed from 20% to be higher up */
+	        left: 50%;
+	        transform: translateX(-50%);
+	        font-family: 'Caveat', cursive;
+	        color: white;
+	        font-size: 24px;
+	        display: none; /* Start hidden */
+	        flex-direction: column;
+	        align-items: center;
+	        z-index: 25;
+	        pointer-events: none;
+	        text-align: center;
+	        width: 100%;
+	    }
 
-		.flick-arrow {
-		    font-size: 30px;
-		    margin-top: -15px;
-		    animation: bounce 1s infinite alternate;
-		}
+	    .flick-arrow {
+	        font-size: 30px;
+	        margin-top: -15px;
+	        animation: bounce 1s infinite alternate;
+	    }
 
 		@keyframes bounce {
 		    from { transform: translateY(0); }
@@ -669,68 +672,73 @@
         }
 
         // Text Glitch Effect
-        function showGlitchText() {
-            text.style.display = 'block';
-            text.style.opacity = '1';
+		function showGlitchText() {
+		    text.style.display = 'block';
+		    text.style.opacity = '1';
+    
+		    const glitchLayer1 = document.createElement('div');
+		    glitchLayer1.className = 'glitch-layer';
+		    glitchLayer1.dataset.text = 'RiverAdam$';
+		    text.parentNode.insertBefore(glitchLayer1, text.nextSibling);
+    
+		    const glitchLayer2 = document.createElement('div');
+		    glitchLayer2.className = 'glitch-layer';
+		    glitchLayer2.dataset.text = 'RiverAdam$';
+		    text.parentNode.insertBefore(glitchLayer2, text.nextSibling);
+    
+		    let flashCount = 0;
+		    const maxFlashes = 6;
+		    const flashInterval = 100;
+    
+		    const flash = setInterval(() => {
+		        const effects = [
+		            'intense-glitch',
+		            'font-press-start glitch-effect',
+		            'font-major-mono glitch-effect'
+		        ];
+		        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+		        text.className = `handwritten ${randomEffect}`;
+        
+		        const colors = [
+		            '#ff00ff',
+		            '#00ffff',
+		            '#ffff00',
+		            '#ff00ff',
+		            '#00ff00',
+		            '#ff0000'
+		        ];
+		        text.style.color = colors[Math.floor(Math.random() * colors.length)];
+        
+		        text.style.transform = `translate(-50%, -50%) scale(${0.8 + Math.random() * 0.6})`;
+        
+		        flashCount++;
+		        if (flashCount >= maxFlashes) {
+		            clearInterval(flash);
+		            text.className = 'handwritten font-caveat';
+		            text.style.color = 'white';
+		            text.style.transform = 'translate(-50%, -50%)';
+		            text.style.animation = 'none';
             
-            const glitchLayer1 = document.createElement('div');
-            glitchLayer1.className = 'glitch-layer';
-            glitchLayer1.dataset.text = 'RiverAdam$';
-            text.parentNode.insertBefore(glitchLayer1, text.nextSibling);
+		            glitchLayer1.remove();
+		            glitchLayer2.remove();
             
-            const glitchLayer2 = document.createElement('div');
-            glitchLayer2.className = 'glitch-layer';
-            glitchLayer2.dataset.text = 'RiverAdam$';
-            text.parentNode.insertBefore(glitchLayer2, text.nextSibling);
-            
-            let flashCount = 0;
-            const maxFlashes = 6;
-            const flashInterval = 100;
-            
-            const flash = setInterval(() => {
-                const effects = [
-                    'intense-glitch',
-                    'font-press-start glitch-effect',
-                    'font-major-mono glitch-effect'
-                ];
-                const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-                text.className = `handwritten ${randomEffect}`;
+		            setTimeout(() => {
+		                text.style.display = 'none';
+		                carousel.style.display = 'block';
+		                topRightImages.style.display = 'flex';
+		                platformLinks.style.display = 'flex';
+		                createSlideshow();
+		                initCarousel();
+		                initFloatingImage();
                 
-                const colors = [
-                    '#ff00ff',
-                    '#00ffff',
-                    '#ffff00',
-                    '#ff00ff',
-                    '#00ff00',
-                    '#ff0000'
-                ];
-                text.style.color = colors[Math.floor(Math.random() * colors.length)];
-                
-                text.style.transform = `translate(-50%, -50%) scale(${0.8 + Math.random() * 0.6})`;
-                
-                flashCount++;
-                if (flashCount >= maxFlashes) {
-                    clearInterval(flash);
-                    text.className = 'handwritten font-caveat';
-                    text.style.color = 'white';
-                    text.style.transform = 'translate(-50%, -50%)';
-                    text.style.animation = 'none';
-                    
-                    glitchLayer1.remove();
-                    glitchLayer2.remove();
-                    
-                    setTimeout(() => {
-                        text.style.display = 'none';
-                        carousel.style.display = 'block';
-                        topRightImages.style.display = 'flex';
-                        platformLinks.style.display = 'flex';
-                        createSlideshow();
-                        initCarousel();
-                        initFloatingImage();
-                    }, 300);
-                }
-            }, flashInterval);
-        }
+		                // Show flick instruction after everything is set up
+		                setTimeout(() => {
+		                    document.getElementById('flickInstruction').style.display = 'flex';
+		                }, 500);
+		            }, 300);
+		        }
+		    }, flashInterval);
+		}
 
         // Progress Bar Functions
         function updateProgressBar() {
@@ -927,10 +935,6 @@
 		    floatingImage.style.left = `${currentX}px`;
 		    floatingImage.style.top = `${currentY}px`;
 
-		    // Show instruction initially
-		    const flickInstruction = document.getElementById('flickInstruction');
-		    flickInstruction.style.display = 'flex';
-
 		    // Physics parameters
 		    const throwPower = 2.2;
 		    const friction = 0.98;
@@ -941,7 +945,7 @@
 		            // Apply friction
 		            velocityX *= friction;
 		            velocityY *= friction;
-    
+
 		            // Update position
 		            currentX += velocityX;
 		            currentY += velocityY;
@@ -965,7 +969,7 @@
 
 		            floatingImage.style.left = `${currentX}px`;
 		            floatingImage.style.top = `${currentY}px`;
-            
+
 		            // Create smoke trail when moving
 		            if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
 		                createSmokeTrail(
@@ -981,10 +985,9 @@
 		    let throwVector = { x: 0, y: 0 };
 
 		    function handleFirstInteraction() {
-		        // Hide instruction permanently
-		        const flickInstruction = document.getElementById('flickInstruction');
-		        flickInstruction.style.display = 'none';
-        
+		        // Hide instruction when user first interacts
+		        document.getElementById('flickInstruction').style.display = 'none';
+
 		        // Remove these event listeners after first interaction
 		        floatingImage.removeEventListener('mousedown', handleFirstInteraction);
 		        floatingImage.removeEventListener('touchstart', handleFirstInteraction);
@@ -1006,7 +1009,7 @@
 
 		    function handleDragStart(e) {
 		        if (isDraggingFloatingImage) return;
-        
+
 		        isDraggingFloatingImage = true;
 		        floatingImage.classList.add('grabbing');
 		        throwVector = { x: 0, y: 0 };
