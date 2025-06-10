@@ -334,17 +334,16 @@
             box-shadow: 0 3px 12px rgba(0,0,0,0.4);
         }
         
-        /* --- [FIXED] Progress Bar & Character --- */
+        /* --- [CORRECTED] Progress Bar & Character --- */
         .progress-track {
-            position: fixed;
+            position: fixed; /* CORRECTED: This locks the element to the viewport */
             top: 40px;
-            left: 20px; /* Positioned on the left */
-            width: calc(50vw - 40px); /* Fills the left quadrant */
+            left: 20px;
+            width: calc(50vw - 40px);
             height: 4px;
             background: rgba(255,255,255,0.2);
             z-index: 99;
             display: none;
-            position: relative; /* New: for containing the character */
             cursor: pointer;
         }
 
@@ -355,13 +354,13 @@
             height: 100%;
             width: 0%;
             background: var(--primary-color);
-            pointer-events: none; /* Allows clicks to go through to the track */
+            pointer-events: none;
         }
 
         .game-character {
-            position: absolute; /* Changed: Now absolute to the track */
-            top: 50%; /* Vertically centers on the track */
-            left: 0%;  /* Changed: JS will now control this directly */
+            position: absolute; /* Positions relative to the track, which is now fixed */
+            top: 50%;
+            left: 0%;
             width: 40px;
             height: 40px;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="10" width="6" height="8" fill="%239b59b6"/><rect x="8" y="14" width="8" height="2" fill="%236a3d8a"/><circle cx="11" cy="12" r="1" fill="%23000"/><circle cx="13" cy="12" r="1" fill="%23000"/></svg>');
@@ -371,12 +370,12 @@
             display: none;
             animation: walk 0.5s steps(2) infinite;
             cursor: ew-resize;
-            transform: translate(-50%, -50%); /* Centers the character on its 'left' value */
+            transform: translate(-50%, -50%);
         }
 
         @keyframes walk {
             0%, 100% { transform: translate(-50%, -50%); }
-            50% { transform: translate(-50%, -60%); } /* A bit more lift */
+            50% { transform: translate(-50%, -60%); }
         }
 
 
@@ -728,12 +727,12 @@
                 }, GLITCH_INTERVAL_MS);
             };
 
-            // --- [FIXED] Audio and Progress Bar ---
+            // --- [CORRECTED] Audio and Progress Bar Logic ---
             const updateProgressBar = () => {
                 if (state.currentAudio && !state.isCharacterDragging) {
                     const progress = (state.currentAudio.currentTime / state.currentAudio.duration) * 100;
                     elements.progressFill.style.width = `${progress}%`;
-                    elements.gameCharacter.style.left = `${progress}%`; // This now correctly controls the character
+                    elements.gameCharacter.style.left = `${progress}%`;
                 }
             };
 
@@ -748,14 +747,13 @@
                 scrubPosition = Math.max(0, Math.min(1, scrubPosition));
 
                 state.currentAudio.currentTime = scrubPosition * state.currentAudio.duration;
-                updateProgressBar(); // Manually update UI while scrubbing
+                updateProgressBar();
             };
             
             const setupProgressInteraction = () => {
                 const startScrub = (e) => {
-                    if (e.target !== elements.gameCharacter && e.target !== elements.progressTrack) return;
                     state.isCharacterDragging = true;
-                    handleScrub(e); // Immediately jump to the click position
+                    handleScrub(e);
 
                     document.addEventListener('mousemove', handleScrub);
                     document.addEventListener('touchmove', handleScrub, { passive: false });
@@ -790,10 +788,10 @@
                 state.currentAudio.play().catch(e => console.error("Audio play failed:", e));
 
                 state.currentAudio.onplay = () => {
-                    elements.gameCharacter.style.display = 'block';
                     elements.progressTrack.style.display = 'block';
-                    elements.gameCharacter.style.left = '0%'; // Reset position
-                    elements.progressFill.style.width = '0%'; // Reset fill
+                    elements.gameCharacter.style.display = 'block';
+                    elements.gameCharacter.style.left = '0%';
+                    elements.progressFill.style.width = '0%';
                     state.progressUpdateInterval = setInterval(updateProgressBar, 100);
                 };
 
