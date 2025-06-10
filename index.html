@@ -13,26 +13,31 @@
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
-		
         
         /* Base Styles */
         body {
-            background: #213b4d;
+            background-image: url('GITBACK/wall.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             height: 100vh;
+            height: 100dvh; /* Dynamic viewport height for mobile */
             display: grid;
             place-items: center;
             margin: 0;
+            padding: 0;
             overflow: hidden;
             position: relative;
         }
-        
+
         .handwritten {
             font-family: 'Caveat', cursive;
             color: white;
             user-select: none;
             letter-spacing: 1px;
         }
-        
+
         /* Emoji Wrapper */
         .emoji-wrapper {
             position: fixed;
@@ -43,7 +48,7 @@
             cursor: pointer;
             z-index: 10;
         }
-        
+
         #emoji {
             font-size: 80px;
             display: inline-block;
@@ -53,11 +58,11 @@
             text-align: center;
             transition: transform 0.2s ease;
         }
-        
+
         #emoji:active {
             transform: scale(0.8);
         }
-        
+
         /* Glitch Text */
         #text {
             position: fixed;
@@ -72,7 +77,7 @@
             width: auto;
             pointer-events: none;
         }
-        
+
         /* Font Classes */
         .font-caveat { font-family: 'Caveat', cursive; }
         .font-press-start { font-family: 'Press Start 2P', cursive; }
@@ -81,7 +86,7 @@
         .font-marker { font-family: 'Permanent Marker', cursive; }
         .font-vt323 { font-family: 'VT323', monospace; }
         .font-major-mono { font-family: 'Major Mono Display', monospace; }
-        
+
         /* Animations */
         @keyframes text-glitch {
             0%, 5%, 100% { transform: translate(-50%, -50%); opacity: 1; text-shadow: none; }
@@ -203,31 +208,31 @@
             0% { width: 0%; }
             100% { width: 100%; }
         }
-		
-		.flick-instruction {
-		    position: fixed;
-		    top: calc(20% - 1.7cm);
-		    left: 10%;
-		    font-family: 'Caveat', cursive;
-		    color: white;
-		    font-size: 24px;
-		    display: none;
-		    flex-direction: column;
-		    align-items: center;
-		    z-index: 25;
-		    pointer-events: none;
-		}
+        
+        .flick-instruction {
+            position: fixed;
+            top: calc(20% - 1.7cm);
+            left: 10%;
+            font-family: 'Caveat', cursive;
+            color: white;
+            font-size: 24px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 25;
+            pointer-events: none;
+        }
 
-		.flick-arrow {
-		    font-size: 22px;
-		    margin-top: -15px;
-		    animation: bounce 1s infinite alternate;
-		}
+        .flick-arrow {
+            font-size: 22px;
+            margin-top: -15px;
+            animation: bounce 1s infinite alternate;
+        }
 
-		@keyframes bounce {
-		    from { transform: translateY(0); }
-		    to { transform: translateY(10px); }
-		}
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(10px); }
+        }
         
         /* Carousel Styles */
         .carousel-container {
@@ -409,47 +414,57 @@
                 transform: translate(-50%, -50%) scale(1.5);
             }
         }
-		
-		#afeegoVideoContainer {
-		    display: none;
-		    position: fixed;
-		    left: 20px;
-		    bottom: 20px;
-		    z-index: 100;
-		    background: transparent;
-		    padding: 0;
-		    max-width: 50%; /* Prevent it from being too wide */
-		}
+        
+        #afeegoVideoContainer {
+            display: none;
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 100;
+            background: transparent;
+            padding: 0;
+            max-width: 50%; /* Prevent it from being too wide */
+        }
 
-		#afeegoVideo {
-		    border-radius: 8px;
-		    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-		    width: 240px; /* Fixed width for desktop */
-		    height: 135px; /* Fixed height for desktop */
-		}
+        #afeegoVideo {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            width: 240px; /* Fixed width for desktop */
+            height: 135px; /* Fixed height for desktop */
+        }
 
-		@media only screen and (max-width: 600px) {
-		    #afeegoVideoContainer {
-		        left: 10px;
-		        bottom: 10px;
-		        max-width: 60%; /* Slightly larger on mobile but not full-width */
-		    }
-    
-		    #afeegoVideo {
-		        width: 160px !important; /* Smaller on mobile */
-		        height: 90px !important;
-		    }
-		}
-            
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            body {
+                background-attachment: scroll; /* Better performance on mobile */
+                height: 100vh;
+                height: 100dvh;
+                min-height: -webkit-fill-available;
+            }
+        
+            html {
+                height: -webkit-fill-available;
+            }
+            #afeegoVideoContainer {
+                left: 10px;
+                bottom: 10px;
+                max-width: 60%; /* Slightly larger on mobile but not full-width */
+            }
+        
+            #afeegoVideo {
+                width: 160px !important; /* Smaller on mobile */
+                height: 90px !important;
+            }
+                    
             .carousel-container {
                 width: 300px;
                 height: 300px;
             }
-            
+                    
             .track {
                 font-size: 14px;
             }
-            
+                    
             .track-0 { top: 20px; left: 100px; }
             .track-1 { top: 50px; left: 50px; }
             .track-2 { top: 100px; left: 20px; }
@@ -458,44 +473,44 @@
             .track-5 { top: 170px; left: 150px; }
             .track-6 { top: 100px; left: 180px; }
             .track-7 { top: 50px; left: 150px; }
-            
+                    
             .slideshow-container {
                 width: 80px;
                 height: 80px;
             }
-            
+                    
             .top-right-images {
                 width: 80px;
                 height: 80px;
                 right: 15px;
                 top: 15px;
             }
-            
+                    
             .platform-links {
                 bottom: 25px;
                 gap: 12px;
             }
-            
+                    
             .platform-emoji {
                 font-size: 16px;
                 width: 20px;
                 height: 20px;
                 padding: 6px;
             }
-            
+                    
             .game-character {
                 width: 30px;
                 height: 30px;
                 left: 15%;
             }
-            
+                    
             .progress-track {
                 top: 35px;
                 height: 3px;
                 left: 15%;
                 width: 55%;
             }
-            
+                    
             #floatingImage {
                 width: 40px;
                 height: 40px;
@@ -543,6 +558,17 @@
                 <span class="platform-emoji instagram">📸</span>
             </a>
         </div>
+
+        <div id="afeegoVideoContainer">
+            <video id="afeegoVideo" width="320" height="180" controls>
+                <source src="AFEEGO/1.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="flick-instruction" id="flickInstruction">
+            Flick
+            <div class="flick-arrow">↓</div>
+        </div>
     </div>
 
     <script>
@@ -559,8 +585,9 @@
         const progressFill = document.getElementById('progressFill');
         const spinner = document.querySelector('.spinner');
         const floatingImage = document.getElementById('floatingImage');
-		const videoContainer = document.getElementById('videoContainer');
-		const afeegoVideo = document.getElementById('afeegoVideo');
+        const afeegoVideoContainer = document.getElementById('afeegoVideoContainer');
+        const afeegoVideo = document.getElementById('afeegoVideo');
+        const flickInstruction = document.getElementById('flickInstruction');
         
         // State Variables
         let currentAudio = null;
@@ -570,11 +597,10 @@
         let currentSlide = 0;
         let loadedImages = 0;
         let totalImages = 0;
-        let isDragging = false;
+        let isDraggingProgressBar = false;
         let isDraggingFloatingImage = false;
         let progressUpdateInterval = null;
-		let isVideoPlaying = false;
-		let hasAfeegoVideoPlayed = false; // Track if video was shown before
+        let hasAfeegoVideoPlayed = false; // Track if video was shown before
         
         // Floating Image Variables
         let lastX = 0;
@@ -584,47 +610,43 @@
         let velocityX = 0;
         let velocityY = 0;
         const friction = 0.98;
+        const bounceFactor = 0.7;
         let animationFrameId;
         let lastSmokeTime = 0;
         const smokeInterval = 100; // milliseconds between smoke particles
 
         // Data
-		const audioFiles = [
-		    { name: "21 Century", file: "RIVERADAMS/21_Century_copy.mp3", duration: 180 },
-		    { name: "Grey", file: "RIVERADAMS/grey_copy.mp3", duration: 210 },
-		    { name: "𝐌𝐫. 𝐒𝐨̷𝐥𝐨̷", file: "RIVERADAMS/Mr_Solo_copy.mp3", duration: 195 }, // Bold with strikes ONLY on o's
-		    { name: "Opportunities", file: "RIVERADAMS/Opportunities_copy.mp3", duration: 225 },
-		    { name: "Rap (feat. AFEEGO)", file: "RIVERADAMS/Rap_feat_AFEEGO_copy.mp3", duration: 240 },
-		    { name: "Spoken Word", file: "RIVERADAMS/Spoken_Word_copy.mp3", duration: 180 },
-		    { name: "Trying", file: "RIVERADAMS/Trying_copy.mp3", duration: 200 },
-		    { name: "𝓦𝔂𝓷𝔀𝓸𝓸𝓭", file: "RIVERADAMS/Wynwood_copy_Wav.mp3", duration: 190 } // Bold with strikes ONLY on o's
-		];
+        const audioFiles = [
+            { name: "21 Century", file: "RIVERADAMS/21_Century_copy.mp3", duration: 180 },
+            { name: "Grey", file: "RIVERADAMS/grey_copy.mp3", duration: 210 },
+            { name: "𝐌𝐫. 𝐒𝐨̷𝐥𝐨̷", file: "RIVERADAMS/Mr_Solo_copy.mp3", duration: 195 },
+            { name: "Opportunities", file: "RIVERADAMS/Opportunities_copy.mp3", duration: 225 },
+            { name: "Rap (feat. AFEEGO)", file: "RIVERADAMS/Rap_feat_AFEEGO_copy.mp3", duration: 240 },
+            { name: "Spoken Word", file: "RIVERADAMS/Spoken_Word_copy.mp3", duration: 180 },
+            { name: "Trying", file: "RIVERADAMS/Trying_copy.mp3", duration: 200 },
+            { name: "𝓦𝔂𝓷𝔀𝓸𝓸𝓭", file: "RIVERADAMS/Wynwood_copy_Wav.mp3", duration: 190 }
+        ];
 
         const photoFiles = Array.from({length: 11}, (_, i) => `RIVERADAMSPICZ/${i+1}.jpg`);
         totalImages = photoFiles.length;
 
-        const fontClasses = [
-            'font-caveat',  
-            'font-press-start',
-            'font-rubik',
-            'font-comic',
-            'font-marker',
-            'font-vt323',
-            'font-major-mono'
-        ];
+        // Note: Font classes are defined in CSS; no need to list them in JS unless dynamically assigned.
 
         // Initialize Slideshow
         function createSlideshow() {
             spinner.style.display = 'block';
             slideshow.style.display = 'block';
             
-            const slidesToLoad = photoFiles.filter(file => !file.includes('1.jpg'));
+            const slidesToLoad = photoFiles.filter(file => !file.includes('1.jpg')); // Assuming '1.jpg' is used for floating image
             totalImages = slidesToLoad.length;
 
             if (totalImages === 0) {
                 spinner.style.display = 'none';
                 return;
             }
+
+            slideshow.innerHTML = '<div class="spinner"></div>'; // Clear existing content and re-add spinner
+            const currentSpinner = slideshow.querySelector('.spinner');
 
             slidesToLoad.forEach((photo, index) => {
                 const slide = document.createElement('img');
@@ -635,17 +657,17 @@
                 slide.onload = () => {
                     loadedImages++;
                     if (loadedImages === totalImages) {
-                        spinner.style.display = 'none';
+                        currentSpinner.style.display = 'none';
                         startSlideshow();
                     }
                 };
                 
                 slide.onerror = () => {
-                    slide.style.display = 'none';
+                    slide.style.display = 'none'; // Hide broken images
                     loadedImages++;
                     if (loadedImages === totalImages) {
-                        spinner.style.display = 'none';
-                        if (document.querySelectorAll('.slide:not([style*="display: none"])').length > 0) {
+                        currentSpinner.style.display = 'none';
+                        if (document.querySelectorAll('#slideshow .slide:not([style*="display: none"])').length > 0) {
                             startSlideshow();
                         }
                     }
@@ -673,15 +695,18 @@
             text.style.display = 'block';
             text.style.opacity = '1';
             
-            const glitchLayer1 = document.createElement('div');
-            glitchLayer1.className = 'glitch-layer';
-            glitchLayer1.dataset.text = 'RiverAdam$';
-            text.parentNode.insertBefore(glitchLayer1, text.nextSibling);
-            
-            const glitchLayer2 = document.createElement('div');
-            glitchLayer2.className = 'glitch-layer';
-            glitchLayer2.dataset.text = 'RiverAdam$';
-            text.parentNode.insertBefore(glitchLayer2, text.nextSibling);
+            // Create glitch layers (if they don't already exist)
+            if (!document.querySelector('.glitch-layer')) {
+                const glitchLayer1 = document.createElement('div');
+                glitchLayer1.className = 'glitch-layer';
+                glitchLayer1.dataset.text = 'RiverAdam$';
+                text.parentNode.insertBefore(glitchLayer1, text.nextSibling);
+                
+                const glitchLayer2 = document.createElement('div');
+                glitchLayer2.className = 'glitch-layer';
+                glitchLayer2.dataset.text = 'RiverAdam$';
+                text.parentNode.insertBefore(glitchLayer2, text.nextSibling);
+            }
             
             let flashCount = 0;
             const maxFlashes = 6;
@@ -697,12 +722,7 @@
                 text.className = `handwritten ${randomEffect}`;
                 
                 const colors = [
-                    '#ff00ff',
-                    '#00ffff',
-                    '#ffff00',
-                    '#ff00ff',
-                    '#00ff00',
-                    '#ff0000'
+                    '#ff00ff', '#00ffff', '#ffff00', '#ff00ff', '#00ff00', '#ff0000'
                 ];
                 text.style.color = colors[Math.floor(Math.random() * colors.length)];
                 
@@ -716,8 +736,7 @@
                     text.style.transform = 'translate(-50%, -50%)';
                     text.style.animation = 'none';
                     
-                    glitchLayer1.remove();
-                    glitchLayer2.remove();
+                    document.querySelectorAll('.glitch-layer').forEach(layer => layer.remove());
                     
                     setTimeout(() => {
                         text.style.display = 'none';
@@ -727,8 +746,7 @@
                         createSlideshow();
                         initCarousel();
                         initFloatingImage();
-						const flickInstruction = document.getElementById('flickInstruction');
-						flickInstruction.style.display = 'flex';
+                        flickInstruction.style.display = 'flex'; // Show instruction after main elements appear
                     }, 300);
                 }
             }, flashInterval);
@@ -736,171 +754,181 @@
 
         // Progress Bar Functions
         function updateProgressBar() {
-            if (currentAudio && !isDragging) {
+            if (currentAudio && !isDraggingProgressBar) {
                 const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
                 progressFill.style.width = `${progress}%`;
                 const screenWidth = window.innerWidth;
-                const startPosition = screenWidth <= 600 ? 15 : 25;
-                const newPosition = startPosition + (progress * 0.5);
+                const startPosition = screenWidth <= 768 ? 15 : 25; // Adjusted breakpoint to 768px for consistency
+                const newPosition = startPosition + (progress * 0.5); // 0.5 is 50% width of progress bar
                 gameCharacter.style.left = `${newPosition}%`;
             }
         }
 
-        function handleScrub(event) {
+        function handleProgressBarScrub(event) {
             if (!currentAudio || isDraggingFloatingImage) return;
             
             const progressTrackRect = progressTrack.getBoundingClientRect();
-            let clientX = event.clientX || (event.touches && event.touches[0] ? event.touches[0].clientX : null);
+            const clientX = event.clientX || (event.touches && event.touches[0] ? event.touches[0].clientX : null);
             if (clientX === null) return;
 
             let scrubPosition = (clientX - progressTrackRect.left) / progressTrackRect.width;
             scrubPosition = Math.max(0, Math.min(1, scrubPosition));
             
             currentAudio.currentTime = scrubPosition * currentAudio.duration;
-            progressFill.style.width = `${scrubPosition * 100}%`;
-            
-            const screenWidth = window.innerWidth;
-            const startPosition = screenWidth <= 600 ? 15 : 25;
-            const newPosition = startPosition + (scrubPosition * 50);
-            gameCharacter.style.left = `${newPosition}%`;
+            updateProgressBar(); // Update immediately on scrub
         }
 
         // Character Animation
         function animateCharacter(duration) {
             gameCharacter.style.display = 'block';
             progressTrack.style.display = 'block';
-            gameCharacter.style.left = window.innerWidth <= 600 ? '15%' : '25%';
+            gameCharacter.style.left = window.innerWidth <= 768 ? '15%' : '25%'; // Adjusted breakpoint
             progressFill.style.width = '0%';
             
+            // Clear any existing interval to prevent multiple running
+            clearInterval(progressUpdateInterval); 
             progressUpdateInterval = setInterval(updateProgressBar, 100);
             
-            gameCharacter.addEventListener('mousedown', (e) => {
-                if (isDraggingFloatingImage) return;
-                isDragging = true;
-                document.addEventListener('mousemove', handleScrub);
-                document.addEventListener('mouseup', () => {
-                    isDragging = false;
-                    document.removeEventListener('mousemove', handleScrub);
-                });
-            });
+            // Event listeners for scrubbing
+            gameCharacter.addEventListener('mousedown', handleProgressBarDragStart);
+            gameCharacter.addEventListener('touchstart', handleProgressBarDragStart, { passive: false });
+            progressTrack.addEventListener('click', handleProgressBarScrubClick);
+            progressTrack.addEventListener('touchstart', handleProgressBarScrubTouch, { passive: false });
+        }
 
-            gameCharacter.addEventListener('touchstart', (e) => {
-                if (isDraggingFloatingImage) return;
-                isDragging = true;
-                document.addEventListener('touchmove', handleScrub);
-                document.addEventListener('touchend', () => {
-                    isDragging = false;
-                    document.removeEventListener('touchmove', handleScrub);
-                });
-                e.preventDefault();
-            });
-            
-            progressTrack.addEventListener('click', (e) => {
-                if (!isDraggingFloatingImage) {
-                    handleScrub(e);
-                }
-            });
+        function handleProgressBarDragStart(e) {
+            if (isDraggingFloatingImage) return;
+            isDraggingProgressBar = true;
+            document.addEventListener('mousemove', handleProgressBarScrub);
+            document.addEventListener('mouseup', handleProgressBarDragEnd);
+            e.preventDefault(); // Prevent default drag behavior for character
+        }
 
-            progressTrack.addEventListener('touchstart', (e) => {
-                if (!isDraggingFloatingImage) {
-                    handleScrub(e);
-                    e.preventDefault();
-                }
-            }, { passive: false });
+        function handleProgressBarScrubClick(e) {
+            if (!isDraggingFloatingImage) {
+                handleProgressBarScrub(e);
+            }
+        }
+
+        function handleProgressBarScrubTouch(e) {
+            if (!isDraggingFloatingImage) {
+                handleProgressBarScrub(e);
+                e.preventDefault(); // Prevent default touch behavior
+            }
+        }
+
+        function handleProgressBarDragEnd() {
+            isDraggingProgressBar = false;
+            document.removeEventListener('mousemove', handleProgressBarScrub);
+            document.removeEventListener('mouseup', handleProgressBarDragEnd);
         }
 
         function cleanupCharacterAnimation() {
             clearInterval(progressUpdateInterval);
             progressTrack.style.display = 'none';
             gameCharacter.style.display = 'none';
-            document.removeEventListener('mousemove', handleScrub);
-            document.removeEventListener('touchmove', handleScrub);
-            isDragging = false;
+            // Remove event listeners when animation is cleaned up
+            gameCharacter.removeEventListener('mousedown', handleProgressBarDragStart);
+            gameCharacter.removeEventListener('touchstart', handleProgressBarDragStart);
+            progressTrack.removeEventListener('click', handleProgressBarScrubClick);
+            progressTrack.removeEventListener('touchstart', handleProgressBarScrubTouch);
+            document.removeEventListener('mousemove', handleProgressBarScrub);
+            document.removeEventListener('mouseup', handleProgressBarDragEnd);
+            isDraggingProgressBar = false;
         }
 
         // Initialize Carousel
-		function initCarousel() {
-		    let afeegoVideoPlayed = false; // Track if AFEEGO video has been played
-    
-		    audioFiles.forEach((track, index) => {
-		        const trackElement = document.createElement('div');
-		        trackElement.className = `track track-${index % 8}`;
-		        trackElement.textContent = track.name;
-		        trackElement.dataset.index = index;
-		        carousel.appendChild(trackElement);
+        function initCarousel() {
+            carousel.innerHTML = ''; // Clear existing tracks if re-initializing
+            audioFiles.forEach((track, index) => {
+                const trackElement = document.createElement('div');
+                trackElement.className = `track track-${index % 8}`;
+                trackElement.textContent = track.name;
+                trackElement.dataset.index = index;
+                carousel.appendChild(trackElement);
 
-		        trackElement.addEventListener('click', async () => {
-		            try {
-		                // Pause/resume logic for all tracks
-		                if (currentPlayingTrack === index && currentAudio) {
-		                    if (currentAudio.paused) {
-		                        await currentAudio.play();
-		                        document.querySelector('.track.playing')?.classList.add('playing');
-		                    } else {
-		                        currentAudio.pause();
-		                        document.querySelector('.track.playing')?.classList.remove('playing');
-		                    }
-		                    return;
-		                }
+                trackElement.addEventListener('click', async () => {
+                    try {
+                        // Pause/resume logic for all tracks
+                        if (currentPlayingTrack === index && currentAudio) {
+                            if (currentAudio.paused) {
+                                await currentAudio.play();
+                                trackElement.classList.add('playing');
+                            } else {
+                                currentAudio.pause();
+                                trackElement.classList.remove('playing');
+                            }
+                            return; // Exit if just pausing/resuming current track
+                        }
 
-		                // Stop current audio
-		                if (currentAudio) currentAudio.pause();
+                        // Stop current audio if a new track is selected
+                        if (currentAudio) {
+                            currentAudio.pause();
+                            const previouslyPlayingTrack = document.querySelector('.track.playing');
+                            if (previouslyPlayingTrack) {
+                                previouslyPlayingTrack.classList.remove('playing');
+                            }
+                        }
 
-		                // AFEEGO video handling (only first time)
-		                if (track.name.includes("AFEEGO") && !afeegoVideoPlayed) {
-		                    const video = document.getElementById('afeegoVideo');
-		                    const videoContainer = document.getElementById('afeegoVideoContainer');
+                        // AFEEGO video handling (only first time the AFEEGO track is played)
+                        if (track.name.includes("AFEEGO") && !hasAfeegoVideoPlayed) {
+                            afeegoVideo.currentTime = 0;
+                            afeegoVideoContainer.style.display = 'block';
+                            hasAfeegoVideoPlayed = true; // Mark as played
+
+                            afeegoVideo.onended = () => {
+                                afeegoVideoContainer.style.display = 'none';
+                                playTrack(track, index, trackElement); // Play audio after video ends
+                            };
+                            
+                            afeegoVideo.onerror = () => {
+                                console.error("AFEEGO video error. Attempting to play audio instead.");
+                                afeegoVideoContainer.style.display = 'none';
+                                playTrack(track, index, trackElement); // Fallback to audio if video fails
+                            };
+
+                            try {
+                                await afeegoVideo.play();
+                                return; // Stop further audio processing until video ends or fails
+                            } catch (e) {
+                                console.error("Video play failed:", e);
+                                afeegoVideoContainer.style.display = 'none';
+                                playTrack(track, index, trackElement); // Fallback if user gesture is needed
+                            }
+                        }
+
+                        // Normal track play
+                        playTrack(track, index, trackElement);
                     
-		                    video.currentTime = 0;
-		                    videoContainer.style.display = 'block';
-		                    afeegoVideoPlayed = true;
-                    
-		                    video.onended = () => {
-		                        videoContainer.style.display = 'none';
-		                        playTrack(track, index, trackElement);
-		                    };
-                    
-		                    try {
-		                        await video.play();
-		                        return;
-		                    } catch (e) {
-		                        console.error("Video play failed:", e);
-		                        videoContainer.style.display = 'none';
-		                    }
-		                }
+                    } catch (e) {
+                        console.error("Playback error:", e);
+                    }
+                });
+            });
+        }
+        
+        // Helper function to play audio tracks
+        function playTrack(track, index, element) {
+            // If we're switching tracks, create new audio
+            if (currentPlayingTrack !== index || !currentAudio) {
+                currentAudio = new Audio(track.file);
+                currentPlayingTrack = index;
+            }
 
-		                // Normal track play
-		                playTrack(track, index, trackElement);
-                
-		            } catch (e) {
-		                console.error("Playback error:", e);
-		            }
-		        });
-		    });
-		}
-		
-		// Helper function to play audio tracks
-		function playTrack(track, index, element) {
-		    // If we're switching tracks, create new audio
-		    if (currentPlayingTrack !== index || !currentAudio) {
-		        currentAudio = new Audio(track.file);
-		        currentPlayingTrack = index;
-		    }
+            currentAudio.onplay = () => {
+                animateCharacter(track.duration);
+                document.querySelectorAll('.track').forEach(t => t.classList.remove('playing'));
+                element.classList.add('playing');
+            };
 
-		    currentAudio.onplay = () => {
-		        animateCharacter(track.duration);
-		        document.querySelectorAll('.track').forEach(t => t.classList.remove('playing'));
-		        element.classList.add('playing');
-		    };
+            currentAudio.onended = () => {
+                element.classList.remove('playing');
+                currentPlayingTrack = null;
+                cleanupCharacterAnimation();
+            };
 
-		    currentAudio.onended = () => {
-		        element.classList.remove('playing');
-		        currentPlayingTrack = null;
-		        cleanupCharacterAnimation();
-		    };
-
-		    currentAudio.play();
-		}
+            currentAudio.play();
+        }
         
         // Create smoke trail effect
         function createSmokeTrail(x, y) {
@@ -921,151 +949,147 @@
         }
         
         // Floating Image Functions
-		function initFloatingImage() {
-		    floatingImage.style.display = 'block';
-		    // Position in upper left center (10% from left, 20% from top)
-		    currentX = window.innerWidth * 0.1;
-		    currentY = window.innerHeight * 0.2;
-		    floatingImage.style.left = `${currentX}px`;
-		    floatingImage.style.top = `${currentY}px`;
+        function initFloatingImage() {
+            floatingImage.style.display = 'block';
+            // Position in upper left center (10% from left, 20% from top)
+            currentX = window.innerWidth * 0.1;
+            currentY = window.innerHeight * 0.2;
+            floatingImage.style.left = `${currentX}px`;
+            floatingImage.style.top = `${currentY}px`;
 
-		    
-
-		    // Physics parameters
-		    const throwPower = 2.2;
-		    const friction = 0.98;
-		    const bounceFactor = 0.7;
-
-		    function updateFloatingImage() {
-		        if (!isDraggingFloatingImage) {
-		            // Apply friction
-		            velocityX *= friction;
-		            velocityY *= friction;
-    
-		            // Update position
-		            currentX += velocityX;
-		            currentY += velocityY;
-
-		            // Boundary checks with bounces
-		            if (currentX < 0) {
-		                currentX = 0;
-		                velocityX *= -bounceFactor;
-		            } else if (currentX > window.innerWidth - floatingImage.offsetWidth) {
-		                currentX = window.innerWidth - floatingImage.offsetWidth;
-		                velocityX *= -bounceFactor;
-		            }
-
-		            if (currentY < 0) {
-		                currentY = 0;
-		                velocityY *= -bounceFactor;
-		            } else if (currentY > window.innerHeight - floatingImage.offsetHeight) {
-		                currentY = window.innerHeight - floatingImage.offsetHeight;
-		                velocityY *= -bounceFactor;
-		            }
-
-		            floatingImage.style.left = `${currentX}px`;
-		            floatingImage.style.top = `${currentY}px`;
-            
-		            // Create smoke trail when moving
-		            if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
-		                createSmokeTrail(
-		                    currentX + floatingImage.offsetWidth / 2,
-		                    currentY + floatingImage.offsetHeight / 2
-		                );
-		            }
-		        }
-		        animationFrameId = requestAnimationFrame(updateFloatingImage);
-		    }
-
-		    // Track initial throw direction
-		    let throwVector = { x: 0, y: 0 };
-
-		    function handleFirstInteraction() {
-		        // Hide instruction permanently
-		        const flickInstruction = document.getElementById('flickInstruction');
-		        flickInstruction.style.display = 'none';
+            function updateFloatingImage() {
+                if (!isDraggingFloatingImage) {
+                    // Apply friction
+                    velocityX *= friction;
+                    velocityY *= friction;
         
-		        // Remove these event listeners after first interaction
-		        floatingImage.removeEventListener('mousedown', handleFirstInteraction);
-		        floatingImage.removeEventListener('touchstart', handleFirstInteraction);
-		    }
+                    // Update position
+                    currentX += velocityX;
+                    currentY += velocityY;
 
-		    // First interaction listeners (for hiding instruction)
-		    floatingImage.addEventListener('mousedown', handleFirstInteraction);
-		    floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: false });
+                    // Boundary checks with bounces
+                    const imageWidth = floatingImage.offsetWidth;
+                    const imageHeight = floatingImage.offsetHeight;
 
-		    // Drag listeners
-		    floatingImage.addEventListener('mousedown', handleDragStart);
-		    floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
+                    if (currentX < 0) {
+                        currentX = 0;
+                        velocityX *= -bounceFactor;
+                    } else if (currentX > window.innerWidth - imageWidth) {
+                        currentX = window.innerWidth - imageWidth;
+                        velocityX *= -bounceFactor;
+                    }
 
-		    document.addEventListener('mousemove', handleDragMove);
-		    document.addEventListener('touchmove', handleDragMove, { passive: false });
+                    if (currentY < 0) {
+                        currentY = 0;
+                        velocityY *= -bounceFactor;
+                    } else if (currentY > window.innerHeight - imageHeight) {
+                        currentY = window.innerHeight - imageHeight;
+                        velocityY *= -bounceFactor;
+                    }
 
-		    document.addEventListener('mouseup', handleDragEnd);
-		    document.addEventListener('touchend', handleDragEnd);
-
-		    function handleDragStart(e) {
-		        if (isDraggingFloatingImage) return;
+                    floatingImage.style.left = `${currentX}px`;
+                    floatingImage.style.top = `${currentY}px`;
         
-		        isDraggingFloatingImage = true;
-		        floatingImage.classList.add('grabbing');
-		        throwVector = { x: 0, y: 0 };
+                    // Create smoke trail when moving
+                    if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
+                        createSmokeTrail(
+                            currentX + imageWidth / 2,
+                            currentY + imageHeight / 2
+                        );
+                    }
+                }
+                animationFrameId = requestAnimationFrame(updateFloatingImage);
+            }
 
-		        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-		        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            // Track initial throw direction
+            let throwVector = { x: 0, y: 0 };
 
-		        if (clientX && clientY) {
-		            lastX = clientX;
-		            lastY = clientY;
-		        }
-
-		        if (e.cancelable) e.preventDefault();
-		    }
-
-		    function handleDragMove(e) {
-		        if (!isDraggingFloatingImage) return;
-
-		        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-		        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-		        if (!clientX || !clientY) return;
-
-		        // Track movement vector
-		        throwVector.x = clientX - lastX;
-		        throwVector.y = clientY - lastY;
-
-		        currentX += throwVector.x;
-		        currentY += throwVector.y;
-		        floatingImage.style.left = `${currentX}px`;
-		        floatingImage.style.top = `${currentY}px`;
-
-		        lastX = clientX;
-		        lastY = clientY;
-
-		        if (e.cancelable) e.preventDefault();
-		    }
-
-		    function handleDragEnd() {
-		        if (!isDraggingFloatingImage) return;
-
-		        isDraggingFloatingImage = false;
-		        floatingImage.classList.remove('grabbing');
-
-		        // Apply velocity in throw direction
-		        if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
-		            velocityX = throwVector.x * throwPower * 0.3;
-		            velocityY = throwVector.y * throwPower * 0.3;
-		        }
-		    }
-
-		    updateFloatingImage();
-		}
+            function handleFirstInteraction() {
+                // Hide instruction permanently
+                flickInstruction.style.display = 'none';
         
-        // Event Listeners
+                // Remove these event listeners after first interaction
+                floatingImage.removeEventListener('mousedown', handleFirstInteraction);
+                floatingImage.removeEventListener('touchstart', handleFirstInteraction);
+            }
+
+            // First interaction listeners (for hiding instruction)
+            floatingImage.addEventListener('mousedown', handleFirstInteraction);
+            floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: false });
+
+            // Drag listeners
+            floatingImage.addEventListener('mousedown', handleDragStart);
+            floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
+
+            document.addEventListener('mousemove', handleDragMove);
+            document.addEventListener('touchmove', handleDragMove, { passive: false });
+
+            document.addEventListener('mouseup', handleDragEnd);
+            document.addEventListener('touchend', handleDragEnd);
+
+            function handleDragStart(e) {
+                if (isDraggingFloatingImage) return; // Prevent multiple drag starts
+        
+                isDraggingFloatingImage = true;
+                floatingImage.classList.add('grabbing');
+                throwVector = { x: 0, y: 0 }; // Reset throw vector on new drag
+
+                const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+                const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+
+                if (clientX !== null && clientY !== null) {
+                    lastX = clientX;
+                    lastY = clientY;
+                }
+
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function handleDragMove(e) {
+                if (!isDraggingFloatingImage) return;
+
+                const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+                const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+
+                if (clientX === null || clientY === null) return;
+
+                // Track movement vector
+                throwVector.x = clientX - lastX;
+                throwVector.y = clientY - lastY;
+
+                currentX += throwVector.x;
+                currentY += throwVector.y;
+                floatingImage.style.left = `${currentX}px`;
+                floatingImage.style.top = `${currentY}px`;
+
+                lastX = clientX;
+                lastY = clientY;
+
+                if (e.cancelable) e.preventDefault();
+            }
+
+            function handleDragEnd() {
+                if (!isDraggingFloatingImage) return;
+
+                isDraggingFloatingImage = false;
+                floatingImage.classList.remove('grabbing');
+
+                // Apply velocity in throw direction, scaled down for a more controlled flick
+                if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
+                    const throwPower = 1.0; // Adjust this value to control how far it "flicks"
+                    velocityX = throwVector.x * throwPower;
+                    velocityY = throwVector.y * throwPower;
+                }
+            }
+
+            updateFloatingImage();
+        }
+        
+        // Initial Event Listener for Emoji Click
         emojiWrapper.addEventListener('click', async () => {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                await audioContext.resume();
+                await audioContext.resume(); // Resume audio context on user interaction
             }
             
             emoji.classList.add('fade-out');
@@ -1076,14 +1100,5 @@
             }, 500);
         });
     </script>
-	<div id="afeegoVideoContainer" style="display: none; position: fixed; 		left: 20px; bottom: 20px; z-index: 100;">
- 	   	<video id="afeegoVideo" width="320" height="180" controls 			style="border-radius: 8px; box-shadow: 0 4px 12px 			rgba(0,0,0,0.3);">
-				<source src="AFEEGO/1.mp4" type="video/mp4">
-		</video>
-	</div>
-	<div class="flick-instruction" id="flickInstruction">
-    	Flick
-		<div class="flick-arrow">↓</div>
-	</div>
 </body>
 </html>
