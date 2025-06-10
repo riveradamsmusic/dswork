@@ -222,7 +222,7 @@
         /* --- Flick Instruction --- */
         .flick-instruction {
             position: fixed;
-            top: calc(20% - 65px); /* Adjusted from 1.7cm */
+            top: calc(20% - 65px);
             left: 10%;
             font-family: var(--font-caveat);
             color: white;
@@ -250,7 +250,7 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(calc(-50% + 19px), calc(-50% + 38px)); /* Adjusted from cm */
+            transform: translate(calc(-50% + 19px), calc(-50% + 38px));
             width: 390px;
             height: 390px;
             z-index: 15;
@@ -275,7 +275,7 @@
 
         .track.playing {
             color: #00ff00;
-            text-shadow: 0 0 5px #00ff00;
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
         }
 
         /* Track Positions */
@@ -333,17 +333,19 @@
             background: rgba(50,50,50,0.8);
             box-shadow: 0 3px 12px rgba(0,0,0,0.4);
         }
-
-        /* --- Progress Bar & Character --- */
+        
+        /* --- [FIXED] Progress Bar & Character --- */
         .progress-track {
             position: fixed;
             top: 40px;
-            left: 25%;
-            width: 50%;
+            left: 20px; /* Positioned on the left */
+            width: calc(50vw - 40px); /* Fills the left quadrant */
             height: 4px;
             background: rgba(255,255,255,0.2);
             z-index: 99;
             display: none;
+            position: relative; /* New: for containing the character */
+            cursor: pointer;
         }
 
         .progress-fill {
@@ -353,12 +355,13 @@
             height: 100%;
             width: 0%;
             background: var(--primary-color);
+            pointer-events: none; /* Allows clicks to go through to the track */
         }
 
         .game-character {
-            position: fixed;
-            top: 20px; /* Aligns with progress track */
-            left: 25%;
+            position: absolute; /* Changed: Now absolute to the track */
+            top: 50%; /* Vertically centers on the track */
+            left: 0%;  /* Changed: JS will now control this directly */
             width: 40px;
             height: 40px;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="10" width="6" height="8" fill="%239b59b6"/><rect x="8" y="14" width="8" height="2" fill="%236a3d8a"/><circle cx="11" cy="12" r="1" fill="%23000"/><circle cx="13" cy="12" r="1" fill="%23000"/></svg>');
@@ -368,14 +371,14 @@
             display: none;
             animation: walk 0.5s steps(2) infinite;
             cursor: ew-resize;
-            /* Adjust transform to center character over the line */
-            transform: translateY(-50%) translateX(-50%);
+            transform: translate(-50%, -50%); /* Centers the character on its 'left' value */
         }
 
         @keyframes walk {
-            0%, 100% { transform: translateY(-50%) translateX(-50%); }
-            50% { transform: translateY(-55%) translateX(-50%); } /* Slight lift */
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -60%); } /* A bit more lift */
         }
+
 
         /* --- Floating Draggable Image --- */
         #floatingImage {
@@ -448,12 +451,16 @@
         /* --- Media Queries for Mobile --- */
         @media screen and (max-width: 768px) {
             body {
-                background-attachment: scroll; /* Better performance on mobile */
+                background-attachment: scroll;
                 min-height: -webkit-fill-available;
             }
 
             html {
                 height: -webkit-fill-available;
+            }
+            
+            .progress-track {
+                width: calc(90vw - 40px); /* Wider on mobile */
             }
 
             .slideshow-container {
@@ -473,10 +480,7 @@
                 height: 300px;
             }
 
-            .track {
-                font-size: 14px;
-            }
-
+            .track { font-size: 14px; }
             .track-0 { top: 20px; left: 100px; }
             .track-1 { top: 50px; left: 50px; }
             .track-2 { top: 100px; left: 20px; }
@@ -498,23 +502,7 @@
                 padding: 6px;
             }
 
-            .progress-track {
-                top: 35px;
-                height: 3px;
-                left: 15%;
-                width: 70%; /* Wider on mobile */
-            }
-
-            .game-character {
-                width: 30px;
-                height: 30px;
-                left: 15%;
-            }
-
-            #floatingImage {
-                width: 40px;
-                height: 40px;
-            }
+            #floatingImage { width: 40px; height: 40px; }
 
             #afeegoVideoContainer {
                 left: 10px;
@@ -522,10 +510,7 @@
                 max-width: 60%;
             }
 
-            #afeegoVideo {
-                width: 160px;
-                height: 90px;
-            }
+            #afeegoVideo { width: 160px; height: 90px; }
         }
     </style>
 </head>
@@ -553,8 +538,8 @@
 
         <div class="progress-track" id="progressTrack">
             <div class="progress-fill" id="progressFill"></div>
+            <div class="game-character" id="gameCharacter"></div>
         </div>
-        <div class="game-character" id="gameCharacter"></div>
 
         <div class="platform-links" id="platformLinks">
             <a href="https://music.apple.com/us/artist/river-adams/1554125278" class="platform-link" target="_blank">
@@ -588,8 +573,6 @@
     <script>
         'use strict';
 
-        // Since the script is at the end of the body, DOMContentLoaded is not strictly necessary,
-        // but it's a robust practice to ensure all elements are available.
         document.addEventListener('DOMContentLoaded', () => {
 
             // --- Constants ---
@@ -689,7 +672,7 @@
                     slide.onload = onImageLoad;
                     slide.onerror = () => {
                         console.error(`Failed to load image: ${photo}`);
-                        onImageLoad(); // Still count it to finish loading
+                        onImageLoad(); 
                     };
                     elements.slideshow.appendChild(slide);
                 });
@@ -731,7 +714,6 @@
                             opacity: 1;
                         `;
 
-                        // Transition to main content
                         setTimeout(() => {
                             elements.text.style.display = 'none';
                             elements.carousel.style.display = 'block';
@@ -746,13 +728,12 @@
                 }, GLITCH_INTERVAL_MS);
             };
 
-            // --- Audio and Progress Bar ---
+            // --- [FIXED] Audio and Progress Bar ---
             const updateProgressBar = () => {
                 if (state.currentAudio && !state.isCharacterDragging) {
                     const progress = (state.currentAudio.currentTime / state.currentAudio.duration) * 100;
                     elements.progressFill.style.width = `${progress}%`;
-                    const newPosition = (progress / 100) * elements.progressTrack.offsetWidth;
-                    elements.gameCharacter.style.transform = `translateX(${newPosition}px) translateY(-50%) translateX(-50%)`;
+                    elements.gameCharacter.style.left = `${progress}%`; // This now correctly controls the character
                 }
             };
 
@@ -767,12 +748,15 @@
                 scrubPosition = Math.max(0, Math.min(1, scrubPosition));
 
                 state.currentAudio.currentTime = scrubPosition * state.currentAudio.duration;
-                updateProgressBar();
+                updateProgressBar(); // Manually update UI while scrubbing
             };
             
             const setupProgressInteraction = () => {
                 const startScrub = (e) => {
+                    if (e.target !== elements.gameCharacter && e.target !== elements.progressTrack) return;
                     state.isCharacterDragging = true;
+                    handleScrub(e); // Immediately jump to the click position
+
                     document.addEventListener('mousemove', handleScrub);
                     document.addEventListener('touchmove', handleScrub, { passive: false });
                     document.addEventListener('mouseup', endScrub);
@@ -787,9 +771,8 @@
                     document.removeEventListener('touchend', endScrub);
                 };
                 
-                elements.gameCharacter.addEventListener('mousedown', startScrub);
-                elements.gameCharacter.addEventListener('touchstart', startScrub, { passive: false });
-                elements.progressTrack.addEventListener('click', handleScrub);
+                elements.progressTrack.addEventListener('mousedown', startScrub);
+                elements.progressTrack.addEventListener('touchstart', startScrub, { passive: false });
             };
 
             const playTrack = (track, index, element) => {
@@ -809,6 +792,8 @@
                 state.currentAudio.onplay = () => {
                     elements.gameCharacter.style.display = 'block';
                     elements.progressTrack.style.display = 'block';
+                    elements.gameCharacter.style.left = '0%'; // Reset position
+                    elements.progressFill.style.width = '0%'; // Reset fill
                     state.progressUpdateInterval = setInterval(updateProgressBar, 100);
                 };
 
@@ -823,7 +808,6 @@
                 clearInterval(state.progressUpdateInterval);
                 elements.progressTrack.style.display = 'none';
                 elements.gameCharacter.style.display = 'none';
-                elements.progressFill.style.width = '0%';
             };
 
             // --- Carousel Initialization ---
@@ -889,7 +873,6 @@
                     floatingImageState.currentX += floatingImageState.velocityX;
                     floatingImageState.currentY += floatingImageState.velocityY;
 
-                    // Boundary checks with bounce
                     const { offsetWidth, offsetHeight } = elements.floatingImage;
                     if (floatingImageState.currentX < 0) {
                         floatingImageState.currentX = 0;
@@ -927,7 +910,7 @@
                 const handleDragStart = (e) => {
                     state.isFloatingImageDragging = true;
                     elements.floatingImage.classList.add('grabbing');
-                    elements.flickInstruction.style.display = 'none'; // Hide on first interaction
+                    elements.flickInstruction.style.display = 'none';
                     
                     const coords = getEventCoordinates(e);
                     floatingImageState.lastX = coords.x;
@@ -982,7 +965,6 @@
 
             // --- Initial Event Listener ---
             elements.emojiWrapper.addEventListener('click', async () => {
-                // Initialize AudioContext on user interaction
                 if (!state.audioContext) {
                     try {
                         state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -994,14 +976,13 @@
 
                 elements.emoji.classList.add('fade-out');
                 
-                // Wait for fade-out animation before showing glitch text
                 setTimeout(() => {
                     elements.emojiWrapper.style.display = 'none';
                     showGlitchText();
                 }, 500);
             });
 
-            // --- Setup Interactions that require DOM elements ---
+            // --- Setup Interactions ---
             setupProgressInteraction();
         });
     </script>
