@@ -6,9 +6,7 @@
     <title>RiverAdam$</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
-
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
     <meta name="theme-color" content="#000000">
 
     <link rel="apple-touch-startup-image" href="GITBACK/wall.png">
@@ -22,7 +20,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
-		
+        
         /* Base Styles */
         html {
             height: 100%;
@@ -31,7 +29,7 @@
             background-color: #000; /* Fallback background */
         }
 
-	    body {
+        body {
             background-image: url('GITBACK/wall7.png');
             background-size: cover;
             background-position: center;
@@ -39,14 +37,13 @@
             background-attachment: fixed; /* Use fixed for a static, non-scrolling background */
             height: 100%;
             width: 100%;
-	        margin: 0;
-	        padding: 0;
-	        overflow: hidden;
-	        position: relative;
-	    }
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+        }
 
         /* === FORCED LAYOUT FIX === */
-        /* This forces your main content container to fill the entire screen in the web app window. */
         #container {
             position: fixed;
             width: 100%;
@@ -83,9 +80,15 @@
             height: 80px;
             line-height: 1;
             text-align: center;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, opacity 0.5s ease-in-out;
+            animation: pulse-glow 2.5s infinite ease-in-out;
         }
         
+        #emoji.fade-out {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
         #emoji:active {
             transform: scale(0.8);
         }
@@ -127,24 +130,19 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.2; }
         }
-		
-		/* Keyframe animation for the bright, pulsing glow */
-		@keyframes pulse-glow {
-		  0% {
-		    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
-		  }
-		  50% {
-		    text-shadow: 0 0 20px #fff, 0 0 30px #00ffff, 0 0 40px #00ffff, 0 0 50px #00ffff;
-		  }
-		  100% {
-		    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
-		  }
-		}
-
-		/* Applying the glow animation to the emoji */
-		#emoji {
-		    animation: pulse-glow 2.5s infinite ease-in-out;
-		}
+        
+        /* Keyframe animation for the bright, pulsing glow */
+        @keyframes pulse-glow {
+          0% {
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+          }
+          50% {
+            text-shadow: 0 0 20px #fff, 0 0 30px #00ffff, 0 0 40px #00ffff, 0 0 50px #00ffff;
+          }
+          100% {
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+          }
+        }
 
         @keyframes glitch-color-shift {
             0%, 100% { color: white; }
@@ -201,7 +199,7 @@
         /* Top Right Images */
         .top-right-images {
             position: fixed;
-            top: 40px; /* <--- Changed from 20px */
+            top: 40px; 
             right: 20px;
             width: 90px;
             height: 90px;
@@ -253,36 +251,36 @@
             0% { width: 0%; }
             100% { width: 100%; }
         }
-		
-	.flick-instruction {
-	    position: fixed;
-	    top: calc(20% - 1.7cm);
-	    left: 10%;
-	    font-family: 'Caveat', cursive;
-	    color: white;
-	    font-size: 24px;
-	    display: none;
-	    flex-direction: column;
-	    align-items: center;
-	    z-index: 25;
-	    pointer-events: none;
-            padding: 0 5px; /* <--- FIX for the truncated "k" */
-	}
+        
+        .flick-instruction {
+            position: fixed;
+            top: calc(20% - 1.7cm);
+            left: 10%;
+            font-family: 'Caveat', cursive;
+            color: white;
+            font-size: 24px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 25;
+            pointer-events: none;
+            padding: 0 5px; 
+        }
 
-		.flick-arrow {
-		    font-size: 22px;
-		    margin-top: -15px;
-		    animation: bounce 1s infinite alternate;
-		}
+        .flick-arrow {
+            font-size: 22px;
+            margin-top: -15px;
+            animation: bounce 1s infinite alternate;
+        }
 
-		@keyframes bounce {
-		    from { 
-		        transform: translateY(5px); /* Start 5px lower */
-		    }
-		    to { 
-		        transform: translateY(15px); /* Move down to 15px */
-		    }
-		}
+        @keyframes bounce {
+            from { 
+                transform: translateY(5px);
+            }
+            to { 
+                transform: translateY(15px);
+            }
+        }
         
         /* Carousel Styles */
         .carousel-container {
@@ -376,33 +374,37 @@
         }
         
         /* Game Character */
-		/* Game Character */
-		.game-character {
-		    position: fixed;
-		    top: 20px;
-		    left: 25%;
-		    width: 44px;
-		    height: 44px;
-		    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="10" width="6" height="8" fill="%239b59b6"/><rect x="8" y="14" width="8" height="2" fill="%236a3d8a"/><circle cx="11" cy="12" r="1" fill="%23000"/><circle cx="13" cy="12" r="1" fill="%23000"/></svg>');
-		    background-size: contain;
-		    background-repeat: no-repeat;
-		    z-index: 100;
-		    display: none;
-		    animation: walk 0.5s steps(2) infinite;
-		    cursor: ew-resize;
-		}
+        .game-character {
+            position: fixed;
+            top: 20px;
+            left: 25%;
+            width: 44px;
+            height: 44px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="10" width="6" height="8" fill="%239b59b6"/><rect x="8" y="14" width="8" height="2" fill="%236a3d8a"/><circle cx="11" cy="12" r="1" fill="%23000"/><circle cx="13" cy="12" r="1" fill="%23000"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 100;
+            display: none;
+            animation: walk 0.5s steps(2) infinite;
+            cursor: ew-resize;
+            transition: filter 0.4s ease;
+        }
+
+        .game-character.glowing-character {
+            filter: drop-shadow(0 0 4px #9b59b6) drop-shadow(0 0 8px #9b59b6);
+        }
         
         /* Progress Bar */
-		.progress-track {
-		    position: fixed;
-		    top: 40px;
-		    left: 40%; /* Changed from 25% to 40% (25 + 15) */
-		    width: 35%; /* Reduced from 50% to 35% (50 - 15) */
-		    height: 4px;
-		    background: rgba(255,255,255,0.2);
-		    z-index: 99;
-		    display: none;
-		}
+        .progress-track {
+            position: fixed;
+            top: 40px;
+            left: 40%; 
+            width: 35%; 
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            z-index: 99;
+            display: none;
+        }
         
         .progress-fill {
             position: absolute;
@@ -411,6 +413,12 @@
             height: 100%;
             width: 0%;
             background: #9b59b6;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .progress-fill.glowing-bar {
+            background-color: #9b59b6;
+            box-shadow: 0 0 5px rgba(155, 89, 182, 0.7), 0 0 10px rgba(155, 89, 182, 0.5), 0 0 15px rgba(155, 89, 182, 0.3);
         }
         
         @keyframes walk {
@@ -418,19 +426,6 @@
             50% { transform: translateY(-5px); }
             100% { transform: translateY(0); }
         }
-		
-		/* Glowing effect for progress bar fill */
-		.progress-fill.glowing-bar {
-		    background-color: #9b59b6; /* Changed to purple */
-		    box-shadow: 0 0 5px rgba(155, 89, 182, 0.7), 0 0 10px rgba(155, 89, 182, 0.5), 0 0 15px rgba(155, 89, 182, 0.3); /* Changed to purple */
-		    transition: background-color 0.4s ease, box-shadow 0.4s ease;
-		}
-
-		/* Glowing effect for the character */
-		.game-character.glowing-character {
-		    filter: drop-shadow(0 0 4px #9b59b6) drop-shadow(0 0 8px #9b59b6); /* Changed to purple */
-		    transition: filter 0.4s ease;
-		}
         
         /* Floating Image */
         #floatingImage {
@@ -479,39 +474,36 @@
                 transform: translate(-50%, -50%) scale(1.5);
             }
         }
-		
-		#afeegoVideoContainer {
-		    display: none;
-		    position: fixed;
-		    left: 20px;
-		    bottom: 20px;
-		    z-index: 100;
-		    background: transparent;
-		    padding: 0;
-		    max-width: 50%; /* Prevent it from being too wide */
-		}
+        
+        #afeegoVideoContainer {
+            display: none;
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 100;
+            background: transparent;
+            padding: 0;
+            max-width: 50%; /* Prevent it from being too wide */
+        }
 
-		#afeegoVideo {
-		    border-radius: 8px;
-		    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-		    width: 240px; /* Fixed width for desktop */
-		    height: 135px; /* Fixed height for desktop */
-		}
+        #afeegoVideo {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            width: 240px; /* Fixed width for desktop */
+            height: 135px; /* Fixed height for desktop */
+        }
 
-		@media screen and (max-width: 768px) {
-            /* Mobile styles have been integrated into the main styles for simplicity */
-            /* The #container fix handles the primary layout issue */
-
-		    #afeegoVideoContainer {
-		        left: 10px;
-		        bottom: 10px;
-		        max-width: 60%; /* Slightly larger on mobile but not full-width */
-		    }
-   
-		    #afeegoVideo {
-		        width: 160px !important; /* Smaller on mobile */
-		        height: 90px !important;
-		    }
+        @media screen and (max-width: 768px) {
+            #afeegoVideoContainer {
+                left: 10px;
+                bottom: 10px;
+                max-width: 60%; 
+            }
+    
+            #afeegoVideo {
+                width: 160px !important; /* Smaller on mobile */
+                height: 90px !important;
+            }
             
             .carousel-container {
                 width: 300px;
@@ -540,7 +532,7 @@
                 width: 80px;
                 height: 80px;
                 right: 15px;
-                top: 30px; /* <--- Changed from 15px */
+                top: 30px; 
             }
             
             .platform-links {
@@ -555,18 +547,18 @@
                 padding: 6px;
             }
             
-		    .game-character {
-		        width: 33px; /* Increased by 35% */
-		        height: 33px; /* Increased by 35% */
-		        left: 15%;
-		    }
+            .game-character {
+                width: 33px; 
+                height: 33px; 
+                left: 15%;
+            }
             
-		    .progress-track {
-		        top: 35px;
-		        left: 30%; /* Adjusted from 15% */
-		        width: 40%; /* Adjusted from 55% */
-		        height: 3px;
-		    }
+            .progress-track {
+                top: 35px;
+                left: 30%; 
+                width: 40%; 
+                height: 3px;
+            }
             
             #floatingImage {
                 width: 40px;
@@ -631,10 +623,9 @@
         const progressFill = document.getElementById('progressFill');
         const spinner = document.querySelector('.spinner');
         const floatingImage = document.getElementById('floatingImage');
-		const videoContainer = document.getElementById('videoContainer');
-		const afeegoVideo = document.getElementById('afeegoVideo');
-		const floatingImageOriginalX = window.innerWidth * 0.1;
-		const floatingImageOriginalY = window.innerHeight * 0.2;
+        const afeegoVideoContainer = document.getElementById('afeegoVideoContainer');
+        const afeegoVideo = document.getElementById('afeegoVideo');
+        const flickInstruction = document.getElementById('flickInstruction');
         
         // State Variables
         let currentAudio = null;
@@ -644,58 +635,38 @@
         let currentSlide = 0;
         let loadedImages = 0;
         let totalImages = 0;
-        let isDragging = false;
-        let isDraggingFloatingImage = false;
+        let isScrubbing = false;
         let progressUpdateInterval = null;
-		let isVideoPlaying = false;
-		let hasAfeegoVideoPlayed = false; // Track if video was shown before
-		let returnToStartTimeout = null;
-		
         
-        // Floating Image Variables
-        let lastX = 0;
-        let lastY = 0;
-        let currentX = 0;
-        let currentY = 0;
-        let velocityX = 0;
-        let velocityY = 0;
-        const friction = 0.98;
-        let animationFrameId;
+        // --- FLOATING IMAGE VARIABLES (REVISED) ---
+        let isDraggingFloatingImage = false;
+        let floatingImagePhysicsInterval = null;
+        let returnToStartTimeout = null;
+        let pos = { x: 0, y: 0 };
+        let velocity = { x: 0, y: 0 };
+        let lastPos = { x: 0, y: 0 };
+        let startPos = { x: window.innerWidth * 0.1, y: window.innerHeight * 0.2 };
         let lastSmokeTime = 0;
-        const smokeInterval = 100; // milliseconds between smoke particles
-		let maxVelocity = 0;
-		let returnForce = 0.15; // Increased from 0.05 for quicker return
-		let returnTriggerRatio = 0.25; // Start return when velocity is 25% of max
-
+        const smokeInterval = 100; // milliseconds
+        
         // Data
-		const audioFiles = [
-		    { name: "21 Century", file: "RIVERADAMS/21_Century_copy.mp3", duration: 180 },
-		    { name: "Grey", file: "RIVERADAMS/grey_copy.mp3", duration: 210 },
-		    { name: "𝐌𝐫. 𝐒𝐨̷𝐥𝐨̷", file: "RIVERADAMS/Mr_Solo_copy.mp3", duration: 195 }, // Bold with strikes ONLY on o's
-		    { name: "Opportunities", file: "RIVERADAMS/Opportunities_copy.mp3", duration: 225 },
-		    { name: "Rap (feat. AFEEGO)", file: "RIVERADAMS/Rap_feat_AFEEGO_copy.mp3", duration: 240 },
-		    { name: "Spoken Word", file: "RIVERADAMS/Spoken_Word_copy.mp3", duration: 180 },
-		    { name: "Trying", file: "RIVERADAMS/Trying_copy.mp3", duration: 200 },
-		    { name: "𝓦𝔂𝓷𝔀𝓸𝓸𝓭", file: "RIVERADAMS/Wynwood_copy_Wav.mp3", duration: 190 } // Bold with strikes ONLY on o's
-		];
+        const audioFiles = [
+            { name: "21 Century", file: "RIVERADAMS/21_Century_copy.mp3", duration: 180 },
+            { name: "Grey", file: "RIVERADAMS/grey_copy.mp3", duration: 210 },
+            { name: "𝐌𝐫. 𝐒𝐨̷𝐥𝐨̷", file: "RIVERADAMS/Mr_Solo_copy.mp3", duration: 195 },
+            { name: "Opportunities", file: "RIVERADAMS/Opportunities_copy.mp3", duration: 225 },
+            { name: "Rap (feat. AFEEGO)", file: "RIVERADAMS/Rap_feat_AFEEGO_copy.mp3", duration: 240 },
+            { name: "Spoken Word", file: "RIVERADAMS/Spoken_Word_copy.mp3", duration: 180 },
+            { name: "Trying", file: "RIVERADAMS/Trying_copy.mp3", duration: 200 },
+            { name: "𝓦𝔂𝓷𝔀𝓸𝓸𝓭", file: "RIVERADAMS/Wynwood_copy_Wav.mp3", duration: 190 }
+        ];
 
         const photoFiles = Array.from({length: 11}, (_, i) => `RIVERADAMSPICZ/${i+1}.jpg`);
         totalImages = photoFiles.length;
 
-        const fontClasses = [
-            'font-caveat',  
-            'font-press-start',
-            'font-rubik',
-            'font-comic',
-            'font-marker',
-            'font-vt323',
-            'font-major-mono'
-        ];
-		
-		window.addEventListener('resize', () => {
-		    floatingImageOriginalX = window.innerWidth * 0.1;
-		    floatingImageOriginalY = window.innerHeight * 0.2;
-		});
+        window.addEventListener('resize', () => {
+            startPos = { x: window.innerWidth * 0.1, y: window.innerHeight * 0.2 };
+        });
 
         // Initialize Slideshow
         function createSlideshow() {
@@ -757,40 +728,14 @@
             text.style.display = 'block';
             text.style.opacity = '1';
             
-            const glitchLayer1 = document.createElement('div');
-            glitchLayer1.className = 'glitch-layer';
-            glitchLayer1.dataset.text = 'RiverAdam$';
-            text.parentNode.insertBefore(glitchLayer1, text.nextSibling);
-            
-            const glitchLayer2 = document.createElement('div');
-            glitchLayer2.className = 'glitch-layer';
-            glitchLayer2.dataset.text = 'RiverAdam$';
-            text.parentNode.insertBefore(glitchLayer2, text.nextSibling);
-            
             let flashCount = 0;
             const maxFlashes = 6;
             const flashInterval = 100;
             
             const flash = setInterval(() => {
-                const effects = [
-                    'intense-glitch',
-                    'font-press-start glitch-effect',
-                    'font-major-mono glitch-effect'
-                ];
-                const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+                const fontClasses = ['font-press-start', 'font-major-mono', 'intense-glitch'];
+                const randomEffect = fontClasses[Math.floor(Math.random() * fontClasses.length)];
                 text.className = `handwritten ${randomEffect}`;
-                
-                const colors = [
-                    '#ff00ff',
-                    '#00ffff',
-                    '#ffff00',
-                    '#ff00ff',
-                    '#00ff00',
-                    '#ff0000'
-                ];
-                text.style.color = colors[Math.floor(Math.random() * colors.length)];
-                
-                text.style.transform = `translate(-50%, -50%) scale(${0.8 + Math.random() * 0.6})`;
                 
                 flashCount++;
                 if (flashCount >= maxFlashes) {
@@ -800,234 +745,170 @@
                     text.style.transform = 'translate(-50%, -50%)';
                     text.style.animation = 'none';
                     
-                    glitchLayer1.remove();
-                    glitchLayer2.remove();
-                    
                     setTimeout(() => {
                         text.style.display = 'none';
                         carousel.style.display = 'block';
                         topRightImages.style.display = 'flex';
                         platformLinks.style.display = 'flex';
+                        flickInstruction.style.display = 'flex';
+
                         createSlideshow();
                         initCarousel();
                         initFloatingImage();
-						const flickInstruction = document.getElementById('flickInstruction');
-						flickInstruction.style.display = 'flex';
                     }, 300);
                 }
             }, flashInterval);
         }
 
-        // Progress Bar Functions
-		function updateProgressBar() {
-		    if (currentAudio && !isDragging) {
-		        const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
-		        progressFill.style.width = `${progress}%`;
+        // Progress Bar & Character
+        function updateProgressBar() {
+            if (currentAudio && !isScrubbing) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                progressFill.style.width = `${progress}%`;
 
-		        const isMobile = window.innerWidth <= 768;
-		        const startPositionPercent = isMobile ? 30 : 40; // Updated values
-		        const trackWidthPercent = isMobile ? 40 : 35; // Updated values
-		        const characterWidth = isMobile ? 33 : 44;
-		        const offset = characterWidth / 2;
+                const isMobile = window.innerWidth <= 768;
+                const startPositionPercent = isMobile ? 30 : 40;
+                const trackWidthPercent = isMobile ? 40 : 35;
+                const characterWidth = isMobile ? 33 : 44;
+                const offset = characterWidth / 2;
 
-		        const newPositionPercent = startPositionPercent + (progress / 100 * trackWidthPercent);
-		        gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
-		    }
-		}
+                const newPositionPercent = startPositionPercent + (progress / 100 * trackWidthPercent);
+                gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
+            }
+        }
 
-		function handleScrub(event) {
-		    if (!currentAudio || isDraggingFloatingImage) return;
+        function handleScrub(event) {
+            if (!currentAudio) return;
 
-		    const progressTrackRect = progressTrack.getBoundingClientRect();
-		    let clientX = event.clientX || (event.touches && event.touches[0] ? event.touches[0].clientX : null);
-		    if (clientX === null) return;
+            const progressTrackRect = progressTrack.getBoundingClientRect();
+            let clientX = event.clientX || (event.touches && event.touches[0] ? event.touches[0].clientX : null);
+            if (clientX === null) return;
 
-		    let scrubPosition = (clientX - progressTrackRect.left) / progressTrackRect.width;
-		    scrubPosition = Math.max(0, Math.min(1, scrubPosition));
+            let scrubPosition = (clientX - progressTrackRect.left) / progressTrackRect.width;
+            scrubPosition = Math.max(0, Math.min(1, scrubPosition));
 
-		    currentAudio.currentTime = scrubPosition * currentAudio.duration;
-		    progressFill.style.width = `${scrubPosition * 100}%`;
+            currentAudio.currentTime = scrubPosition * currentAudio.duration;
+            updateProgressBar(); // Update immediately
+        }
 
-		    const isMobile = window.innerWidth <= 768;
-		    const startPositionPercent = isMobile ? 30 : 40; // Updated values
-		    const trackWidthPercent = isMobile ? 40 : 35; // Updated values
-		    const characterWidth = isMobile ? 33 : 44;
-		    const offset = characterWidth / 2;
+        function setupProgressBarListeners() {
+            const startScrub = (e) => {
+                isScrubbing = true;
+                handleScrub(e); // Handle initial click/touch
+                document.addEventListener('mousemove', handleScrub);
+                document.addEventListener('touchmove', handleScrub);
+                document.addEventListener('mouseup', endScrub);
+                document.addEventListener('touchend', endScrub);
+            };
 
-		    const newPositionPercent = startPositionPercent + (scrubPosition * trackWidthPercent);
-		    gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
-		}
+            const endScrub = () => {
+                isScrubbing = false;
+                document.removeEventListener('mousemove', handleScrub);
+                document.removeEventListener('touchmove', handleScrub);
+                document.removeEventListener('mouseup', endScrub);
+                document.removeEventListener('touchend', endScrub);
+            };
 
-        // Character Animation
-		function animateCharacter(duration) {
-		    gameCharacter.style.display = 'block';
-		    progressTrack.style.display = 'block';
+            progressTrack.addEventListener('mousedown', startScrub);
+            progressTrack.addEventListener('touchstart', startScrub, { passive: false });
+            gameCharacter.addEventListener('mousedown', startScrub);
+            gameCharacter.addEventListener('touchstart', startScrub, { passive: false });
+        }
+        
+        // Music Player & Carousel
+        function initCarousel() {
+            let hasAfeegoVideoPlayed = false; 
+    
+            audioFiles.forEach((track, index) => {
+                const trackElement = document.createElement('div');
+                trackElement.className = `track track-${index % 8}`;
+                trackElement.textContent = track.name;
+                trackElement.dataset.index = index;
+                carousel.appendChild(trackElement);
 
-		    const isMobile = window.innerWidth <= 768;
-		    const characterWidth = isMobile ? 33 : 44;
-		    const startPositionPercent = isMobile ? 30 : 40; // Updated values
-		    const offset = characterWidth / 2;
+                trackElement.addEventListener('click', async () => {
+                    if (currentPlayingTrack === index && currentAudio) {
+                        if (currentAudio.paused) {
+                            await currentAudio.play();
+                        } else {
+                            currentAudio.pause();
+                        }
+                        return;
+                    }
 
-		    gameCharacter.style.left = `calc(${startPositionPercent}% - ${offset}px)`;
-		    progressFill.style.width = '0%';
-		    progressUpdateInterval = setInterval(updateProgressBar, 100);
+                    if (currentAudio) {
+                        currentAudio.pause();
+                        cleanupCharacterAnimation();
+                    }
 
-		    gameCharacter.addEventListener('mousedown', (e) => {
-		        if (isDraggingFloatingImage) return;
-		        isDragging = true;
-		        document.addEventListener('mousemove', handleScrub);
-		        document.addEventListener('mouseup', () => {
-		            isDragging = false;
-		            document.removeEventListener('mousemove', handleScrub);
-		        });
-		    });
+                    if (track.name.includes("AFEEGO") && !hasAfeegoVideoPlayed) {
+                        afeegoVideoContainer.style.display = 'block';
+                        afeegoVideo.currentTime = 0;
+                        hasAfeegoVideoPlayed = true;
+                        
+                        afeegoVideo.onended = () => {
+                            afeegoVideoContainer.style.display = 'none';
+                            playTrack(track, index, trackElement);
+                        };
+                        
+                        try {
+                            await afeegoVideo.play();
+                        } catch (e) {
+                            console.error("Video play failed, playing audio instead.", e);
+                            afeegoVideoContainer.style.display = 'none';
+                            playTrack(track, index, trackElement);
+                        }
+                    } else {
+                        playTrack(track, index, trackElement);
+                    }
+                });
+            });
+        }
+        
+        function playTrack(track, index, element) {
+            currentAudio = new Audio(track.file);
+            currentPlayingTrack = index;
 
-		    gameCharacter.addEventListener('touchstart', (e) => {
-		        if (isDraggingFloatingImage) return;
-		        isDragging = true;
-		        document.addEventListener('touchmove', handleScrub);
-		        document.addEventListener('touchend', () => {
-		            isDragging = false;
-		            document.removeEventListener('touchmove', handleScrub);
-		        });
-		        e.preventDefault();
-		    });
+            currentAudio.onplay = () => {
+                animateCharacter();
+                document.querySelectorAll('.track').forEach(t => t.classList.remove('playing'));
+                element.classList.add('playing');
+                progressFill.classList.add('glowing-bar');
+                gameCharacter.classList.add('glowing-character');
+            };
 
-		    progressTrack.addEventListener('click', (e) => {
-		        if (!isDraggingFloatingImage) {
-		            handleScrub(e);
-		        }
-		    });
+            currentAudio.onpause = () => {
+                element.classList.remove('playing');
+                progressFill.classList.remove('glowing-bar');
+                gameCharacter.classList.remove('glowing-character');
+            };
 
-		    progressTrack.addEventListener('touchstart', (e) => {
-		        if (!isDraggingFloatingImage) {
-		            handleScrub(e);
-		            e.preventDefault();
-		        }
-		    }, { passive: false });
-		}
+            currentAudio.onended = () => {
+                element.classList.remove('playing');
+                currentPlayingTrack = null;
+                cleanupCharacterAnimation();
+            };
+
+            currentAudio.play();
+        }
+
+        function animateCharacter() {
+            gameCharacter.style.display = 'block';
+            progressTrack.style.display = 'block';
+            progressFill.style.width = '0%';
+            clearInterval(progressUpdateInterval);
+            progressUpdateInterval = setInterval(updateProgressBar, 100);
+        }
 
         function cleanupCharacterAnimation() {
             clearInterval(progressUpdateInterval);
             progressTrack.style.display = 'none';
             gameCharacter.style.display = 'none';
-            document.removeEventListener('mousemove', handleScrub);
-            document.removeEventListener('touchmove', handleScrub);
-            isDragging = false;
+            progressFill.classList.remove('glowing-bar');
+            gameCharacter.classList.remove('glowing-character');
         }
-
-        // Initialize Carousel
-		function initCarousel() {
-		    let afeegoVideoPlayed = false; // Track if AFEEGO video has been played
-    
-		    audioFiles.forEach((track, index) => {
-		        const trackElement = document.createElement('div');
-		        trackElement.className = `track track-${index % 8}`;
-		        trackElement.textContent = track.name;
-		        trackElement.dataset.index = index;
-		        carousel.appendChild(trackElement);
-
-		        trackElement.addEventListener('click', async () => {
-		            try {
-		                // Pause/resume logic for all tracks
-		                if (currentPlayingTrack === index && currentAudio) {
-		                    if (currentAudio.paused) {
-		                        await currentAudio.play();
-		                        document.querySelector('.track.playing')?.classList.add('playing');
-		                    } else {
-		                        currentAudio.pause();
-		                        document.querySelector('.track.playing')?.classList.remove('playing');
-		                    }
-		                    return;
-		                }
-
-		                // Stop current audio
-		                if (currentAudio) currentAudio.pause();
-
-		                // AFEEGO video handling (only first time)
-		                if (track.name.includes("AFEEGO") && !afeegoVideoPlayed) {
-		                    const video = document.getElementById('afeegoVideo');
-		                    const videoContainer = document.getElementById('afeegoVideoContainer');
-                    
-		                    video.currentTime = 0;
-		                    videoContainer.style.display = 'block';
-		                    afeegoVideoPlayed = true;
-                    
-		                    video.onended = () => {
-		                        videoContainer.style.display = 'none';
-		                        playTrack(track, index, trackElement);
-		                    };
-                    
-		                    try {
-		                        await video.play();
-		                        return;
-		                    } catch (e) {
-		                        console.error("Video play failed:", e);
-		                        videoContainer.style.display = 'none';
-		                    }
-		                }
-
-		                // Normal track play
-		                playTrack(track, index, trackElement);
-                
-		            } catch (e) {
-		                console.error("Playback error:", e);
-		            }
-		        });
-		    });
-		}
-		
-		// Helper function to play audio tracks
-		// Helper function to play audio tracks
-		function playTrack(track, index, element) {
-		    const progressFill = document.getElementById('progressFill');
-		    const gameCharacter = document.getElementById('gameCharacter');
-
-		    // If we're switching tracks, create a new audio object
-		    if (currentPlayingTrack !== index || !currentAudio) {
-		        if (currentAudio) {
-		            currentAudio.pause(); // Stop the previous track
-		        }
-		        currentAudio = new Audio(track.file);
-		        currentPlayingTrack = index;
-		    }
-
-		    // --- START OF UPDATED LOGIC ---
-		    // When the audio starts playing (or resumes)
-		    currentAudio.onplay = () => {
-		        animateCharacter(track.duration);
-		        document.querySelectorAll('.track').forEach(t => t.classList.remove('playing'));
-		        element.classList.add('playing');
         
-		        // Add the glow effects
-		        progressFill.classList.add('glowing-bar');
-		        gameCharacter.classList.add('glowing-character');
-		    };
-
-		    // When the audio is paused
-		    currentAudio.onpause = () => {
-		        element.classList.remove('playing');
-
-		        // Remove the glow effects
-		        progressFill.classList.remove('glowing-bar');
-		        gameCharacter.classList.remove('glowing-character');
-		    };
-
-		    // When the audio finishes
-		    currentAudio.onended = () => {
-		        element.classList.remove('playing');
-		        currentPlayingTrack = null;
-		        cleanupCharacterAnimation();
-		        // Ensure glow is removed on end
-		        progressFill.classList.remove('glowing-bar');
-		        gameCharacter.classList.remove('glowing-character');
-		    };
-		    // --- END OF UPDATED LOGIC ---
-
-		    currentAudio.play();
-		}
-        
-        // Create smoke trail effect
+        // --- FLOATING IMAGE FUNCTIONS (REVISED) ---
         function createSmokeTrail(x, y) {
             const now = Date.now();
             if (now - lastSmokeTime < smokeInterval) return;
@@ -1039,208 +920,136 @@
             smoke.style.top = `${y}px`;
             document.body.appendChild(smoke);
             
-            // Remove smoke element after animation completes
             setTimeout(() => {
                 smoke.remove();
             }, 1500);
         }
+
+        function updateFloatingImage() {
+            if (!isDraggingFloatingImage) {
+                // Apply friction
+                velocity.x *= 0.97; // Slightly adjusted friction
+                velocity.y *= 0.97;
+
+                // If there's a return timer, it means we should be returning to start
+                if (returnToStartTimeout) {
+                    // Spring physics for a smooth return
+                    const forceX = (startPos.x - pos.x) * 0.05; // Spring stiffness
+                    const forceY = (startPos.y - pos.y) * 0.05;
+                    velocity.x += forceX;
+                    velocity.y += forceY;
+                }
+            }
+
+            pos.x += velocity.x;
+            pos.y += velocity.y;
+            
+            // Boundary checks with bounce
+            const bounceFactor = -0.7;
+            if (pos.x < 0) {
+                pos.x = 0;
+                velocity.x *= bounceFactor;
+            } else if (pos.x > window.innerWidth - floatingImage.offsetWidth) {
+                pos.x = window.innerWidth - floatingImage.offsetWidth;
+                velocity.x *= bounceFactor;
+            }
+
+            if (pos.y < 0) {
+                pos.y = 0;
+                velocity.y *= bounceFactor;
+            } else if (pos.y > window.innerHeight - floatingImage.offsetHeight) {
+                pos.y = window.innerHeight - floatingImage.offsetHeight;
+                velocity.y *= bounceFactor;
+            }
+
+            floatingImage.style.left = `${pos.x}px`;
+            floatingImage.style.top = `${pos.y}px`;
+
+            const speed = Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+            if (speed > 1) {
+                createSmokeTrail(pos.x + 20, pos.y + 20);
+            }
+        }
         
-        // Floating Image Functions
-		function initFloatingImage() {
-		    floatingImage.style.display = 'block';
-		    // Position in upper left center (10% from left, 20% from top)
-		    currentX = window.innerWidth * 0.1;
-		    currentY = window.innerHeight * 0.2;
-		    floatingImage.style.left = `${currentX}px`;
-		    floatingImage.style.top = `${currentY}px`;
+        function handleDragStart(e) {
+            isDraggingFloatingImage = true;
+            floatingImage.classList.add('grabbing');
+            if (returnToStartTimeout) clearTimeout(returnToStartTimeout);
+            returnToStartTimeout = null;
 
-		    
+            velocity = { x: 0, y: 0 }; // Stop movement on grab
+            const eventPos = e.touches ? e.touches[0] : e;
+            lastPos = { x: eventPos.clientX, y: eventPos.clientY };
+            
+            e.preventDefault();
+        }
 
-		    // Physics parameters
-		    const throwPower = 3.50; 
-		    const friction = 0.98;
-		    const bounceFactor = 0.7;
+        function handleDragMove(e) {
+            if (!isDraggingFloatingImage) return;
 
+            const eventPos = e.touches ? e.touches[0] : e;
+            const currentMousePos = { x: eventPos.clientX, y: eventPos.clientY };
+            
+            // Calculate movement and update velocity for the "throw"
+            velocity.x = (currentMousePos.x - lastPos.x) * 1.5; // Throw power
+            velocity.y = (currentMousePos.y - lastPos.y) * 1.5;
+            
+            pos.x += currentMousePos.x - lastPos.x;
+            pos.y += currentMousePos.y - lastPos.y;
+            lastPos = currentMousePos;
 
-			function updateFloatingImage() {
-			    if (!isDraggingFloatingImage) {
-			        // Track maximum velocity
-			        const currentSpeed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-			        maxVelocity = Math.max(maxVelocity, currentSpeed);
-        
-			        // Apply friction
-			        velocityX *= friction;
-			        velocityY *= friction;
-        
-			        // Update position
-			        currentX += velocityX;
-			        currentY += velocityY;
+            e.preventDefault();
+        }
 
-			        // Boundary checks with bounces
-			        const bounceFactor = 0.5; // Reduced from 0.7 for less bounce
-			        if (currentX < 0) {
-			            currentX = 0;
-			            velocityX *= -bounceFactor;
-			        } else if (currentX > window.innerWidth - floatingImage.offsetWidth) {
-			            currentX = window.innerWidth - floatingImage.offsetWidth;
-			            velocityX *= -bounceFactor;
-			        }
+        function handleDragEnd() {
+            if (!isDraggingFloatingImage) return;
+            
+            isDraggingFloatingImage = false;
+            floatingImage.classList.remove('grabbing');
+            
+            // Set a timeout to start returning the image to its start position
+            returnToStartTimeout = setTimeout(() => {
+                // The physics loop will now apply the spring force to return it
+            }, 3000); // Wait 3 seconds before returning
+        }
 
-			        if (currentY < 0) {
-			            currentY = 0;
-			            velocityY *= -bounceFactor;
-			        } else if (currentY > window.innerHeight - floatingImage.offsetHeight) {
-			            currentY = window.innerHeight - floatingImage.offsetHeight;
-			            velocityY *= -bounceFactor;
-			        }
+        function initFloatingImage() {
+            floatingImage.style.display = 'block';
+            pos = { ...startPos };
+            floatingImage.style.left = `${pos.x}px`;
+            floatingImage.style.top = `${pos.y}px`;
 
-			        floatingImage.style.left = `${currentX}px`;
-			        floatingImage.style.top = `${currentY}px`;
+            // Start physics loop
+            if(floatingImagePhysicsInterval) clearInterval(floatingImagePhysicsInterval);
+            floatingImagePhysicsInterval = setInterval(updateFloatingImage, 1000 / 60);
 
-			        // Check if we should start returning
-			        const currentSpeedAfterFriction = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-			        if (maxVelocity > 0 && currentSpeedAfterFriction < maxVelocity * returnTriggerRatio) {
-			            returnToStartPosition();
-			        }
+            // Hide instruction on first interaction
+            const handleFirstInteraction = () => {
+                flickInstruction.style.display = 'none';
+                floatingImage.removeEventListener('mousedown', handleFirstInteraction);
+                floatingImage.removeEventListener('touchstart', handleFirstInteraction);
+            };
 
-			        // Create smoke trail when moving
-			        if (currentSpeedAfterFriction > 0.5) { // Slightly higher threshold
-			            createSmokeTrail(
-			                currentX + floatingImage.offsetWidth / 2,
-			                currentY + floatingImage.offsetHeight / 2
-			            );
-			        }
-			    }
-			    animationFrameId = requestAnimationFrame(updateFloatingImage);
-			}
-			
-			function returnToStartPosition() {
-			    // Only return if not currently being dragged
-			    if (isDraggingFloatingImage) return;
-    
-			    // Calculate distance to original position
-			    const dx = floatingImageOriginalX - currentX;
-			    const dy = floatingImageOriginalY - currentY;
-			    const distance = Math.sqrt(dx * dx + dy * dy);
-    
-			    // If we're already close enough, snap to position and reset
-			    if (distance < 2) { // Smaller threshold for snapping
-			        currentX = floatingImageOriginalX;
-			        currentY = floatingImageOriginalY;
-			        velocityX = 0;
-			        velocityY = 0;
-			        maxVelocity = 0; // Reset max velocity
-			        floatingImage.style.left = `${currentX}px`;
-			        floatingImage.style.top = `${currentY}px`;
-			        return;
-			    }
-    
-			    // Apply strong return force directly toward origin
-			    const directionX = dx / distance;
-			    const directionY = dy / distance;
-    
-			    // Calculate desired speed (faster when farther away)
-			    const targetSpeed = distance * returnForce * 2; // Increased multiplier
-    
-			    // Set velocity directly toward origin at target speed
-			    velocityX = directionX * targetSpeed;
-			    velocityY = directionY * targetSpeed;
-    
-			    // Schedule next frame
-			    animationFrameId = requestAnimationFrame(updateFloatingImage);
-			}
+            // Add all event listeners
+            floatingImage.addEventListener('mousedown', handleFirstInteraction);
+            floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: true });
+            floatingImage.addEventListener('mousedown', handleDragStart);
+            floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
+            document.addEventListener('mousemove', handleDragMove);
+            document.addEventListener('touchmove', handleDragMove, { passive: false });
+            document.addEventListener('mouseup', handleDragEnd);
+            document.addEventListener('touchend', handleDragEnd);
+        }
 
-		    // Track initial throw direction
-		    let throwVector = { x: 0, y: 0 };
-
-		    function handleFirstInteraction() {
-		        // Hide instruction permanently
-		        const flickInstruction = document.getElementById('flickInstruction');
-		        flickInstruction.style.display = 'none';
-        
-		        // Remove these event listeners after first interaction
-		        floatingImage.removeEventListener('mousedown', handleFirstInteraction);
-		        floatingImage.removeEventListener('touchstart', handleFirstInteraction);
-		    }
-
-		    // First interaction listeners (for hiding instruction)
-		    floatingImage.addEventListener('mousedown', handleFirstInteraction);
-		    floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: false });
-
-		    // Drag listeners
-		    floatingImage.addEventListener('mousedown', handleDragStart);
-		    floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
-
-		    document.addEventListener('mousemove', handleDragMove);
-		    document.addEventListener('touchmove', handleDragMove, { passive: false });
-
-		    document.addEventListener('mouseup', handleDragEnd);
-		    document.addEventListener('touchend', handleDragEnd);
-
-		    function handleDragStart(e) {
-		        if (isDraggingFloatingImage) return;
-        
-		        isDraggingFloatingImage = true;
-		        floatingImage.classList.add('grabbing');
-		        throwVector = { x: 0, y: 0 };
-
-		        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-		        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-		        if (clientX && clientY) {
-		            lastX = clientX;
-		            lastY = clientY;
-		        }
-
-		        if (e.cancelable) e.preventDefault();
-		    }
-
-		    function handleDragMove(e) {
-		        if (!isDraggingFloatingImage) return;
-
-		        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-		        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-		        if (!clientX || !clientY) return;
-
-		        // Track movement vector
-		        throwVector.x = clientX - lastX;
-		        throwVector.y = clientY - lastY;
-
-		        currentX += throwVector.x;
-		        currentY += throwVector.y;
-		        floatingImage.style.left = `${currentX}px`;
-		        floatingImage.style.top = `${currentY}px`;
-
-		        lastX = clientX;
-		        lastY = clientY;
-
-		        if (e.cancelable) e.preventDefault();
-		    }
-
-			function handleDragEnd() {
-			    if (!isDraggingFloatingImage) return;
-
-			    isDraggingFloatingImage = false;
-			    floatingImage.classList.remove('grabbing');
-    
-			    // Reset max velocity when starting new throw
-			    maxVelocity = Math.sqrt(throwVector.x * throwVector.x + throwVector.y * throwVector.y);
-    
-			    // Apply velocity in throw direction
-			    if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
-			        velocityX = throwVector.x * throwPower * 0.3;
-			        velocityY = throwVector.y * throwPower * 0.3;
-			    }
-    
-			    // No longer need the timeout since we're using velocity-based triggering
-			}
-        
-        // Event Listeners
+        // Initializer
         emojiWrapper.addEventListener('click', async () => {
             if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                await audioContext.resume();
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    await audioContext.resume();
+                } catch (e) {
+                    console.error("AudioContext could not be started.", e);
+                }
             }
             
             emoji.classList.add('fade-out');
@@ -1250,15 +1059,19 @@
                 showGlitchText();
             }, 500);
         });
+
+        // Setup progress bar listeners once on load
+        setupProgressBarListeners();
+
     </script>
-	<div id="afeegoVideoContainer" style="display: none; position: fixed; 		left: 20px; bottom: 20px; z-index: 100;">
- 	   	<video id="afeegoVideo" width="320" height="180" controls 			style="border-radius: 8px; box-shadow: 0 4px 12px 			rgba(0,0,0,0.3);">
-				<source src="AFEEGO/1.mp4" type="video/mp4">
-		</video>
-	</div>
-	<div class="flick-instruction" id="flickInstruction">
-    	Flick
-		<div class="flick-arrow">↓</div>
-	</div>
+    <div id="afeegoVideoContainer">
+        <video id="afeegoVideo" width="320" height="180" controls style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            <source src="AFEEGO/1.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="flick-instruction" id="flickInstruction">
+        Flick
+        <div class="flick-arrow">↓</div>
+    </div>
 </body>
 </html>
