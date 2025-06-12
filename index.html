@@ -607,6 +607,17 @@
                 <span class="platform-emoji instagram">📸</span>
             </a>
         </div>
+
+        <div id="afeegoVideoContainer">
+            <video id="afeegoVideo" width="320" height="180" controls style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                <source src="AFEEGO/1.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="flick-instruction" id="flickInstruction">
+            Flick
+            <div class="flick-arrow">↓</div>
+        </div>
     </div>
 
     <script>
@@ -638,7 +649,7 @@
         let isScrubbing = false;
         let progressUpdateInterval = null;
         
-        // --- FLOATING IMAGE VARIABLES (REVISED) ---
+        // --- FLOATING IMAGE VARIABLES ---
         let isDraggingFloatingImage = false;
         let floatingImagePhysicsInterval = null;
         let returnToStartTimeout = null;
@@ -788,13 +799,24 @@
             scrubPosition = Math.max(0, Math.min(1, scrubPosition));
 
             currentAudio.currentTime = scrubPosition * currentAudio.duration;
-            updateProgressBar(); // Update immediately
+            // Directly update the visual elements for immediate feedback during scrub
+            const progress = scrubPosition * 100;
+            progressFill.style.width = `${progress}%`;
+
+            const isMobile = window.innerWidth <= 768;
+            const startPositionPercent = isMobile ? 30 : 40;
+            const trackWidthPercent = isMobile ? 40 : 35;
+            const characterWidth = isMobile ? 33 : 44;
+            const offset = characterWidth / 2;
+
+            const newPositionPercent = startPositionPercent + (progress / 100 * trackWidthPercent);
+            gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
         }
 
         function setupProgressBarListeners() {
             const startScrub = (e) => {
                 isScrubbing = true;
-                handleScrub(e); // Handle initial click/touch
+                handleScrub(e);
                 document.addEventListener('mousemove', handleScrub);
                 document.addEventListener('touchmove', handleScrub);
                 document.addEventListener('mouseup', endScrub);
@@ -928,10 +950,10 @@
         function updateFloatingImage() {
             if (!isDraggingFloatingImage) {
                 // Apply friction
-                velocity.x *= 0.97; // Slightly adjusted friction
+                velocity.x *= 0.97;
                 velocity.y *= 0.97;
 
-                // If there's a return timer, it means we should be returning to start
+                // If there's a return timer active, it means we should be returning to start
                 if (returnToStartTimeout) {
                     // Spring physics for a smooth return
                     const forceX = (startPos.x - pos.x) * 0.05; // Spring stiffness
@@ -1064,14 +1086,5 @@
         setupProgressBarListeners();
 
     </script>
-    <div id="afeegoVideoContainer">
-        <video id="afeegoVideo" width="320" height="180" controls style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-            <source src="AFEEGO/1.mp4" type="video/mp4">
-        </video>
-    </div>
-    <div class="flick-instruction" id="flickInstruction">
-        Flick
-        <div class="flick-arrow">↓</div>
-    </div>
 </body>
 </html>
