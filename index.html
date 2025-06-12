@@ -276,12 +276,8 @@
 		}
 
 		@keyframes bounce {
-		    from { 
-		        transform: translateY(5px); /* Start 5px lower */
-		    }
-		    to { 
-		        transform: translateY(15px); /* Move down to 15px */
-		    }
+		    from { transform: translateY(0); }
+		    to { transform: translateY(10px); }
 		}
         
         /* Carousel Styles */
@@ -633,8 +629,6 @@
         const floatingImage = document.getElementById('floatingImage');
 		const videoContainer = document.getElementById('videoContainer');
 		const afeegoVideo = document.getElementById('afeegoVideo');
-		const floatingImageOriginalX = window.innerWidth * 0.1;
-		const floatingImageOriginalY = window.innerHeight * 0.2;
         
         // State Variables
         let currentAudio = null;
@@ -649,8 +643,6 @@
         let progressUpdateInterval = null;
 		let isVideoPlaying = false;
 		let hasAfeegoVideoPlayed = false; // Track if video was shown before
-		let returnToStartTimeout = null;
-		
         
         // Floating Image Variables
         let lastX = 0;
@@ -663,9 +655,6 @@
         let animationFrameId;
         let lastSmokeTime = 0;
         const smokeInterval = 100; // milliseconds between smoke particles
-		let maxVelocity = 0;
-		let returnForce = 0.15; // Increased from 0.05 for quicker return
-		let returnTriggerRatio = 0.25; // Start return when velocity is 25% of max
 
         // Data
 		const audioFiles = [
@@ -691,11 +680,6 @@
             'font-vt323',
             'font-major-mono'
         ];
-		
-		window.addEventListener('resize', () => {
-		    floatingImageOriginalX = window.innerWidth * 0.1;
-		    floatingImageOriginalY = window.innerHeight * 0.2;
-		});
 
         // Initialize Slideshow
         function createSlideshow() {
@@ -1061,94 +1045,46 @@
 		    const friction = 0.98;
 		    const bounceFactor = 0.7;
 
-
-			function updateFloatingImage() {
-			    if (!isDraggingFloatingImage) {
-			        // Track maximum velocity
-			        const currentSpeed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-			        maxVelocity = Math.max(maxVelocity, currentSpeed);
-        
-			        // Apply friction
-			        velocityX *= friction;
-			        velocityY *= friction;
-        
-			        // Update position
-			        currentX += velocityX;
-			        currentY += velocityY;
-
-			        // Boundary checks with bounces
-			        const bounceFactor = 0.5; // Reduced from 0.7 for less bounce
-			        if (currentX < 0) {
-			            currentX = 0;
-			            velocityX *= -bounceFactor;
-			        } else if (currentX > window.innerWidth - floatingImage.offsetWidth) {
-			            currentX = window.innerWidth - floatingImage.offsetWidth;
-			            velocityX *= -bounceFactor;
-			        }
-
-			        if (currentY < 0) {
-			            currentY = 0;
-			            velocityY *= -bounceFactor;
-			        } else if (currentY > window.innerHeight - floatingImage.offsetHeight) {
-			            currentY = window.innerHeight - floatingImage.offsetHeight;
-			            velocityY *= -bounceFactor;
-			        }
-
-			        floatingImage.style.left = `${currentX}px`;
-			        floatingImage.style.top = `${currentY}px`;
-
-			        // Check if we should start returning
-			        const currentSpeedAfterFriction = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-			        if (maxVelocity > 0 && currentSpeedAfterFriction < maxVelocity * returnTriggerRatio) {
-			            returnToStartPosition();
-			        }
-
-			        // Create smoke trail when moving
-			        if (currentSpeedAfterFriction > 0.5) { // Slightly higher threshold
-			            createSmokeTrail(
-			                currentX + floatingImage.offsetWidth / 2,
-			                currentY + floatingImage.offsetHeight / 2
-			            );
-			        }
-			    }
-			    animationFrameId = requestAnimationFrame(updateFloatingImage);
-			}
-			
-			function returnToStartPosition() {
-			    // Only return if not currently being dragged
-			    if (isDraggingFloatingImage) return;
+		    function updateFloatingImage() {
+		        if (!isDraggingFloatingImage) {
+		            // Apply friction
+		            velocityX *= friction;
+		            velocityY *= friction;
     
-			    // Calculate distance to original position
-			    const dx = floatingImageOriginalX - currentX;
-			    const dy = floatingImageOriginalY - currentY;
-			    const distance = Math.sqrt(dx * dx + dy * dy);
-    
-			    // If we're already close enough, snap to position and reset
-			    if (distance < 2) { // Smaller threshold for snapping
-			        currentX = floatingImageOriginalX;
-			        currentY = floatingImageOriginalY;
-			        velocityX = 0;
-			        velocityY = 0;
-			        maxVelocity = 0; // Reset max velocity
-			        floatingImage.style.left = `${currentX}px`;
-			        floatingImage.style.top = `${currentY}px`;
-			        return;
-			    }
-    
-			    // Apply strong return force directly toward origin
-			    const directionX = dx / distance;
-			    const directionY = dy / distance;
-    
-			    // Calculate desired speed (faster when farther away)
-			    const targetSpeed = distance * returnForce * 2; // Increased multiplier
-    
-			    // Set velocity directly toward origin at target speed
-			    velocityX = directionX * targetSpeed;
-			    velocityY = directionY * targetSpeed;
-    
-			    // Schedule next frame
-			    animationFrameId = requestAnimationFrame(updateFloatingImage);
-			}
+		            // Update position
+		            currentX += velocityX;
+		            currentY += velocityY;
+
+		            // Boundary checks with bounces
+		            if (currentX < 0) {
+		                currentX = 0;
+		                velocityX *= -bounceFactor;
+		            } else if (currentX > window.innerWidth - floatingImage.offsetWidth) {
+		                currentX = window.innerWidth - floatingImage.offsetWidth;
+		                velocityX *= -bounceFactor;
+		            }
+
+		            if (currentY < 0) {
+		                currentY = 0;
+		                velocityY *= -bounceFactor;
+		            } else if (currentY > window.innerHeight - floatingImage.offsetHeight) {
+		                currentY = window.innerHeight - floatingImage.offsetHeight;
+		                velocityY *= -bounceFactor;
+		            }
+
+		            floatingImage.style.left = `${currentX}px`;
+		            floatingImage.style.top = `${currentY}px`;
+            
+		            // Create smoke trail when moving
+		            if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
+		                createSmokeTrail(
+		                    currentX + floatingImage.offsetWidth / 2,
+		                    currentY + floatingImage.offsetHeight / 2
+		                );
+		            }
+		        }
+		        animationFrameId = requestAnimationFrame(updateFloatingImage);
+		    }
 
 		    // Track initial throw direction
 		    let throwVector = { x: 0, y: 0 };
@@ -1218,23 +1154,21 @@
 		        if (e.cancelable) e.preventDefault();
 		    }
 
-			function handleDragEnd() {
-			    if (!isDraggingFloatingImage) return;
+		    function handleDragEnd() {
+		        if (!isDraggingFloatingImage) return;
 
-			    isDraggingFloatingImage = false;
-			    floatingImage.classList.remove('grabbing');
-    
-			    // Reset max velocity when starting new throw
-			    maxVelocity = Math.sqrt(throwVector.x * throwVector.x + throwVector.y * throwVector.y);
-    
-			    // Apply velocity in throw direction
-			    if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
-			        velocityX = throwVector.x * throwPower * 0.3;
-			        velocityY = throwVector.y * throwPower * 0.3;
-			    }
-    
-			    // No longer need the timeout since we're using velocity-based triggering
-			}
+		        isDraggingFloatingImage = false;
+		        floatingImage.classList.remove('grabbing');
+
+		        // Apply velocity in throw direction
+		        if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
+		            velocityX = throwVector.x * throwPower * 0.3;
+		            velocityY = throwVector.y * throwPower * 0.3;
+		        }
+		    }
+
+		    updateFloatingImage();
+		}
         
         // Event Listeners
         emojiWrapper.addEventListener('click', async () => {
