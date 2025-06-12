@@ -650,6 +650,7 @@
 		let isVideoPlaying = false;
 		let hasAfeegoVideoPlayed = false; // Track if video was shown before
 		let returnToStartTimeout = null;
+		
         
         // Floating Image Variables
         let lastX = 0;
@@ -662,6 +663,9 @@
         let animationFrameId;
         let lastSmokeTime = 0;
         const smokeInterval = 100; // milliseconds between smoke particles
+		let maxVelocity = 0;
+		let returnForce = 0.15; // Increased from 0.05 for quicker return
+		let returnTriggerRatio = 0.25; // Start return when velocity is 25% of max
 
         // Data
 		const audioFiles = [
@@ -1057,17 +1061,23 @@
 		    const friction = 0.98;
 		    const bounceFactor = 0.7;
 
+
 			function updateFloatingImage() {
 			    if (!isDraggingFloatingImage) {
+			        // Track maximum velocity
+			        const currentSpeed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+			        maxVelocity = Math.max(maxVelocity, currentSpeed);
+        
 			        // Apply friction
 			        velocityX *= friction;
 			        velocityY *= friction;
-
+        
 			        // Update position
 			        currentX += velocityX;
 			        currentY += velocityY;
 
 			        // Boundary checks with bounces
+			        const bounceFactor = 0.5; // Reduced from 0.7 for less bounce
 			        if (currentX < 0) {
 			            currentX = 0;
 			            velocityX *= -bounceFactor;
@@ -1087,16 +1097,18 @@
 			        floatingImage.style.left = `${currentX}px`;
 			        floatingImage.style.top = `${currentY}px`;
 
+			        // Check if we should start returning
+			        const currentSpeedAfterFriction = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+			        if (maxVelocity > 0 && currentSpeedAfterFriction < maxVelocity * returnTriggerRatio) {
+			            returnToStartPosition();
+			        }
+
 			        // Create smoke trail when moving
-			        if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
+			        if (currentSpeedAfterFriction > 0.5) { // Slightly higher threshold
 			            createSmokeTrail(
 			                currentX + floatingImage.offsetWidth / 2,
 			                currentY + floatingImage.offsetHeight / 2
 			            );
-            
-			            // Clear any existing timeout and set a new one
-			            clearTimeout(returnToStartTimeout);
-			            returnToStartTimeout = setTimeout(returnToStartPosition, 3000); // 3 seconds after movement stops
 			        }
 			    }
 			    animationFrameId = requestAnimationFrame(updateFloatingImage);
@@ -1111,32 +1123,31 @@
 			    const dy = floatingImageOriginalY - currentY;
 			    const distance = Math.sqrt(dx * dx + dy * dy);
     
-			    // If we're already close enough, just snap to position
-			    if (distance < 5) {
+			    // If we're already close enough, snap to position and reset
+			    if (distance < 2) { // Smaller threshold for snapping
 			        currentX = floatingImageOriginalX;
 			        currentY = floatingImageOriginalY;
 			        velocityX = 0;
 			        velocityY = 0;
+			        maxVelocity = 0; // Reset max velocity
 			        floatingImage.style.left = `${currentX}px`;
 			        floatingImage.style.top = `${currentY}px`;
 			        return;
 			    }
     
-			    // Apply a gentle force back to original position
-			    const returnForce = 0.05;
-			    velocityX += dx * returnForce;
-			    velocityY += dy * returnForce;
+			    // Apply strong return force directly toward origin
+			    const directionX = dx / distance;
+			    const directionY = dy / distance;
     
-			    // Limit maximum return speed
-			    const maxReturnSpeed = 5;
-			    const currentSpeed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-			    if (currentSpeed > maxReturnSpeed) {
-			        velocityX = (velocityX / currentSpeed) * maxReturnSpeed;
-			        velocityY = (velocityY / currentSpeed) * maxReturnSpeed;
-			    }
+			    // Calculate desired speed (faster when farther away)
+			    const targetSpeed = distance * returnForce * 2; // Increased multiplier
     
-			    // Schedule next frame of return animation
-			    returnToStartTimeout = setTimeout(returnToStartPosition, 16); // ~60fps
+			    // Set velocity directly toward origin at target speed
+			    velocityX = directionX * targetSpeed;
+			    velocityY = directionY * targetSpeed;
+    
+			    // Schedule next frame
+			    animationFrameId = requestAnimationFrame(updateFloatingImage);
 			}
 
 		    // Track initial throw direction
@@ -1212,20 +1223,18 @@
 
 			    isDraggingFloatingImage = false;
 			    floatingImage.classList.remove('grabbing');
-
+    
+			    // Reset max velocity when starting new throw
+			    maxVelocity = Math.sqrt(throwVector.x * throwVector.x + throwVector.y * throwVector.y);
+    
 			    // Apply velocity in throw direction
 			    if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
 			        velocityX = throwVector.x * throwPower * 0.3;
 			        velocityY = throwVector.y * throwPower * 0.3;
 			    }
     
-			    // Start return to position sooner (after 1 second instead of 3)
-			    clearTimeout(returnToStartTimeout);
-			    returnToStartTimeout = setTimeout(returnToStartPosition, 1000);
+			    // No longer need the timeout since we're using velocity-based triggering
 			}
-
-		    updateFloatingImage();
-		}
         
         // Event Listeners
         emojiWrapper.addEventListener('click', async () => {
