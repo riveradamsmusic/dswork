@@ -73,25 +73,27 @@
             z-index: 10;
         }
         
-        #emoji {
-            font-size: 80px;
-            display: inline-block;
-            width: 80px;
-            height: 80px;
-            line-height: 1;
-            text-align: center;
-            transition: transform 0.2s ease, opacity 0.5s ease-in-out;
-            animation: pulse-glow 2.5s infinite ease-in-out;
-        }
+		#emoji {
+		    font-size: 80px;
+		    display: inline-block;
+		    width: 80px;
+		    height: 80px;
+		    line-height: 1;
+		    text-align: center;
+		    transition: transform 0.15s ease, opacity 0.5s ease-in-out;
+		    animation: pulse-glow 2.5s infinite ease-in-out;
+		    transform-origin: center;
+		}
         
-        #emoji.fade-out {
-            opacity: 0;
-            transform: scale(0.5);
-        }
+		#emoji.fade-out {
+		    opacity: 0;
+		    transform: scale(1.1) translateY(-10px);
+		    animation: none;
+		}
 
-        #emoji:active {
-            transform: scale(0.8);
-        }
+		#emoji:active {
+		    transform: scale(1.2);
+		}
         
         /* Glitch Text */
         #text {
@@ -144,12 +146,13 @@
           }
         }
 
-        @keyframes glitch-color-shift {
-            0%, 100% { color: white; }
-            25% { color: #ff00ff; }
-            50% { color: #00ffff; }
-            75% { color: #ffff00; }
-        }
+		@keyframes glitch-color-shift {
+		    0%, 100% { color: white; }
+		    20% { color: #ff00ff; }
+		    40% { color: #00ffff; }
+		    60% { color: #ffff00; }
+		    80% { color: #ff0000; }
+		}
 
         @keyframes glitch-move {
             0% { transform: translate(-50%, -50%); }
@@ -159,13 +162,17 @@
             80% { transform: translate(calc(-50% + 10px), calc(-50% - 5px)); }
         }
 
-        .intense-glitch {
-            animation: 
-                text-glitch 0.1s infinite,
-                glitch-blink 0.3s infinite,
-                glitch-color-shift 1s infinite,
-                glitch-move 2s infinite;
-        }
+		.intense-glitch {
+		    animation: 
+		        text-glitch 0.05s infinite,
+		        glitch-blink 0.15s infinite,
+		        glitch-color-shift 0.5s infinite,
+		        glitch-move 1s infinite;
+		    text-shadow: 
+		        2px 2px 0 #ff00ff, 
+		        -2px -2px 0 #00ffff,
+		        4px 4px 0 #ffff00;
+		}
 
         /* Slideshow Styles */
         .slideshow-container {
@@ -607,17 +614,6 @@
                 <span class="platform-emoji instagram">📸</span>
             </a>
         </div>
-
-        <div id="afeegoVideoContainer">
-            <video id="afeegoVideo" width="320" height="180" controls style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                <source src="AFEEGO/1.mp4" type="video/mp4">
-            </video>
-        </div>
-
-        <div class="flick-instruction" id="flickInstruction">
-            Flick
-            <div class="flick-arrow">↓</div>
-        </div>
     </div>
 
     <script>
@@ -649,7 +645,7 @@
         let isScrubbing = false;
         let progressUpdateInterval = null;
         
-        // --- FLOATING IMAGE VARIABLES ---
+        // --- FLOATING IMAGE VARIABLES (REVISED) ---
         let isDraggingFloatingImage = false;
         let floatingImagePhysicsInterval = null;
         let returnToStartTimeout = null;
@@ -735,41 +731,53 @@
         }
 
         // Text Glitch Effect
-        function showGlitchText() {
-            text.style.display = 'block';
-            text.style.opacity = '1';
+		function showGlitchText() {
+		    text.style.display = 'block';
+		    text.style.opacity = '1';
+		    text.textContent = 'RiverAdam$'; // Ensure text is set
+    
+		    // More intense glitch parameters
+		    let flashCount = 0;
+		    const maxFlashes = 12; // Increased from 6
+		    const flashInterval = 80; // Faster than before (was 100)
+    
+		    const flash = setInterval(() => {
+		        // More dramatic effects
+		        const effects = [
+		            'font-press-start intense-glitch', 
+		            'font-major-mono intense-glitch',
+		            'font-rubik intense-glitch',
+		            'font-vt323 intense-glitch'
+		        ];
+		        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+		        text.className = `handwritten ${randomEffect}`;
+        
+		        // Add random color flashes
+		        const colors = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ff0000'];
+		        text.style.color = colors[Math.floor(Math.random() * colors.length)];
+        
+		        flashCount++;
+		        if (flashCount >= maxFlashes) {
+		            clearInterval(flash);
+		            text.className = 'handwritten font-caveat';
+		            text.style.color = 'white';
+		            text.style.transform = 'translate(-50%, -50%)';
+		            text.style.animation = 'none';
             
-            let flashCount = 0;
-            const maxFlashes = 6;
-            const flashInterval = 100;
-            
-            const flash = setInterval(() => {
-                const fontClasses = ['font-press-start', 'font-major-mono', 'intense-glitch'];
-                const randomEffect = fontClasses[Math.floor(Math.random() * fontClasses.length)];
-                text.className = `handwritten ${randomEffect}`;
-                
-                flashCount++;
-                if (flashCount >= maxFlashes) {
-                    clearInterval(flash);
-                    text.className = 'handwritten font-caveat';
-                    text.style.color = 'white';
-                    text.style.transform = 'translate(-50%, -50%)';
-                    text.style.animation = 'none';
-                    
-                    setTimeout(() => {
-                        text.style.display = 'none';
-                        carousel.style.display = 'block';
-                        topRightImages.style.display = 'flex';
-                        platformLinks.style.display = 'flex';
-                        flickInstruction.style.display = 'flex';
+		            setTimeout(() => {
+		                text.style.display = 'none';
+		                carousel.style.display = 'block';
+		                topRightImages.style.display = 'flex';
+		                platformLinks.style.display = 'flex';
+		                flickInstruction.style.display = 'flex';
 
-                        createSlideshow();
-                        initCarousel();
-                        initFloatingImage();
-                    }, 300);
-                }
-            }, flashInterval);
-        }
+		                createSlideshow();
+		                initCarousel();
+		                initFloatingImage();
+		            }, 300);
+		        }
+		    }, flashInterval);
+		}
 
         // Progress Bar & Character
         function updateProgressBar() {
@@ -799,24 +807,13 @@
             scrubPosition = Math.max(0, Math.min(1, scrubPosition));
 
             currentAudio.currentTime = scrubPosition * currentAudio.duration;
-            // Directly update the visual elements for immediate feedback during scrub
-            const progress = scrubPosition * 100;
-            progressFill.style.width = `${progress}%`;
-
-            const isMobile = window.innerWidth <= 768;
-            const startPositionPercent = isMobile ? 30 : 40;
-            const trackWidthPercent = isMobile ? 40 : 35;
-            const characterWidth = isMobile ? 33 : 44;
-            const offset = characterWidth / 2;
-
-            const newPositionPercent = startPositionPercent + (progress / 100 * trackWidthPercent);
-            gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
+            updateProgressBar(); // Update immediately
         }
 
         function setupProgressBarListeners() {
             const startScrub = (e) => {
                 isScrubbing = true;
-                handleScrub(e);
+                handleScrub(e); // Handle initial click/touch
                 document.addEventListener('mousemove', handleScrub);
                 document.addEventListener('touchmove', handleScrub);
                 document.addEventListener('mouseup', endScrub);
@@ -914,13 +911,22 @@
             currentAudio.play();
         }
 
-        function animateCharacter() {
-            gameCharacter.style.display = 'block';
-            progressTrack.style.display = 'block';
-            progressFill.style.width = '0%';
-            clearInterval(progressUpdateInterval);
-            progressUpdateInterval = setInterval(updateProgressBar, 100);
-        }
+		function animateCharacter() {
+		    gameCharacter.style.display = 'block';
+		    progressTrack.style.display = 'block';
+    
+		    // Immediately position character at start of progress bar
+		    const isMobile = window.innerWidth <= 768;
+		    const startPositionPercent = isMobile ? 30 : 40;
+		    const characterWidth = isMobile ? 33 : 44;
+		    const offset = characterWidth / 2;
+    
+		    gameCharacter.style.left = `calc(${startPositionPercent}% - ${offset}px)`;
+		    progressFill.style.width = '0%';
+    
+		    clearInterval(progressUpdateInterval);
+		    progressUpdateInterval = setInterval(updateProgressBar, 100);
+		}
 
         function cleanupCharacterAnimation() {
             clearInterval(progressUpdateInterval);
@@ -950,10 +956,10 @@
         function updateFloatingImage() {
             if (!isDraggingFloatingImage) {
                 // Apply friction
-                velocity.x *= 0.97;
+                velocity.x *= 0.97; // Slightly adjusted friction
                 velocity.y *= 0.97;
 
-                // If there's a return timer active, it means we should be returning to start
+                // If there's a return timer, it means we should be returning to start
                 if (returnToStartTimeout) {
                     // Spring physics for a smooth return
                     const forceX = (startPos.x - pos.x) * 0.05; // Spring stiffness
@@ -1064,27 +1070,37 @@
         }
 
         // Initializer
-        emojiWrapper.addEventListener('click', async () => {
-            if (!audioContext) {
-                try {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    await audioContext.resume();
-                } catch (e) {
-                    console.error("AudioContext could not be started.", e);
-                }
-            }
-            
-            emoji.classList.add('fade-out');
-            
-            setTimeout(() => {
-                emojiWrapper.style.display = 'none';
-                showGlitchText();
-            }, 500);
-        });
+		emojiWrapper.addEventListener('click', async () => {
+		    if (!audioContext) {
+		        try {
+		            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+		            await audioContext.resume();
+		        } catch (e) {
+		            console.error("AudioContext could not be started.", e);
+		        }
+		    }
+    
+		    // Remove the fade-out class addition and just hide after animation
+		    emoji.style.transform = 'scale(1.2)';
+    
+		    setTimeout(() => {
+		        emojiWrapper.style.display = 'none';
+		        showGlitchText();
+		    }, 150); // Shorter timeout to match new animation speed
+		});
 
         // Setup progress bar listeners once on load
         setupProgressBarListeners();
 
     </script>
+    <div id="afeegoVideoContainer">
+        <video id="afeegoVideo" width="320" height="180" controls style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            <source src="AFEEGO/1.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="flick-instruction" id="flickInstruction">
+        Flick
+        <div class="flick-arrow">↓</div>
+    </div>
 </body>
 </html>
