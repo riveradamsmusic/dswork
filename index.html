@@ -260,35 +260,38 @@
             100% { width: 100%; }
         }
         
-        .flick-instruction {
-            position: fixed;
-            top: calc(20% - 1.7cm);
-            left: 10%;
-            font-family: 'Caveat', cursive;
-            color: white;
-            font-size: 24px;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            z-index: 25;
-            pointer-events: none;
-            padding: 0 5px; 
-        }
+		.flick-instruction {
+		    position: fixed;
+		    top: calc(20% - 1.7cm);
+		    left: 50%;
+		    transform: translateX(-50%);
+		    font-family: 'Caveat', cursive;
+		    color: white;
+		    font-size: 24px;
+		    display: none;
+		    flex-direction: column;
+		    align-items: center;
+		    z-index: 25;
+		    pointer-events: none;
+		    text-align: center;
+		    opacity: 0;
+		    transition: opacity 0.5s ease;
+		}
+		
+		.flick-instruction.show {
+		    opacity: 1;
+		}
 
-        .flick-arrow {
-            font-size: 22px;
-            margin-top: -15px;
-            animation: bounce 1s infinite alternate;
-        }
+		.flick-arrow {
+		    font-size: 22px;
+		    margin-top: 5px;
+		    animation: bounce 1s infinite alternate;
+		}
 
-        @keyframes bounce {
-            from { 
-                transform: translateY(5px);
-            }
-            to { 
-                transform: translateY(15px);
-            }
-        }
+		@keyframes bounce {
+		    from { transform: translateY(0); }
+		    to { transform: translateY(10px); }
+		}
         
         /* Carousel Styles */
         .carousel-container {
@@ -764,26 +767,30 @@
             
 		            setTimeout(() => {
 		                text.style.display = 'none';
-                
-		                // Ensure all elements are displayed
-		                carousel.style.display = 'block';
-		                topRightImages.style.display = 'flex';
-		                platformLinks.style.display = 'flex';
-		                flickInstruction.style.display = 'flex';
-		                slideshow.style.display = 'block'; // Add this line
-		                floatingImage.style.display = 'block'; // Add this line
-                
-		                // Reinitialize components if needed
-		                if (!slideshow.querySelector('.slide')) {
-		                    createSlideshow();
-		                }
-		                if (!carousel.querySelector('.track')) {
-		                    initCarousel();
-		                }
-		                initFloatingImage();
+		                showMainContent();
 		            }, 300);
 		        }
 		    }, flashInterval);
+		}
+
+		function showMainContent() {
+		    // Show basic layout elements first
+		    carousel.style.display = 'block';
+		    topRightImages.style.display = 'flex';
+		    platformLinks.style.display = 'flex';
+    
+		    // Initialize and show flick instruction
+		    const flickInstruction = document.getElementById('flickInstruction');
+		    flickInstruction.style.display = 'flex';
+		    setTimeout(() => {
+		        flickInstruction.classList.add('show');
+		    }, 100);
+    
+		    // Initialize floating image and slideshow only now
+		    setTimeout(() => {
+		        initFloatingImage();
+		        createSlideshow();
+		    }, 500); // Slight delay to ensure everything else is ready
 		}
 
         // Progress Bar & Character
@@ -1092,18 +1099,11 @@
     
 		    setTimeout(() => {
 		        emojiWrapper.style.display = 'none';
+		        showGlitchText();
         
-		        // Preload assets before showing glitch
-		        Promise.all([
-		            createSlideshow(),
-		            initCarousel(),
-		            initFloatingImage()
-		        ]).then(() => {
-		            showGlitchText();
-		        }).catch(error => {
-		            console.error("Preloading failed:", error);
-		            showGlitchText(); // Still show glitch even if some assets fail
-		        });
+		        // Remove any premature initializations
+		        floatingImage.style.display = 'none';
+		        slideshow.style.display = 'none';
 		    }, 150);
 		});
 
