@@ -96,19 +96,20 @@
 		}
         
         /* Glitch Text */
-        #text {
-            position: fixed;
-            top: 50vh;
-            left: 50vw;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            display: none;
-            opacity: 0;
-            z-index: 5;
-            text-align: center;
-            width: auto;
-            pointer-events: none;
-        }
+		#text {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    font-size: 24px;
+		    display: none;
+		    opacity: 0;
+		    z-index: 5;
+		    text-align: center;
+		    width: 100%; /* Ensure full width for proper centering */
+		    pointer-events: none;
+		    padding: 0 20px; /* Add padding to prevent edge clipping */
+		}
         
         /* Font Classes */
         .font-caveat { font-family: 'Caveat', cursive; }
@@ -734,15 +735,13 @@
 		function showGlitchText() {
 		    text.style.display = 'block';
 		    text.style.opacity = '1';
-		    text.textContent = 'RiverAdam$'; // Ensure text is set
+		    text.textContent = 'RiverAdam$';
     
-		    // More intense glitch parameters
 		    let flashCount = 0;
-		    const maxFlashes = 12; // Increased from 6
-		    const flashInterval = 80; // Faster than before (was 100)
+		    const maxFlashes = 12;
+		    const flashInterval = 80;
     
 		    const flash = setInterval(() => {
-		        // More dramatic effects
 		        const effects = [
 		            'font-press-start intense-glitch', 
 		            'font-major-mono intense-glitch',
@@ -752,7 +751,6 @@
 		        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
 		        text.className = `handwritten ${randomEffect}`;
         
-		        // Add random color flashes
 		        const colors = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ff0000'];
 		        text.style.color = colors[Math.floor(Math.random() * colors.length)];
         
@@ -766,13 +764,22 @@
             
 		            setTimeout(() => {
 		                text.style.display = 'none';
+                
+		                // Ensure all elements are displayed
 		                carousel.style.display = 'block';
 		                topRightImages.style.display = 'flex';
 		                platformLinks.style.display = 'flex';
 		                flickInstruction.style.display = 'flex';
-
-		                createSlideshow();
-		                initCarousel();
+		                slideshow.style.display = 'block'; // Add this line
+		                floatingImage.style.display = 'block'; // Add this line
+                
+		                // Reinitialize components if needed
+		                if (!slideshow.querySelector('.slide')) {
+		                    createSlideshow();
+		                }
+		                if (!carousel.querySelector('.track')) {
+		                    initCarousel();
+		                }
 		                initFloatingImage();
 		            }, 300);
 		        }
@@ -1080,13 +1087,24 @@
 		        }
 		    }
     
-		    // Remove the fade-out class addition and just hide after animation
+		    // Inflation effect
 		    emoji.style.transform = 'scale(1.2)';
     
 		    setTimeout(() => {
 		        emojiWrapper.style.display = 'none';
-		        showGlitchText();
-		    }, 150); // Shorter timeout to match new animation speed
+        
+		        // Preload assets before showing glitch
+		        Promise.all([
+		            createSlideshow(),
+		            initCarousel(),
+		            initFloatingImage()
+		        ]).then(() => {
+		            showGlitchText();
+		        }).catch(error => {
+		            console.error("Preloading failed:", error);
+		            showGlitchText(); // Still show glitch even if some assets fail
+		        });
+		    }, 150);
 		});
 
         // Setup progress bar listeners once on load
