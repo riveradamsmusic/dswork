@@ -390,16 +390,16 @@
 		}
         
         /* Progress Bar */
-        .progress-track {
-            position: fixed;
-            top: 40px;
-            left: 25%;
-            width: 50%;
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            z-index: 99;
-            display: none;
-        }
+	.progress-track {
+            position: fixed;
+            top: 40px;
+            left: 35%; /* <-- CHANGED from 25% */
+            width: 50%; /* This remains the original width */
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            z-index: 99;
+            display: none;
+	}
         
         .progress-fill {
             position: absolute;
@@ -558,12 +558,12 @@
 		        left: 15%;
 		    }
             
-            .progress-track {
-                top: 35px;
-                height: 3px;
-                left: 15%;
-                width: 55%;
-            }
+		.progress-track {
+                    top: 35px;
+                    height: 3px;
+                    left: 25%; /* <-- CHANGED from 15% */
+                    width: 55%; /* This remains the original width */
+		}
             
             #floatingImage {
                 width: 40px;
@@ -810,10 +810,10 @@
 		        progressFill.style.width = `${progress}%`;
 
 		        // --- START OF CHANGE ---
-		        const isMobile = window.innerWidth <= 768;
-		        const startPositionPercent = isMobile ? 15 : 25;
-		        const trackWidthPercent = isMobile ? 55 : 50; // Widths from your CSS
-		        const characterWidth = isMobile ? 30 : 40;
+        		const isMobile = window.innerWidth <= 768;
+        		const startPositionPercent = isMobile ? 25 : 35; // Match new CSS 'left'
+        		const trackWidthPercent = isMobile ? 55 : 50;   // Original CSS 'width'
+        		const characterWidth = isMobile ? 30 : 40;
 		        const offset = characterWidth / 2;
 
 		        // Calculate new percentage position along the track
@@ -839,10 +839,10 @@
 		    progressFill.style.width = `${scrubPosition * 100}%`;
 
 		    // --- START OF CHANGE ---
-		    const isMobile = window.innerWidth <= 768;
-		    const startPositionPercent = isMobile ? 15 : 25;
-		    const trackWidthPercent = isMobile ? 55 : 50;
-		    const characterWidth = isMobile ? 30 : 40;
+    		    const isMobile = window.innerWidth <= 768;
+    		    const startPositionPercent = isMobile ? 25 : 35; // Match new CSS 'left'
+    		    const trackWidthPercent = isMobile ? 55 : 50;   // Original CSS 'width'
+    		    const characterWidth = isMobile ? 30 : 40;
 		    const offset = characterWidth / 2;
 
 		    // Calculate new percentage position based on scrub
