@@ -276,8 +276,12 @@
 		}
 
 		@keyframes bounce {
-		    from { transform: translateY(0); }
-		    to { transform: translateY(10px); }
+		    from { 
+		        transform: translateY(5px); /* Start 5px lower */
+		    }
+		    to { 
+		        transform: translateY(15px); /* Move down to 15px */
+		    }
 		}
         
         /* Carousel Styles */
