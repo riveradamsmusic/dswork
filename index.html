@@ -79,6 +79,18 @@
       transform: scale(0.75) rotate(-5deg);
       transition-duration: 0.1s;
     }
+    @keyframes cassette-vanish {
+      from {
+        opacity: 1;
+      }
+      to {
+        transform: scale(0) rotate(-15deg);
+        opacity: 0;
+      }
+    }
+    #emoji.fade-out {
+      animation: cassette-vanish 0.3s ease-in forwards;
+    }
     /* Glitch Text */
     #text {
       position: fixed;
@@ -957,7 +969,7 @@
       setTimeout(() => {
         emojiWrapper.style.display = 'none';
         showGlitchText();
-      }, 500);
+      }, 300);
     });
   </script>
   <div id="afeegoVideoContainer">
