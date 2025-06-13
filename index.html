@@ -897,7 +897,7 @@
       
       function handleFirstInteraction() {
         const flickInstruction = document.getElementById('flickInstruction');
-        flickInstruction.style.display = 'none';
+        // flickInstruction.style.display = 'none'; // This line is commented out to keep the instruction visible.
         floatingImage.removeEventListener('mousedown', handleFirstInteraction);
         floatingImage.removeEventListener('touchstart', handleFirstInteraction);
       }
