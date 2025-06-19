@@ -392,6 +392,48 @@
       box-shadow: 0 5px 10px rgba(0,0,0,0.2);
       cursor: grabbing;
     }
+	
+	.about-button {
+	  position: fixed;
+	  bottom: 30px;
+	  left: 30px;
+	  display: none;
+	  background: rgba(30,30,30,0.7);
+	  color: rgba(255,255,255,0.7);
+	  padding: 8px 16px;
+	  border-radius: 20px;
+	  cursor: pointer;
+	  font-family: 'Caveat', cursive;
+	  font-size: 18px;
+	  transition: all 0.3s ease;
+	  z-index: 5;
+	}
+	.about-button:hover {
+	  background: rgba(50,50,50,0.8);
+	  color: rgba(255,255,255,0.9);
+	  transform: scale(1.1);
+	}
+	.back-button {
+	  position: fixed;
+	  top: 30px;
+	  left: 30px;
+	  background: rgba(30,30,30,0.7);
+	  color: rgba(255,255,255,0.7);
+	  padding: 8px 16px;
+	  border-radius: 20px;
+	  cursor: pointer;
+	  font-family: 'Caveat', cursive;
+	  font-size: 18px;
+	  transition: all 0.3s ease;
+	  z-index: 5;
+	  display: none;
+	}
+	.back-button:hover {
+	  background: rgba(50,50,50,0.8);
+	  color: rgba(255,255,255,0.9);
+	  transform: scale(1.1);
+	}
+	
     /* Smoke Trail Effect */
     .smoke-trail {
       position: absolute;
@@ -526,6 +568,12 @@
         <span class="platform-emoji instagram">📸</span>
       </a>
     </div>
+	<div class="about-button" id="aboutButton">
+	  <span>about!</span>
+	</div>
+	<div class="back-button" id="backButton">
+	  <span>back</span>
+	</div>
   </div>
   <script>
     // DOM Elements
@@ -666,6 +714,7 @@
             initFloatingImage();
             const flickInstruction = document.getElementById('flickInstruction');
             flickInstruction.style.display = 'flex';
+			document.getElementById('aboutButton').style.display = 'block';
           }, 300);
         }
       }, flashInterval);
@@ -972,6 +1021,40 @@
         showGlitchText();
       }, 300);
     });
+	// About page functionality
+	document.getElementById('aboutButton').addEventListener('click', () => {
+	  // Hide main content
+	  carousel.style.display = 'none';
+	  slideshow.style.display = 'none';
+	  topRightImages.style.display = 'none';
+	  platformLinks.style.display = 'none';
+	  floatingImage.style.display = 'none';
+	  document.getElementById('aboutButton').style.display = 'none';
+	  document.getElementById('flickInstruction').style.display = 'none';
+  
+	  // Show back button
+	  document.getElementById('backButton').style.display = 'block';
+  
+	  // Stop any playing audio
+	  if (currentAudio) {
+	    currentAudio.pause();
+	    currentPlayingTrack = null;
+	    cleanupCharacterAnimation();
+	  }
+	});
+
+	document.getElementById('backButton').addEventListener('click', () => {
+	  // Show main content
+	  carousel.style.display = 'block';
+	  slideshow.style.display = 'block';
+	  topRightImages.style.display = 'flex';
+	  platformLinks.style.display = 'flex';
+	  floatingImage.style.display = 'block';
+	  document.getElementById('aboutButton').style.display = 'block';
+  
+	  // Hide back button
+	  document.getElementById('backButton').style.display = 'none';
+	});
   </script>
   <div id="afeegoVideoContainer">
     <video id="afeegoVideo" width="320" height="180" controls>
