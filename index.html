@@ -1,986 +1,1126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>RiverAdam$</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#000000">
-  <link rel="apple-touch-startup-image" href="GITBACK/wall.png">
-  <style>
-    /* Google Font Imports */
-    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>RiverAdam$</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-startup-image" href="GITBACK/wall.png">
+  <style>
+    /* Google Font Imports */
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
 
-    /* Base Styles */
-    html {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background-color: #000;
-    }
-    body {
-      background-image: url('GITBACK/wall7.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      position: relative;
-      filter: brightness(1.15);
-    }
-    /* === FORCED LAYOUT FIX === */
-    #container {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-    }
-    .handwritten {
-      font-family: 'Caveat', cursive;
-      color: white;
-      user-select: none;
-      letter-spacing: 1px;
-    }
-    /* Emoji Wrapper */
-    .emoji-wrapper {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 0;
-      cursor: pointer;
-      z-index: 10;
-    }
-    #emoji {
-      font-size: 80px;
-      display: inline-block;
-      width: 80px;
-      height: 80px;
-      line-height: 1;
-      text-align: center;
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      animation: pulse-glow 2.5s infinite ease-in-out;
-    }
-    #emoji:active {
-      transform: scale(0.75) rotate(-5deg);
-      transition-duration: 0.1s;
-    }
-    @keyframes cassette-vanish {
-      from {
-        opacity: 1;
-      }
-      to {
-        transform: scale(0) rotate(-15deg);
-        opacity: 0;
-      }
-    }
-    #emoji.fade-out {
-      animation: cassette-vanish 0.3s ease-in forwards;
-    }
-    /* Glitch Text */
-    #text {
-      position: fixed;
-      top: 50vh;
-      left: 50vw;
-      transform: translate(-50%, -50%);
-      font-size: 24px;
-      display: none;
-      opacity: 0;
-      z-index: 5;
-      text-align: center;
-      width: auto;
-      pointer-events: none;
-    }
-    /* Font Classes */
-    .font-caveat { font-family: 'Caveat', cursive; }
-    .font-press-start { font-family: 'Press Start 2P', cursive; }
-    .font-rubik { font-family: 'Rubik Doodle Shadow', cursive; }
-    .font-comic { font-family: 'Comic Neue', cursive; }
-    .font-marker { font-family: 'Permanent Marker', cursive; }
-    .font-vt323 { font-family: 'VT323', monospace; }
-    .font-major-mono { font-family: 'Major Mono Display', monospace; }
+    /* Base Styles */
+    html {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background-color: #000;
+    }
+    body {
+      background-image: url('GITBACK/wall7.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+      filter: brightness(1.15);
+    }
+    /* === FORCED LAYOUT FIX === */
+    #container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .handwritten {
+      font-family: 'Caveat', cursive;
+      color: white;
+      user-select: none;
+      letter-spacing: 1px;
+    }
+    /* Emoji Wrapper */
+    .emoji-wrapper {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0;
+      cursor: pointer;
+      z-index: 10;
+    }
+    #emoji {
+      font-size: 80px;
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      line-height: 1;
+      text-align: center;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: pulse-glow 2.5s infinite ease-in-out;
+    }
+    #emoji:active {
+      transform: scale(0.75) rotate(-5deg);
+      transition-duration: 0.1s;
+    }
+    @keyframes cassette-vanish {
+      from {
+        opacity: 1;
+      }
+      to {
+        transform: scale(0) rotate(-15deg);
+        opacity: 0;
+      }
+    }
+    #emoji.fade-out {
+      animation: cassette-vanish 0.3s ease-in forwards;
+    }
+    /* Glitch Text */
+    #text {
+      position: fixed;
+      top: 50vh;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      display: none;
+      opacity: 0;
+      z-index: 5;
+      text-align: center;
+      width: auto;
+      pointer-events: none;
+    }
+    /* Font Classes */
+    .font-caveat { font-family: 'Caveat', cursive; }
+    .font-press-start { font-family: 'Press Start 2P', cursive; }
+    .font-rubik { font-family: 'Rubik Doodle Shadow', cursive; }
+    .font-comic { font-family: 'Comic Neue', cursive; }
+    .font-marker { font-family: 'Permanent Marker', cursive; }
+    .font-vt323 { font-family: 'VT323', monospace; }
+    .font-major-mono { font-family: 'Major Mono Display', monospace; }
 
-    /* Animations */
-    @keyframes text-glitch {
-      0%, 5%, 100% { transform: translate(-50%, -50%); opacity: 1; text-shadow: none; }
-      1% { transform: translate(calc(-50% - 15px), calc(-50% + 10px)) scale(1.3) rotate(5deg); opacity: 0.8; text-shadow: 5px 5px 0 magenta, -5px -5px 0 cyan; }
-      2% { transform: translate(calc(-50% + 12px), calc(-50% - 8px)) scale(0.7) rotate(-10deg); opacity: 0.6; clip-path: polygon(0 0, 100% 0, 100% 60%, 0 60%); }
-      3% { transform: translate(calc(-50% - 8px), calc(-50% + 15px)) skew(20deg) scale(1.2); opacity: 0.9; color: cyan; }
-      4% { transform: translate(calc(-50% + 5px), calc(-50% - 12px)) scale(0.8) rotate(15deg); opacity: 0.7; color: magenta; text-shadow: 3px 3px 5px black; }
+    /* Animations */
+    @keyframes text-glitch {
+      0%, 5%, 100% { transform: translate(-50%, -50%); opacity: 1; text-shadow: none; }
+      1% { transform: translate(calc(-50% - 15px), calc(-50% + 10px)) scale(1.3) rotate(5deg); opacity: 0.8; text-shadow: 5px 5px 0 magenta, -5px -5px 0 cyan; }
+      2% { transform: translate(calc(-50% + 12px), calc(-50% - 8px)) scale(0.7) rotate(-10deg); opacity: 0.6; clip-path: polygon(0 0, 100% 0, 100% 60%, 0 60%); }
+      3% { transform: translate(calc(-50% - 8px), calc(-50% + 15px)) skew(20deg) scale(1.2); opacity: 0.9; color: cyan; }
+      4% { transform: translate(calc(-50% + 5px), calc(-50% - 12px)) scale(0.8) rotate(15deg); opacity: 0.7; color: magenta; text-shadow: 3px 3px 5px black; }
+    }
+    @keyframes glitch-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    @keyframes pulse-glow {
+      0% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff; }
+      50% { text-shadow: 0 0 20px #fff, 0 0 30px #00ffff, 0 0 40px #00ffff, 0 0 50px #00ffff; }
+      100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff; }
+    }
+    @keyframes glitch-color-shift {
+      0%, 100% { color: white; }
+      25% { color: #ff00ff; }
+      50% { color: #00ffff; }
+      75% { color: #ffff00; }
+    }
+    @keyframes glitch-move {
+      0% { transform: translate(-50%, -50%); }
+      20% { transform: translate(calc(-50% - 10px), calc(-50% + 5px)); }
+      40% { transform: translate(calc(-50% + 8px), calc(-50% - 8px)); }
+      60% { transform: translate(calc(-50% - 5px), calc(-50% + 10px)); }
+      80% { transform: translate(calc(-50% + 10px), calc(-50% - 5px)); }
+    }
+    .intense-glitch {
+      animation: text-glitch 0.1s infinite, glitch-blink 0.3s infinite, glitch-color-shift 1s infinite, glitch-move 2s infinite;
+    }
+    /* Slideshow Styles */
+    .slideshow-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      z-index: 10;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      background-color: rgba(20, 20, 20, 0.3);
+      display: none;
+    }
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .slide.active {
+      opacity: 1;
+    }
+    /* Top Right Images */
+    .top-right-images {
+      position: fixed;
+      top: 40px;
+      right: 20px;
+      width: 90px;
+      height: 90px;
+      z-index: 1;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .top-right-image {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    /* Loading Spinner */
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 12px;
+      background: #222;
+      border: 2px solid #9b59b6;
+      z-index: 2;
+      display: none;
+    }
+    .spinner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: repeating-linear-gradient(45deg, #9b59b6, #9b59b6 4px, #6a3d8a 4px, #6a3d8a 8px);
+      animation: load-bar 2s steps(10) infinite;
+    }
+    @keyframes load-bar {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    .flick-instruction {
+      position: fixed;
+      top: calc(20% - 1.7cm);
+      left: 10%;
+      font-family: 'Caveat', cursive;
+      color: white;
+      font-size: 24px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      z-index: 25;
+      pointer-events: none;
+      padding: 0 5px;
+    }
+    .flick-arrow {
+      font-size: 22px;
+      margin-top: -15px;
+      animation: bounce 1s infinite alternate;
+    }
+    @keyframes bounce {
+      from { transform: translateY(5px); }
+      to { transform: translateY(15px); }
+    }
+    /* Carousel Styles */
+    .carousel-container {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm));
+      width: 390px;
+      height: 390px;
+      z-index: 15;
+    }
+    .track {
+      position: absolute;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18.2px;
+      text-align: center;
+      background: transparent;
+      z-index: 3;
+    }
+    .track:hover {
+      transform: scale(1.1);
+    }
+    .track.playing {
+      color: #00ff00;
+      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00;
+    }
+    /* Track Positions */
+    .track-0 { font-family: 'Press Start 2P', cursive; top: 26px; left: 130px; }
+    .track-1 { font-family: 'Rubik Doodle Shadow', cursive; top: 65px; left: 65px; }
+    .track-2 { font-family: 'Comic Neue', cursive; top: 130px; left: 26px; }
+    .track-3 { font-family: 'Permanent Marker', cursive; top: 221px; left: 65px; }
+    .track-4 { font-family: 'Caveat', cursive; top: 260px; left: 130px; }
+    .track-5 { font-family: 'Press Start 2P', cursive; top: 221px; left: 195px; }
+    .track-6 { font-family: 'Rubik Doodle Shadow', cursive; top: 130px; left: 234px; }
+    .track-7 { font-family: 'Comic Neue', cursive; top: 65px; left: 195px; }
+    /* Platform Links */
+    .platform-links {
+      position: fixed;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      display: none;
+      justify-content: center;
+      gap: 15px;
+      z-index: 5;
+    }
+    .platform-link {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+    .platform-link:hover {
+      opacity: 1;
+      transform: scale(1.15);
+      color: rgba(255,255,255,0.9);
+    }
+    .platform-emoji {
+      font-size: 18px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(30,30,30,0.7);
+      border-radius: 50%;
+      padding: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    .platform-link:hover .platform-emoji {
+      background: rgba(50,50,50,0.8);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.4);
+    }
+    /* Game Character */
+    .game-character {
+      position: fixed;
+      top: 20px;
+      left: 25%;
+      width: 44px;
+      height: 44px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="10" width="6" height="8" fill="%239b59b6"/><rect x="8" y="14" width="8" height="2" fill="%236a3d8a"/><circle cx="11" cy="12" r="1" fill="%23000"/><circle cx="13" cy="12" r="1" fill="%23000"/></svg>');
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 100;
+      display: none;
+      animation: walk 0.5s steps(2) infinite;
+      cursor: ew-resize;
+    }
+    /* Progress Bar */
+    .progress-track {
+      position: fixed;
+      top: 40px;
+      left: 40%;
+      width: 35%;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      z-index: 99;
+      display: none;
+    }
+    .progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: #9b59b6;
+    }
+    @keyframes walk {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+    .progress-fill.glowing-bar {
+      background-color: #9b59b6;
+      box-shadow: 0 0 5px rgba(155, 89, 182, 0.7), 0 0 10px rgba(155, 89, 182, 0.5), 0 0 15px rgba(155, 89, 182, 0.3);
+      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .game-character.glowing-character {
+      filter: drop-shadow(0 0 4px #9b59b6) drop-shadow(0 0 8px #9b59b6);
+      transition: filter 0.4s ease;
+    }
+    /* Floating Image */
+    #floatingImage {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      z-index: 20;
+      display: none;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      border-radius: 50%;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+      transition: transform 0.1s ease-out;
+      border: none;
+    }
+    #floatingImage.grabbing {
+      transform: scale(0.92);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      cursor: grabbing;
+    }
+    /* Smoke Trail Effect */
+    .smoke-trail {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;
+      z-index: 19;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      animation: smoke-fade 1.5s ease-out forwards;
+    }
+    @keyframes smoke-fade {
+      0% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.5);
+      }
+    }
+    #afeegoVideoContainer {
+      display: none;
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 100;
+      background: transparent;
+      padding: 0;
+      max-width: 50%;
+    }
+    #afeegoVideo {
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      width: 240px;
+      height: 135px;
+    }
+
+    /* === NEW: About Link and Overlay Styles === */
+    #aboutLink {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        font-size: 20px;
+        text-decoration: none;
+        cursor: pointer;
+        z-index: 101;
+        display: none; /* Initially hidden */
+        transition: transform 0.2s;
     }
-    @keyframes glitch-blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
+    #aboutLink:hover {
+        transform: scale(1.1);
     }
-    @keyframes pulse-glow {
-      0% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff; }
-      50% { text-shadow: 0 0 20px #fff, 0 0 30px #00ffff, 0 0 40px #00ffff, 0 0 50px #00ffff; }
-      100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff; }
+    .about-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        z-index: 200;
+        display: none; /* Initially hidden */
+        place-items: center;
+        animation: fadeIn 0.5s ease;
     }
-    @keyframes glitch-color-shift {
-      0%, 100% { color: white; }
-      25% { color: #ff00ff; }
-      50% { color: #00ffff; }
-      75% { color: #ffff00; }
+    .notebook {
+        background-color: #fdfdfd;
+        width: 90%;
+        max-width: 650px;
+        height: 85vh;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
-    @keyframes glitch-move {
-      0% { transform: translate(-50%, -50%); }
-      20% { transform: translate(calc(-50% - 10px), calc(-50% + 5px)); }
-      40% { transform: translate(calc(-50% + 8px), calc(-50% - 8px)); }
-      60% { transform: translate(calc(-50% - 5px), calc(-50% + 10px)); }
-      80% { transform: translate(calc(-50% + 10px), calc(-50% - 5px)); }
+    .notebook-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
     }
-    .intense-glitch {
-      animation: text-glitch 0.1s infinite, glitch-blink 0.3s infinite, glitch-color-shift 1s infinite, glitch-move 2s infinite;
+    .back-link {
+        font-family: 'Caveat', cursive;
+        text-decoration: none;
+        color: #3498db;
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.2s;
     }
-    /* Slideshow Styles */
-    .slideshow-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90px;
-      height: 90px;
-      z-index: 10;
-      overflow: hidden;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      background-color: rgba(20, 20, 20, 0.3);
-      display: none;
+    .back-link:hover {
+        color: #2980b9;
     }
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease;
+    .notebook-content {
+        padding: 20px 40px 20px 60px; /* Adjusted padding for margin line */
+        overflow-y: auto;
+        font-family: 'Caveat', cursive;
+        font-size: 22px;
+        line-height: 2;
+        color: #1a2c3d;
+        background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(2em - 1px), #d1eaff calc(2em - 1px), #d1eaff 2em);
+        position: relative;
+        flex-grow: 1;
     }
-    .slide.active {
-      opacity: 1;
+    .notebook-content::before { /* Red margin line */
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 45px;
+        bottom: 0;
+        width: 2px;
+        background-color: #ffb6c1;
     }
-    /* Top Right Images */
-    .top-right-images {
-      position: fixed;
-      top: 40px;
-      right: 20px;
-      width: 90px;
-      height: 90px;
-      z-index: 1;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
+    .notebook-content p {
+        margin: 0;
     }
-    .top-right-image {
-      width: 100%;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 4px;
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
-    /* Loading Spinner */
-    .spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100px;
-      height: 12px;
-      background: #222;
-      border: 2px solid #9b59b6;
-      z-index: 2;
-      display: none;
-    }
-    .spinner::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 0%;
-      background: repeating-linear-gradient(45deg, #9b59b6, #9b59b6 4px, #6a3d8a 4px, #6a3d8a 8px);
-      animation: load-bar 2s steps(10) infinite;
-    }
-    @keyframes load-bar {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
-    .flick-instruction {
-      position: fixed;
-      top: calc(20% - 1.7cm);
-      left: 10%;
-      font-family: 'Caveat', cursive;
-      color: white;
-      font-size: 24px;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      z-index: 25;
-      pointer-events: none;
-      padding: 0 5px;
-    }
-    .flick-arrow {
-      font-size: 22px;
-      margin-top: -15px;
-      animation: bounce 1s infinite alternate;
-    }
-    @keyframes bounce {
-      from { transform: translateY(5px); }
-      to { transform: translateY(15px); }
-    }
-    /* Carousel Styles */
-    .carousel-container {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(calc(-50% + 0.5cm), calc(-50% + 1.0cm));
-      width: 390px;
-      height: 390px;
-      z-index: 15;
-    }
-    .track {
-      position: absolute;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 18.2px;
-      text-align: center;
-      background: transparent;
-      z-index: 3;
-    }
-    .track:hover {
-      transform: scale(1.1);
-    }
-    .track.playing {
-      color: #00ff00;
-      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00;
-    }
-    /* Track Positions */
-    .track-0 { font-family: 'Press Start 2P', cursive; top: 26px; left: 130px; }
-    .track-1 { font-family: 'Rubik Doodle Shadow', cursive; top: 65px; left: 65px; }
-    .track-2 { font-family: 'Comic Neue', cursive; top: 130px; left: 26px; }
-    .track-3 { font-family: 'Permanent Marker', cursive; top: 221px; left: 65px; }
-    .track-4 { font-family: 'Caveat', cursive; top: 260px; left: 130px; }
-    .track-5 { font-family: 'Press Start 2P', cursive; top: 221px; left: 195px; }
-    .track-6 { font-family: 'Rubik Doodle Shadow', cursive; top: 130px; left: 234px; }
-    .track-7 { font-family: 'Comic Neue', cursive; top: 65px; left: 195px; }
-    /* Platform Links */
-    .platform-links {
-      position: fixed;
-      bottom: 30px;
-      left: 0;
-      right: 0;
-      display: none;
-      justify-content: center;
-      gap: 15px;
-      z-index: 5;
-    }
-    .platform-link {
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      transition: all 0.3s ease;
-      opacity: 0.8;
-    }
-    .platform-link:hover {
-      opacity: 1;
-      transform: scale(1.15);
-      color: rgba(255,255,255,0.9);
-    }
-    .platform-emoji {
-      font-size: 18px;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(30,30,30,0.7);
-      border-radius: 50%;
-      padding: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
-    }
-    .platform-link:hover .platform-emoji {
-      background: rgba(50,50,50,0.8);
-      box-shadow: 0 3px 12px rgba(0,0,0,0.4);
-    }
-    /* Game Character */
-    .game-character {
-      position: fixed;
-      top: 20px;
-      left: 25%;
-      width: 44px;
-      height: 44px;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="10" width="6" height="8" fill="%239b59b6"/><rect x="8" y="14" width="8" height="2" fill="%236a3d8a"/><circle cx="11" cy="12" r="1" fill="%23000"/><circle cx="13" cy="12" r="1" fill="%23000"/></svg>');
-      background-size: contain;
-      background-repeat: no-repeat;
-      z-index: 100;
-      display: none;
-      animation: walk 0.5s steps(2) infinite;
-      cursor: ew-resize;
-    }
-    /* Progress Bar */
-    .progress-track {
-      position: fixed;
-      top: 40px;
-      left: 40%;
-      width: 35%;
-      height: 4px;
-      background: rgba(255,255,255,0.2);
-      z-index: 99;
-      display: none;
-    }
-    .progress-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 0%;
-      background: #9b59b6;
-    }
-    @keyframes walk {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-      100% { transform: translateY(0); }
-    }
-    .progress-fill.glowing-bar {
-      background-color: #9b59b6;
-      box-shadow: 0 0 5px rgba(155, 89, 182, 0.7), 0 0 10px rgba(155, 89, 182, 0.5), 0 0 15px rgba(155, 89, 182, 0.3);
-      transition: background-color 0.4s ease, box-shadow 0.4s ease;
-    }
-    .game-character.glowing-character {
-      filter: drop-shadow(0 0 4px #9b59b6) drop-shadow(0 0 8px #9b59b6);
-      transition: filter 0.4s ease;
-    }
-    /* Floating Image */
-    #floatingImage {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-      z-index: 20;
-      display: none;
-      cursor: grab;
-      user-select: none;
-      touch-action: none;
-      border-radius: 50%;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-      transition: transform 0.1s ease-out;
-      border: none;
-    }
-    #floatingImage.grabbing {
-      transform: scale(0.92);
-      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-      cursor: grabbing;
-    }
-    /* Smoke Trail Effect */
-    .smoke-trail {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
-      pointer-events: none;
-      z-index: 19;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      animation: smoke-fade 1.5s ease-out forwards;
-    }
-    @keyframes smoke-fade {
-      0% {
-        opacity: 0.7;
-        transform: translate(-50%, -50%) scale(0.8);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(1.5);
-      }
-    }
-    #afeegoVideoContainer {
-      display: none;
-      position: fixed;
-      left: 20px;
-      bottom: 20px;
-      z-index: 100;
-      background: transparent;
-      padding: 0;
-      max-width: 50%;
-    }
-    #afeegoVideo {
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      width: 240px;
-      height: 135px;
-    }
-    @media screen and (max-width: 768px) {
-      #afeegoVideoContainer {
-        left: 10px;
-        bottom: 10px;
-        max-width: 60%;
-      }
-      #afeegoVideo {
-        width: 160px !important;
-        height: 90px !important;
-      }
-      .carousel-container {
-        width: 300px;
-        height: 300px;
-      }
-      .track {
-        font-size: 14px;
-      }
-      .track-0 { top: 20px; left: 100px; }
-      .track-1 { top: 50px; left: 50px; }
-      .track-2 { top: 100px; left: 20px; }
-      .track-3 { top: 170px; left: 50px; }
-      .track-4 { top: 200px; left: 100px; }
-      .track-5 { top: 170px; left: 150px; }
-      .track-6 { top: 100px; left: 180px; }
-      .track-7 { top: 50px; left: 150px; }
-      .slideshow-container {
-        width: 80px;
-        height: 80px;
-      }
-      .top-right-images {
-        width: 80px;
-        height: 80px;
-        right: 15px;
-        top: 30px;
-      }
-      .platform-links {
-        bottom: 25px;
-        gap: 12px;
-      }
-      .platform-emoji {
-        font-size: 16px;
-        width: 20px;
-        height: 20px;
-        padding: 6px;
-      }
-      .game-character {
-        width: 33px;
-        height: 33px;
-        left: 15%;
-      }
-      .progress-track {
-        top: 35px;
-        left: 30%;
-        width: 40%;
-        height: 3px;
-      }
-      #floatingImage {
-        width: 40px;
-        height: 40px;
-      }
-    }
-  </style>
+    /* === END NEW STYLES === */
+
+    @media screen and (max-width: 768px) {
+      #afeegoVideoContainer {
+        left: 10px;
+        bottom: 10px;
+        max-width: 60%;
+      }
+      #afeegoVideo {
+        width: 160px !important;
+        height: 90px !important;
+      }
+      .carousel-container {
+        width: 300px;
+        height: 300px;
+      }
+      .track {
+        font-size: 14px;
+      }
+      .track-0 { top: 20px; left: 100px; }
+      .track-1 { top: 50px; left: 50px; }
+      .track-2 { top: 100px; left: 20px; }
+      .track-3 { top: 170px; left: 50px; }
+      .track-4 { top: 200px; left: 100px; }
+      .track-5 { top: 170px; left: 150px; }
+      .track-6 { top: 100px; left: 180px; }
+      .track-7 { top: 50px; left: 150px; }
+      .slideshow-container {
+        width: 80px;
+        height: 80px;
+      }
+      .top-right-images {
+        width: 80px;
+        height: 80px;
+        right: 15px;
+        top: 30px;
+      }
+      .platform-links {
+        bottom: 25px;
+        gap: 12px;
+      }
+      .platform-emoji {
+        font-size: 16px;
+        width: 20px;
+        height: 20px;
+        padding: 6px;
+      }
+      .game-character {
+        width: 33px;
+        height: 33px;
+        left: 15%;
+      }
+      .progress-track {
+        top: 35px;
+        left: 30%;
+        width: 40%;
+        height: 3px;
+      }
+      #floatingImage {
+        width: 40px;
+        height: 40px;
+      }
+       #aboutLink {
+            bottom: 25px;
+            left: 20px;
+            font-size: 18px;
+       }
+       .notebook {
+            width: 95%;
+            height: 85vh;
+       }
+       .notebook-content {
+            font-size: 18px;
+            line-height: 1.8;
+       }
+    }
+  </style>
 </head>
 <body>
-  <div id="container">
-    <div class="emoji-wrapper">
-      <span id="emoji" class="handwritten">📼</span>
-    </div>
-    <span id="text" class="handwritten">RiverAdam$</span>
-    <img id="floatingImage" src="RIVERADAMSME/1.jpg" alt="Floating Image">
-    <div class="slideshow-container" id="slideshow">
-      <div class="spinner"></div>
-    </div>
-    <div class="top-right-images" id="topRightImages">
-      <img src="RIVERADAMSME/2.jpg" class="top-right-image" alt="RiverAdams 2">
-    </div>
-    <div class="carousel-container" id="carousel"></div>
-    <div class="progress-track" id="progressTrack">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <div class="game-character" id="gameCharacter"></div>
-    <div class="platform-links" id="platformLinks">
-      <a href="https://music.apple.com/us/artist/river-adams/1554125278" class="platform-link" target="_blank">
-        <span class="platform-emoji apple">🍎</span>
-      </a>
-      <a href="https://www.youtube.com/@RiverAdamsMusic" class="platform-link" target="_blank">
-        <span class="platform-emoji youtube">▶️</span>
-      </a>
-      <a href="https://open.spotify.com/artist/5ZV6CFDURLSarqDL7Wwn6n?si=0H_HMr3dTQefGaHi7RX7FQ" class="platform-link" target="_blank">
-        <span class="platform-emoji spotify">🎵</span>
-      </a>
-      <a href="https://www.instagram.com/riveradamsmusic/" class="platform-link" target="_blank">
-        <span class="platform-emoji instagram">📸</span>
-      </a>
+  <div id="container">
+    <div class="emoji-wrapper">
+      <span id="emoji" class="handwritten">📼</span>
+    </div>
+    <span id="text" class="handwritten">RiverAdam$</span>
+    <img id="floatingImage" src="RIVERADAMSME/1.jpg" alt="Floating Image">
+    <div class="slideshow-container" id="slideshow">
+      <div class="spinner"></div>
+    </div>
+    <div class="top-right-images" id="topRightImages">
+      <img src="RIVERADAMSME/2.jpg" class="top-right-image" alt="RiverAdams 2">
+    </div>
+    <div class="carousel-container" id="carousel"></div>
+    <div class="progress-track" id="progressTrack">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="game-character" id="gameCharacter"></div>
+    <div class="platform-links" id="platformLinks">
+      <a href="https://music.apple.com/us/artist/river-adams/1554125278" class="platform-link" target="_blank">
+        <span class="platform-emoji apple">🍎</span>
+      </a>
+      <a href="https://www.youtube.com/@RiverAdamsMusic" class="platform-link" target="_blank">
+        <span class="platform-emoji youtube">▶️</span>
+      </a>
+      <a href="https://open.spotify.com/artist/5ZV6CFDURLSarqDL7Wwn6n?si=0H_HMr3dTQefGaHi7RX7FQ" class="platform-link" target="_blank">
+        <span class="platform-emoji spotify">🎵</span>
+      </a>
+      <a href="https://www.instagram.com/riveradamsmusic/" class="platform-link" target="_blank">
+        <span class="platform-emoji instagram">📸</span>
+      </a>
+    </div>
+    <a href="#" id="aboutLink" class="handwritten font-caveat">about!</a>
+  </div>
+
+  <div id="aboutOverlay" class="about-overlay">
+    <div class="notebook">
+        <div class="notebook-header">
+            <a href="#" id="backButton" class="back-link">&larr; back</a>
+        </div>
+        <div class="notebook-content">
+            <p>Growing up in Western Michigan's shifting seasons, River Adams found his musical path through his sister's piano lessons, middle school saxophone, and eventually an old guitar in his grandparents basement. Those early years with music as his constant companion established a creative rhythm that would become as essential as breathing.</p>
+            <br>
+            <p>His sound draws from those sun filled Lake Michigan summers—echoes of Jack Johnson's coastal grooves, John Mayer's melodic sensibility, and MGMT's experimental edge. After briefly studying computer science at Michigan State, Adams realized his calling lay elsewhere and made the move to Los Angeles in 2017, diving headfirst into California's music scene.</p>
+            <br>
+            <p>Living in a creative house, he connected with collaborators like AFEEGO and Maedrix while teaching himself the art of production and recording. When Covid lockdown hit, Adams embarked on a transformative road trip from LA to Seattle, finding new creative fuel in the changing landscapes and unfamiliar cities along the way. Four solo EPs and two albums later—all self-recorded, mixed, and mastered—Adams has carved out his own sonic territory. Now he's pushing further into uncharted waters, experimenting with AI and new digital mediums to expand what music can be.</p>
+            <br>
+            <p>You'll find him somewhere between the outdoors and his computer, either laying down tracks or exploring whatever digital canvas holds his next creative breakthrough. His music still carries the warmth of those formative Michigan summers, filtered through years of evolution and an instinct for what's coming next.</p>
+        </div>
     </div>
   </div>
-  <script>
-    // DOM Elements
-    const emoji = document.getElementById('emoji');
-    const emojiWrapper = document.querySelector('.emoji-wrapper');
-    const text = document.getElementById('text');
-    const carousel = document.getElementById('carousel');
-    const slideshow = document.getElementById('slideshow');
-    const topRightImages = document.getElementById('topRightImages');
-    const platformLinks = document.getElementById('platformLinks');
-    const gameCharacter = document.getElementById('gameCharacter');
-    const progressTrack = document.getElementById('progressTrack');
-    const progressFill = document.getElementById('progressFill');
-    const spinner = document.querySelector('.spinner');
-    const floatingImage = document.getElementById('floatingImage');
-    const videoContainer = document.getElementById('videoContainer');
-    const afeegoVideo = document.getElementById('afeegoVideo');
-    // State Variables
-    let currentAudio = null;
-    let currentPlayingTrack = null;
-    let audioContext = null;
-    let slideInterval = null;
-    let currentSlide = 0;
-    let loadedImages = 0;
-    let totalImages = 0;
-    let isDragging = false;
-    let isDraggingFloatingImage = false;
-    let progressUpdateInterval = null;
-    let isVideoPlaying = false;
-    let hasAfeegoVideoPlayed = false;
-    // Floating Image Variables
-    let lastX = 0;
-    let lastY = 0;
-    let currentX = 0;
-    let currentY = 0;
-    let velocityX = 0;
-    let velocityY = 0;
-    let animationFrameId;
-    let lastSmokeTime = 0;
-    const smokeInterval = 100;
-    // Data
-    const audioFiles = [
-      { name: "21 Century", file: "RIVERADAMS/21_Century_copy.mp3", duration: 180 },
-      { name: "Grey", file: "RIVERADAMS/grey_copy.mp3", duration: 210 },
-      { name: "𝐌𝐫. 𝐒𝐨̷𝐥𝐨̷", file: "RIVERADAMS/Mr_Solo_copy.mp3", duration: 195 },
-      { name: "Opportunities", file: "RIVERADAMS/Opportunities_copy.mp3", duration: 225 },
-      { name: "Rap (feat. AFEEGO)", file: "RIVERADAMS/Rap_feat_AFEEGO_copy.mp3", duration: 240 },
-      { name: "Spoken Word", file: "RIVERADAMS/Spoken_Word_copy.mp3", duration: 180 },
-      { name: "Trying", file: "RIVERADAMS/Trying_copy.mp3", duration: 200 },
-      { name: "𝓦𝔂𝓷𝔀𝓸𝓸𝓭", file: "RIVERADAMS/Wynwood_copy_Wav.mp3", duration: 190 }
-    ];
-    const photoFiles = Array.from({length: 11}, (_, i) => `RIVERADAMSPICZ/${i+1}.jpg`);
-    totalImages = photoFiles.length;
-    const fontClasses = [ 'font-caveat', 'font-press-start', 'font-rubik', 'font-comic', 'font-marker', 'font-vt323', 'font-major-mono' ];
-    // Initialize Slideshow
-    function createSlideshow() {
-      spinner.style.display = 'block';
-      slideshow.style.display = 'block';
-      const slidesToLoad = photoFiles.filter(file => !file.includes('1.jpg'));
-      totalImages = slidesToLoad.length;
-      if (totalImages === 0) {
-        spinner.style.display = 'none';
-        return;
-      }
-      slidesToLoad.forEach((photo, index) => {
-        const slide = document.createElement('img');
-        slide.className = 'slide';
-        slide.src = photo;
-        slide.alt = `RiverAdams photo ${index + 1}`;
-        slide.onload = () => {
-          loadedImages++;
-          if (loadedImages === totalImages) {
-            spinner.style.display = 'none';
-            startSlideshow();
-          }
-        };
-        slide.onerror = () => {
-          slide.style.display = 'none';
-          loadedImages++;
-          if (loadedImages === totalImages) {
-            spinner.style.display = 'none';
-            if (document.querySelectorAll('.slide:not([style*="display: none"])').length > 0) {
-              startSlideshow();
-            }
-          }
-        };
-        slideshow.appendChild(slide);
-      });
-    }
-    function startSlideshow() {
-      const slides = document.querySelectorAll('#slideshow .slide:not([style*="display: none"])');
-      if (slides.length === 0) return;
-      slides[0].classList.add('active');
-      slideInterval = setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-      }, 3000);
-    }
-    // Text Glitch Effect
-    function showGlitchText() {
-      text.style.display = 'block';
-      text.style.opacity = '1';
-      const glitchLayer1 = document.createElement('div');
-      glitchLayer1.className = 'glitch-layer';
-      glitchLayer1.dataset.text = 'RiverAdam$';
-      text.parentNode.insertBefore(glitchLayer1, text.nextSibling);
-      const glitchLayer2 = document.createElement('div');
-      glitchLayer2.className = 'glitch-layer';
-      glitchLayer2.dataset.text = 'RiverAdam$';
-      text.parentNode.insertBefore(glitchLayer2, text.nextSibling);
-      let flashCount = 0;
-      const maxFlashes = 6;
-      const flashInterval = 100;
-      const flash = setInterval(() => {
-        const effects = [ 'intense-glitch', 'font-press-start glitch-effect', 'font-major-mono glitch-effect' ];
-        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-        text.className = `handwritten ${randomEffect}`;
-        const colors = [ '#ff00ff', '#00ffff', '#ffff00', '#ff00ff', '#00ff00', '#ff0000' ];
-        text.style.color = colors[Math.floor(Math.random() * colors.length)];
-        text.style.transform = `translate(-50%, -50%) scale(${0.8 + Math.random() * 0.6})`;
-        flashCount++;
-        if (flashCount >= maxFlashes) {
-          clearInterval(flash);
-          text.className = 'handwritten font-caveat';
-          text.style.color = 'white';
-          text.style.transform = 'translate(-50%, -50%)';
-          text.style.animation = 'none';
-          glitchLayer1.remove();
-          glitchLayer2.remove();
-          setTimeout(() => {
-            text.style.display = 'none';
-            carousel.style.display = 'block';
-            topRightImages.style.display = 'flex';
-            platformLinks.style.display = 'flex';
-            createSlideshow();
-            initCarousel();
-            initFloatingImage();
-            const flickInstruction = document.getElementById('flickInstruction');
-            flickInstruction.style.display = 'flex';
-          }, 300);
-        }
-      }, flashInterval);
-    }
-    // Progress Bar Functions
-    function updateProgressBar() {
-      if (currentAudio && !isDragging) {
-        const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
-        progressFill.style.width = `${progress}%`;
-        const isMobile = window.innerWidth <= 768;
-        const startPositionPercent = isMobile ? 30 : 40;
-        const trackWidthPercent = isMobile ? 40 : 35;
-        const characterWidth = isMobile ? 33 : 44;
-        const offset = characterWidth / 2;
-        const newPositionPercent = startPositionPercent + (progress / 100 * trackWidthPercent);
-        gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
-      }
-    }
-    function handleScrub(event) {
-      if (!currentAudio || isDraggingFloatingImage) return;
-      const progressTrackRect = progressTrack.getBoundingClientRect();
-      let clientX = event.clientX || (event.touches && event.touches[0] ? event.touches[0].clientX : null);
-      if (clientX === null) return;
-      let scrubPosition = (clientX - progressTrackRect.left) / progressTrackRect.width;
-      scrubPosition = Math.max(0, Math.min(1, scrubPosition));
-      currentAudio.currentTime = scrubPosition * currentAudio.duration;
-      progressFill.style.width = `${scrubPosition * 100}%`;
-      const isMobile = window.innerWidth <= 768;
-      const startPositionPercent = isMobile ? 30 : 40;
-      const trackWidthPercent = isMobile ? 40 : 35;
-      const characterWidth = isMobile ? 33 : 44;
-      const offset = characterWidth / 2;
-      const newPositionPercent = startPositionPercent + (scrubPosition * trackWidthPercent);
-      gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
-    }
-    // Character Animation
-    function animateCharacter(duration) {
-      gameCharacter.style.display = 'block';
-      progressTrack.style.display = 'block';
-      const isMobile = window.innerWidth <= 768;
-      const characterWidth = isMobile ? 33 : 44;
-      const startPositionPercent = isMobile ? 30 : 40;
-      const offset = characterWidth / 2;
-      gameCharacter.style.left = `calc(${startPositionPercent}% - ${offset}px)`;
-      progressFill.style.width = '0%';
-      progressUpdateInterval = setInterval(updateProgressBar, 100);
-      gameCharacter.addEventListener('mousedown', (e) => {
-        if (isDraggingFloatingImage) return;
-        isDragging = true;
-        document.addEventListener('mousemove', handleScrub);
-        document.addEventListener('mouseup', () => {
-          isDragging = false;
-          document.removeEventListener('mousemove', handleScrub);
-        });
-      });
-      gameCharacter.addEventListener('touchstart', (e) => {
-        if (isDraggingFloatingImage) return;
-        isDragging = true;
-        document.addEventListener('touchmove', handleScrub);
-        document.addEventListener('touchend', () => {
-          isDragging = false;
-          document.removeEventListener('touchmove', handleScrub);
-        });
+
+  <script>
+    // DOM Elements
+    const emoji = document.getElementById('emoji');
+    const emojiWrapper = document.querySelector('.emoji-wrapper');
+    const text = document.getElementById('text');
+    const carousel = document.getElementById('carousel');
+    const slideshow = document.getElementById('slideshow');
+    const topRightImages = document.getElementById('topRightImages');
+    const platformLinks = document.getElementById('platformLinks');
+    const gameCharacter = document.getElementById('gameCharacter');
+    const progressTrack = document.getElementById('progressTrack');
+    const progressFill = document.getElementById('progressFill');
+    const spinner = document.querySelector('.spinner');
+    const floatingImage = document.getElementById('floatingImage');
+    const videoContainer = document.getElementById('videoContainer');
+    const afeegoVideo = document.getElementById('afeegoVideo');
+    // NEW: About overlay elements
+    const aboutLink = document.getElementById('aboutLink');
+    const aboutOverlay = document.getElementById('aboutOverlay');
+    const backButton = document.getElementById('backButton');
+
+    // State Variables
+    let currentAudio = null;
+    let currentPlayingTrack = null;
+    let audioContext = null;
+    let slideInterval = null;
+    let currentSlide = 0;
+    let loadedImages = 0;
+    let totalImages = 0;
+    let isDragging = false;
+    let isDraggingFloatingImage = false;
+    let progressUpdateInterval = null;
+    let isVideoPlaying = false;
+    let hasAfeegoVideoPlayed = false;
+    // Floating Image Variables
+    let lastX = 0;
+    let lastY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+    let animationFrameId;
+    let lastSmokeTime = 0;
+    const smokeInterval = 100;
+    // Data
+    const audioFiles = [
+      { name: "21 Century", file: "RIVERADAMS/21_Century_copy.mp3", duration: 180 },
+      { name: "Grey", file: "RIVERADAMS/grey_copy.mp3", duration: 210 },
+      { name: "𝐌𝐫. 𝐒𝐨̷𝐥𝐨̷", file: "RIVERADAMS/Mr_Solo_copy.mp3", duration: 195 },
+      { name: "Opportunities", file: "RIVERADAMS/Opportunities_copy.mp3", duration: 225 },
+      { name: "Rap (feat. AFEEGO)", file: "RIVERADAMS/Rap_feat_AFEEGO_copy.mp3", duration: 240 },
+      { name: "Spoken Word", file: "RIVERADAMS/Spoken_Word_copy.mp3", duration: 180 },
+      { name: "Trying", file: "RIVERADAMS/Trying_copy.mp3", duration: 200 },
+      { name: "𝓦𝔂𝓷𝔀𝓸𝓸𝓭", file: "RIVERADAMS/Wynwood_copy_Wav.mp3", duration: 190 }
+    ];
+    const photoFiles = Array.from({length: 11}, (_, i) => `RIVERADAMSPICZ/${i+1}.jpg`);
+    totalImages = photoFiles.length;
+    const fontClasses = [ 'font-caveat', 'font-press-start', 'font-rubik', 'font-comic', 'font-marker', 'font-vt323', 'font-major-mono' ];
+    // Initialize Slideshow
+    function createSlideshow() {
+      spinner.style.display = 'block';
+      slideshow.style.display = 'block';
+      const slidesToLoad = photoFiles.filter(file => !file.includes('1.jpg'));
+      totalImages = slidesToLoad.length;
+      if (totalImages === 0) {
+        spinner.style.display = 'none';
+        return;
+      }
+      slidesToLoad.forEach((photo, index) => {
+        const slide = document.createElement('img');
+        slide.className = 'slide';
+        slide.src = photo;
+        slide.alt = `RiverAdams photo ${index + 1}`;
+        slide.onload = () => {
+          loadedImages++;
+          if (loadedImages === totalImages) {
+            spinner.style.display = 'none';
+            startSlideshow();
+          }
+        };
+        slide.onerror = () => {
+          slide.style.display = 'none';
+          loadedImages++;
+          if (loadedImages === totalImages) {
+            spinner.style.display = 'none';
+            if (document.querySelectorAll('.slide:not([style*="display: none"])').length > 0) {
+              startSlideshow();
+            }
+          }
+        };
+        slideshow.appendChild(slide);
+      });
+    }
+    function startSlideshow() {
+      const slides = document.querySelectorAll('#slideshow .slide:not([style*="display: none"])');
+      if (slides.length === 0) return;
+      slides[0].classList.add('active');
+      slideInterval = setInterval(() => {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }, 3000);
+    }
+    // Text Glitch Effect
+    function showGlitchText() {
+      text.style.display = 'block';
+      text.style.opacity = '1';
+      const glitchLayer1 = document.createElement('div');
+      glitchLayer1.className = 'glitch-layer';
+      glitchLayer1.dataset.text = 'RiverAdam$';
+      text.parentNode.insertBefore(glitchLayer1, text.nextSibling);
+      const glitchLayer2 = document.createElement('div');
+      glitchLayer2.className = 'glitch-layer';
+      glitchLayer2.dataset.text = 'RiverAdam$';
+      text.parentNode.insertBefore(glitchLayer2, text.nextSibling);
+      let flashCount = 0;
+      const maxFlashes = 6;
+      const flashInterval = 100;
+      const flash = setInterval(() => {
+        const effects = [ 'intense-glitch', 'font-press-start glitch-effect', 'font-major-mono glitch-effect' ];
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        text.className = `handwritten ${randomEffect}`;
+        const colors = [ '#ff00ff', '#00ffff', '#ffff00', '#ff00ff', '#00ff00', '#ff0000' ];
+        text.style.color = colors[Math.floor(Math.random() * colors.length)];
+        text.style.transform = `translate(-50%, -50%) scale(${0.8 + Math.random() * 0.6})`;
+        flashCount++;
+        if (flashCount >= maxFlashes) {
+          clearInterval(flash);
+          text.className = 'handwritten font-caveat';
+          text.style.color = 'white';
+          text.style.transform = 'translate(-50%, -50%)';
+          text.style.animation = 'none';
+          glitchLayer1.remove();
+          glitchLayer2.remove();
+          setTimeout(() => {
+            text.style.display = 'none';
+            carousel.style.display = 'block';
+            topRightImages.style.display = 'flex';
+            platformLinks.style.display = 'flex';
+            aboutLink.style.display = 'block'; // NEW: Show about link
+            createSlideshow();
+            initCarousel();
+            initFloatingImage();
+            const flickInstruction = document.getElementById('flickInstruction');
+            flickInstruction.style.display = 'flex';
+          }, 300);
+        }
+      }, flashInterval);
+    }
+    // Progress Bar Functions
+    function updateProgressBar() {
+      if (currentAudio && !isDragging) {
+        const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+        progressFill.style.width = `${progress}%`;
+        const isMobile = window.innerWidth <= 768;
+        const startPositionPercent = isMobile ? 30 : 40;
+        const trackWidthPercent = isMobile ? 40 : 35;
+        const characterWidth = isMobile ? 33 : 44;
+        const offset = characterWidth / 2;
+        const newPositionPercent = startPositionPercent + (progress / 100 * trackWidthPercent);
+        gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
+      }
+    }
+    function handleScrub(event) {
+      if (!currentAudio || isDraggingFloatingImage) return;
+      const progressTrackRect = progressTrack.getBoundingClientRect();
+      let clientX = event.clientX || (event.touches && event.touches[0] ? event.touches[0].clientX : null);
+      if (clientX === null) return;
+      let scrubPosition = (clientX - progressTrackRect.left) / progressTrackRect.width;
+      scrubPosition = Math.max(0, Math.min(1, scrubPosition));
+      currentAudio.currentTime = scrubPosition * currentAudio.duration;
+      progressFill.style.width = `${scrubPosition * 100}%`;
+      const isMobile = window.innerWidth <= 768;
+      const startPositionPercent = isMobile ? 30 : 40;
+      const trackWidthPercent = isMobile ? 40 : 35;
+      const characterWidth = isMobile ? 33 : 44;
+      const offset = characterWidth / 2;
+      const newPositionPercent = startPositionPercent + (scrubPosition * trackWidthPercent);
+      gameCharacter.style.left = `calc(${newPositionPercent}% - ${offset}px)`;
+    }
+    // Character Animation
+    function animateCharacter(duration) {
+      gameCharacter.style.display = 'block';
+      progressTrack.style.display = 'block';
+      const isMobile = window.innerWidth <= 768;
+      const characterWidth = isMobile ? 33 : 44;
+      const startPositionPercent = isMobile ? 30 : 40;
+      const offset = characterWidth / 2;
+      gameCharacter.style.left = `calc(${startPositionPercent}% - ${offset}px)`;
+      progressFill.style.width = '0%';
+      progressUpdateInterval = setInterval(updateProgressBar, 100);
+      gameCharacter.addEventListener('mousedown', (e) => {
+        if (isDraggingFloatingImage) return;
+        isDragging = true;
+        document.addEventListener('mousemove', handleScrub);
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+          document.removeEventListener('mousemove', handleScrub);
+        });
+      });
+      gameCharacter.addEventListener('touchstart', (e) => {
+        if (isDraggingFloatingImage) return;
+        isDragging = true;
+        document.addEventListener('touchmove', handleScrub);
+        document.addEventListener('touchend', () => {
+          isDragging = false;
+          document.removeEventListener('touchmove', handleScrub);
+        });
+        e.preventDefault();
+      });
+      progressTrack.addEventListener('click', (e) => {
+        if (!isDraggingFloatingImage) {
+          handleScrub(e);
+        }
+      });
+      progressTrack.addEventListener('touchstart', (e) => {
+        if (!isDraggingFloatingImage) {
+          handleScrub(e);
+          e.preventDefault();
+        }
+      }, { passive: false });
+    }
+    function cleanupCharacterAnimation() {
+      clearInterval(progressUpdateInterval);
+      progressTrack.style.display = 'none';
+      gameCharacter.style.display = 'none';
+      document.removeEventListener('mousemove', handleScrub);
+      document.removeEventListener('touchmove', handleScrub);
+      isDragging = false;
+    }
+    // Initialize Carousel
+    function initCarousel() {
+      let afeegoVideoPlayed = false;
+      audioFiles.forEach((track, index) => {
+        const trackElement = document.createElement('div');
+        trackElement.className = `track track-${index % 8}`;
+        trackElement.textContent = track.name;
+        trackElement.dataset.index = index;
+        carousel.appendChild(trackElement);
+        trackElement.addEventListener('click', async () => {
+          try {
+            if (currentPlayingTrack === index && currentAudio) {
+              if (currentAudio.paused) {
+                await currentAudio.play();
+                document.querySelector('.track.playing')?.classList.add('playing');
+              } else {
+                currentAudio.pause();
+                document.querySelector('.track.playing')?.classList.remove('playing');
+              }
+              return;
+            }
+            if (currentAudio) currentAudio.pause();
+            if (track.name.includes("AFEEGO") && !afeegoVideoPlayed) {
+              const video = document.getElementById('afeegoVideo');
+              const videoContainer = document.getElementById('afeegoVideoContainer');
+              video.currentTime = 0;
+              videoContainer.style.display = 'block';
+              afeegoVideoPlayed = true;
+              video.onended = () => {
+                videoContainer.style.display = 'none';
+                playTrack(track, index, trackElement);
+              };
+              try {
+                await video.play();
+                return;
+              } catch (e) {
+                console.error("Video play failed:", e);
+                videoContainer.style.display = 'none';
+              }
+            }
+            playTrack(track, index, trackElement);
+          } catch (e) {
+            console.error("Playback error:", e);
+          }
+        });
+      });
+    }
+    // Helper function to play audio tracks
+    function playTrack(track, index, element) {
+      const progressFill = document.getElementById('progressFill');
+      const gameCharacter = document.getElementById('gameCharacter');
+      if (currentPlayingTrack !== index || !currentAudio) {
+        if (currentAudio) {
+          currentAudio.pause();
+        }
+        currentAudio = new Audio(track.file);
+        currentPlayingTrack = index;
+      }
+      currentAudio.onplay = () => {
+        animateCharacter(track.duration);
+        document.querySelectorAll('.track').forEach(t => t.classList.remove('playing'));
+        element.classList.add('playing');
+        progressFill.classList.add('glowing-bar');
+        gameCharacter.classList.add('glowing-character');
+      };
+      currentAudio.onpause = () => {
+        element.classList.remove('playing');
+        progressFill.classList.remove('glowing-bar');
+        gameCharacter.classList.remove('glowing-character');
+      };
+      currentAudio.onended = () => {
+        element.classList.remove('playing');
+        currentPlayingTrack = null;
+        cleanupCharacterAnimation();
+        progressFill.classList.remove('glowing-bar');
+        gameCharacter.classList.remove('glowing-character');
+      };
+      currentAudio.play();
+    }
+    // Create smoke trail effect
+    function createSmokeTrail(x, y) {
+      const now = Date.now();
+      if (now - lastSmokeTime < smokeInterval) return;
+      lastSmokeTime = now;
+      const smoke = document.createElement('div');
+      smoke.className = 'smoke-trail';
+      smoke.style.left = `${x}px`;
+      smoke.style.top = `${y}px`;
+      document.body.appendChild(smoke);
+      setTimeout(() => {
+        smoke.remove();
+      }, 1500);
+    }
+    // Floating Image Functions
+    function initFloatingImage() {
+      floatingImage.style.display = 'block';
+      
+      // --- MODIFICATION START ---
+      // Define the starting position and boomerang physics constants
+      const startX = window.innerWidth * 0.1;
+      const startY = window.innerHeight * 0.2;
+      const returnSpring = 0.04; // The "pull" strength of the boomerang
+      const throwFriction = 0.97; // How quickly the initial throw and return motion dampens
+
+      // Set initial position
+      currentX = startX;
+      currentY = startY;
+      floatingImage.style.left = `${currentX}px`;
+      floatingImage.style.top = `${currentY}px`;
+      
+      function updateFloatingImage() {
+        if (!isDraggingFloatingImage) {
+          // Calculate the distance to the start position (the "pull" of the spring)
+          const dx = startX - currentX;
+          const dy = startY - currentY;
+          
+          // Apply the spring force to the velocity, pulling it back
+          velocityX += dx * returnSpring;
+          velocityY += dy * returnSpring;
+          
+          // Apply friction to dampen the movement for a smooth, snappy stop
+          velocityX *= throwFriction;
+          velocityY *= throwFriction;
+          
+          // Update the position with the new velocity
+          currentX += velocityX;
+          currentY += velocityY;
+          
+          floatingImage.style.left = `${currentX}px`;
+          floatingImage.style.top = `${currentY}px`;
+
+          // Create smoke trail when moving
+          if (Math.abs(velocityX) > 1 || Math.abs(velocityY) > 1) {
+            createSmokeTrail(
+              currentX + floatingImage.offsetWidth / 2,
+              currentY + floatingImage.offsetHeight / 2
+            );
+          }
+        }
+        animationFrameId = requestAnimationFrame(updateFloatingImage);
+      }
+      // --- MODIFICATION END ---
+
+      let throwVector = { x: 0, y: 0 };
+      
+      function handleFirstInteraction() {
+        const flickInstruction = document.getElementById('flickInstruction');
+        // flickInstruction.style.display = 'none'; // This line is commented out to keep the instruction visible.
+        floatingImage.removeEventListener('mousedown', handleFirstInteraction);
+        floatingImage.removeEventListener('touchstart', handleFirstInteraction);
+      }
+
+      floatingImage.addEventListener('mousedown', handleFirstInteraction);
+      floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: false });
+      
+      floatingImage.addEventListener('mousedown', handleDragStart);
+      floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
+      
+      document.addEventListener('mousemove', handleDragMove);
+      document.addEventListener('touchmove', handleDragMove, { passive: false });
+      
+      document.addEventListener('mouseup', handleDragEnd);
+      document.addEventListener('touchend', handleDragEnd);
+      
+      function handleDragStart(e) {
+        if (isDraggingFloatingImage) return;
+        isDraggingFloatingImage = true;
+        floatingImage.classList.add('grabbing');
+        throwVector = { x: 0, y: 0 };
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        if (clientX && clientY) {
+          lastX = clientX;
+          lastY = clientY;
+        }
+        if (e.cancelable) e.preventDefault();
+      }
+      
+      function handleDragMove(e) {
+        if (!isDraggingFloatingImage) return;
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        if (!clientX || !clientY) return;
+        throwVector.x = clientX - lastX;
+        throwVector.y = clientY - lastY;
+        currentX += throwVector.x;
+        currentY += throwVector.y;
+        floatingImage.style.left = `${currentX}px`;
+        floatingImage.style.top = `${currentY}px`;
+        lastX = clientX;
+        lastY = clientY;
+        if (e.cancelable) e.preventDefault();
+      }
+      
+      function handleDragEnd() {
+        if (!isDraggingFloatingImage) return;
+        isDraggingFloatingImage = false;
+        floatingImage.classList.remove('grabbing');
+        
+        // The "throwPower" is now integrated into the velocity from the flick
+        const throwPower = 1.5;
+        if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
+          velocityX = throwVector.x * throwPower;
+          velocityY = throwVector.y * throwPower;
+        }
+      }
+      
+      updateFloatingImage();
+    }
+    // Event Listeners
+    emojiWrapper.addEventListener('click', async () => {
+      if (!audioContext) {
+        audioContext = new(window.AudioContext || window.webkitAudioContext)();
+        await audioContext.resume();
+      }
+      emoji.classList.add('fade-out');
+      setTimeout(() => {
+        emojiWrapper.style.display = 'none';
+        showGlitchText();
+      }, 300);
+    });
+
+    // NEW: Event listeners for the About Overlay
+    aboutLink.addEventListener('click', (e) => {
         e.preventDefault();
-      });
-      progressTrack.addEventListener('click', (e) => {
-        if (!isDraggingFloatingImage) {
-          handleScrub(e);
-        }
-      });
-      progressTrack.addEventListener('touchstart', (e) => {
-        if (!isDraggingFloatingImage) {
-          handleScrub(e);
-          e.preventDefault();
-        }
-      }, { passive: false });
-    }
-    function cleanupCharacterAnimation() {
-      clearInterval(progressUpdateInterval);
-      progressTrack.style.display = 'none';
-      gameCharacter.style.display = 'none';
-      document.removeEventListener('mousemove', handleScrub);
-      document.removeEventListener('touchmove', handleScrub);
-      isDragging = false;
-    }
-    // Initialize Carousel
-    function initCarousel() {
-      let afeegoVideoPlayed = false;
-      audioFiles.forEach((track, index) => {
-        const trackElement = document.createElement('div');
-        trackElement.className = `track track-${index % 8}`;
-        trackElement.textContent = track.name;
-        trackElement.dataset.index = index;
-        carousel.appendChild(trackElement);
-        trackElement.addEventListener('click', async () => {
-          try {
-            if (currentPlayingTrack === index && currentAudio) {
-              if (currentAudio.paused) {
-                await currentAudio.play();
-                document.querySelector('.track.playing')?.classList.add('playing');
-              } else {
-                currentAudio.pause();
-                document.querySelector('.track.playing')?.classList.remove('playing');
-              }
-              return;
-            }
-            if (currentAudio) currentAudio.pause();
-            if (track.name.includes("AFEEGO") && !afeegoVideoPlayed) {
-              const video = document.getElementById('afeegoVideo');
-              const videoContainer = document.getElementById('afeegoVideoContainer');
-              video.currentTime = 0;
-              videoContainer.style.display = 'block';
-              afeegoVideoPlayed = true;
-              video.onended = () => {
-                videoContainer.style.display = 'none';
-                playTrack(track, index, trackElement);
-              };
-              try {
-                await video.play();
-                return;
-              } catch (e) {
-                console.error("Video play failed:", e);
-                videoContainer.style.display = 'none';
-              }
-            }
-            playTrack(track, index, trackElement);
-          } catch (e) {
-            console.error("Playback error:", e);
-          }
-        });
-      });
-    }
-    // Helper function to play audio tracks
-    function playTrack(track, index, element) {
-      const progressFill = document.getElementById('progressFill');
-      const gameCharacter = document.getElementById('gameCharacter');
-      if (currentPlayingTrack !== index || !currentAudio) {
-        if (currentAudio) {
-          currentAudio.pause();
-        }
-        currentAudio = new Audio(track.file);
-        currentPlayingTrack = index;
-      }
-      currentAudio.onplay = () => {
-        animateCharacter(track.duration);
-        document.querySelectorAll('.track').forEach(t => t.classList.remove('playing'));
-        element.classList.add('playing');
-        progressFill.classList.add('glowing-bar');
-        gameCharacter.classList.add('glowing-character');
-      };
-      currentAudio.onpause = () => {
-        element.classList.remove('playing');
-        progressFill.classList.remove('glowing-bar');
-        gameCharacter.classList.remove('glowing-character');
-      };
-      currentAudio.onended = () => {
-        element.classList.remove('playing');
-        currentPlayingTrack = null;
-        cleanupCharacterAnimation();
-        progressFill.classList.remove('glowing-bar');
-        gameCharacter.classList.remove('glowing-character');
-      };
-      currentAudio.play();
-    }
-    // Create smoke trail effect
-    function createSmokeTrail(x, y) {
-      const now = Date.now();
-      if (now - lastSmokeTime < smokeInterval) return;
-      lastSmokeTime = now;
-      const smoke = document.createElement('div');
-      smoke.className = 'smoke-trail';
-      smoke.style.left = `${x}px`;
-      smoke.style.top = `${y}px`;
-      document.body.appendChild(smoke);
-      setTimeout(() => {
-        smoke.remove();
-      }, 1500);
-    }
-    // Floating Image Functions
-    function initFloatingImage() {
-      floatingImage.style.display = 'block';
-      
-      // --- MODIFICATION START ---
-      // Define the starting position and boomerang physics constants
-      const startX = window.innerWidth * 0.1;
-      const startY = window.innerHeight * 0.2;
-      const returnSpring = 0.04; // The "pull" strength of the boomerang
-      const throwFriction = 0.97; // How quickly the initial throw and return motion dampens
-
-      // Set initial position
-      currentX = startX;
-      currentY = startY;
-      floatingImage.style.left = `${currentX}px`;
-      floatingImage.style.top = `${currentY}px`;
-      
-      function updateFloatingImage() {
-        if (!isDraggingFloatingImage) {
-          // Calculate the distance to the start position (the "pull" of the spring)
-          const dx = startX - currentX;
-          const dy = startY - currentY;
-          
-          // Apply the spring force to the velocity, pulling it back
-          velocityX += dx * returnSpring;
-          velocityY += dy * returnSpring;
-          
-          // Apply friction to dampen the movement for a smooth, snappy stop
-          velocityX *= throwFriction;
-          velocityY *= throwFriction;
-          
-          // Update the position with the new velocity
-          currentX += velocityX;
-          currentY += velocityY;
-          
-          floatingImage.style.left = `${currentX}px`;
-          floatingImage.style.top = `${currentY}px`;
-
-          // Create smoke trail when moving
-          if (Math.abs(velocityX) > 1 || Math.abs(velocityY) > 1) {
-            createSmokeTrail(
-              currentX + floatingImage.offsetWidth / 2,
-              currentY + floatingImage.offsetHeight / 2
-            );
-          }
-        }
-        animationFrameId = requestAnimationFrame(updateFloatingImage);
-      }
-      // --- MODIFICATION END ---
-
-      let throwVector = { x: 0, y: 0 };
-      
-      function handleFirstInteraction() {
-        const flickInstruction = document.getElementById('flickInstruction');
-        // flickInstruction.style.display = 'none'; // This line is commented out to keep the instruction visible.
-        floatingImage.removeEventListener('mousedown', handleFirstInteraction);
-        floatingImage.removeEventListener('touchstart', handleFirstInteraction);
-      }
-
-      floatingImage.addEventListener('mousedown', handleFirstInteraction);
-      floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: false });
-      
-      floatingImage.addEventListener('mousedown', handleDragStart);
-      floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
-      
-      document.addEventListener('mousemove', handleDragMove);
-      document.addEventListener('touchmove', handleDragMove, { passive: false });
-      
-      document.addEventListener('mouseup', handleDragEnd);
-      document.addEventListener('touchend', handleDragEnd);
-      
-      function handleDragStart(e) {
-        if (isDraggingFloatingImage) return;
-        isDraggingFloatingImage = true;
-        floatingImage.classList.add('grabbing');
-        throwVector = { x: 0, y: 0 };
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-        if (clientX && clientY) {
-          lastX = clientX;
-          lastY = clientY;
-        }
-        if (e.cancelable) e.preventDefault();
-      }
-      
-      function handleDragMove(e) {
-        if (!isDraggingFloatingImage) return;
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-        if (!clientX || !clientY) return;
-        throwVector.x = clientX - lastX;
-        throwVector.y = clientY - lastY;
-        currentX += throwVector.x;
-        currentY += throwVector.y;
-        floatingImage.style.left = `${currentX}px`;
-        floatingImage.style.top = `${currentY}px`;
-        lastX = clientX;
-        lastY = clientY;
-        if (e.cancelable) e.preventDefault();
-      }
-      
-      function handleDragEnd() {
-        if (!isDraggingFloatingImage) return;
-        isDraggingFloatingImage = false;
-        floatingImage.classList.remove('grabbing');
-        
-        // The "throwPower" is now integrated into the velocity from the flick
-        const throwPower = 1.5;
-        if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
-          velocityX = throwVector.x * throwPower;
-          velocityY = throwVector.y * throwPower;
-        }
-      }
-      
-      updateFloatingImage();
-    }
-    // Event Listeners
-    emojiWrapper.addEventListener('click', async () => {
-      if (!audioContext) {
-        audioContext = new(window.AudioContext || window.webkitAudioContext)();
-        await audioContext.resume();
-      }
-      emoji.classList.add('fade-out');
-      setTimeout(() => {
-        emojiWrapper.style.display = 'none';
-        showGlitchText();
-      }, 300);
+        aboutOverlay.style.display = 'grid';
     });
-  </script>
-  <div id="afeegoVideoContainer">
-    <video id="afeegoVideo" width="320" height="180" controls>
-      <source src="AFEEGO/1.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="flick-instruction" id="flickInstruction">
-    Flick
-    <div class="flick-arrow">↓</div>
-  </div>
+    backButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        aboutOverlay.style.display = 'none';
+    });
+    aboutOverlay.addEventListener('click', (e) => {
+        // If the user clicks on the backdrop (the overlay itself), close it
+        if(e.target === aboutOverlay) {
+            aboutOverlay.style.display = 'none';
+        }
+    });
+
+  </script>
+  <div id="afeegoVideoContainer">
+    <video id="afeegoVideo" width="320" height="180" controls>
+      <source src="AFEEGO/1.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="flick-instruction" id="flickInstruction">
+    Flick
+    <div class="flick-arrow">↓</div>
+  </div>
 </body>
 </html>
