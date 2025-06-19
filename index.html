@@ -482,14 +482,14 @@
 	  position: relative;
 	  z-index: 2;
 	  font-family: 'Caveat', cursive;
-	  font-size: 17.6px;
+	  font-size: clamp(14px, 2.8vw, 17.6px);
 	  line-height: 1.44;
 	  color: #2c3e50;
 	  transform: rotate(-0.5deg);
 	}
 
 	.handwritten-text p {
-	  margin: 0 0 20px 0;
+	  margin: 0 0 clamp(12px, 2.4vw, 20px) 0;
 	  transform: rotate(0.2deg);
 	  text-indent: 20px;
 	}
@@ -506,23 +506,23 @@
 
 	.signature {
 	  text-align: right;
-	  font-size: 28px !important;
-	  margin-top: 30px !important;
-	  margin-right: 40px;
+	  font-size: clamp(18px, 3.5vw, 28px) !important;
+	  margin-top: clamp(15px, 3vw, 30px) !important;
+	  margin-right: clamp(20px, 4vw, 40px);
 	  color: #34495e !important;
 	  text-indent: 0 !important;
 	}
 
 	@media screen and (max-width: 768px) {
-	  .notebook-page {
-	    width: 95vw;
-	    height: 65vh;
-	    min-height: 300px;
-		top: 55%;
-	  }
-	  .notebook-content {
-	    padding: 15px 10px;
-	  }
+	    .notebook-page {
+	      width: 95vw;
+	      height: 65vh;
+	      min-height: 300px;
+	      top: 55%;
+	    }
+	    .notebook-content {
+	      padding: 15px 10px;
+	    }
 	  .handwritten-text {
 	    font-size: 14px;
 	    line-height: 1.4;
@@ -538,14 +538,14 @@
 	}
 	
 	@media screen and (max-width: 480px) {
-	  .notebook-page {
-	    width: 98vw;
-	    height: 60vh;
-		top: 53%;
-	  }
-	  .notebook-content {
-	    padding: 10px 8px;
-	  }
+	    .notebook-page {
+	      width: 98vw;
+	      height: 60vh;
+	      top: 53%;
+	    }
+	    .notebook-content {
+	      padding: 10px 8px;
+	    }
 	  .handwritten-text {
 	    font-size: 13px;
 		line-height: 1.3;
