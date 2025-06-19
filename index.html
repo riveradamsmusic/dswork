@@ -431,88 +431,24 @@
       width: 240px;
       height: 135px;
     }
-    
-    /* === CORRECTED: About Link and Overlay Styles === */
+
+    /* === NEW MINIMAL STYLES START === */
     #aboutLink {
+        font-family: 'Caveat', cursive;
         position: fixed;
         bottom: 30px;
         left: 30px;
-        font-size: 20px;
-        text-decoration: none;
-        cursor: pointer;
-        z-index: 101;
-        display: none; /* Initially hidden */
-        transition: transform 0.2s;
+        z-index: 100;
         color: white;
+        font-size: 24px;
+        text-decoration: none;
+        display: none; /* Hidden until activated by JS */
+        transition: transform 0.2s ease;
     }
     #aboutLink:hover {
         transform: scale(1.1);
     }
-    .about-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8); /* Dark, semi-transparent backdrop */
-        z-index: 200;
-        display: none; /* Hidden by default */
-        place-items: center;
-        animation: fadeIn 0.4s ease;
-    }
-    .notebook {
-        background: #fdfdfd;
-        width: 90%;
-        max-width: 650px;
-        height: 85vh;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.4);
-        border-radius: 4px;
-        position: relative;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-    }
-    .back-link {
-        font-family: 'Caveat', cursive;
-        text-decoration: none;
-        color: #3498db;
-        font-size: 24px;
-        cursor: pointer;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-        margin-bottom: 10px;
-    }
-    .back-link:hover {
-        color: #2980b9;
-    }
-    .notebook-content {
-        padding: 10px 10px 10px 45px; /* Left padding for the red line */
-        overflow-y: auto; /* Make content scrollable */
-        flex-grow: 1; /* Allow content to fill available space */
-        font-family: 'Caveat', cursive;
-        font-size: 21px;
-        line-height: 1.9;
-        color: #1f2d3d;
-        background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 38px, #d1eaff 39px);
-        position: relative;
-    }
-    .notebook-content::before { /* The red margin line */
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 35px;
-        bottom: 0;
-        width: 1px;
-        background-color: #e74c3c;
-    }
-    .notebook-content p {
-        margin-bottom: 20px; /* Space between paragraphs */
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-    /* === END NEW STYLES === */
+    /* === NEW MINIMAL STYLES END === */
 
     @media screen and (max-width: 768px) {
       #afeegoVideoContainer {
@@ -577,11 +513,7 @@
        #aboutLink {
             bottom: 25px;
             left: 20px;
-            font-size: 18px;
-       }
-       .notebook-content {
-            font-size: 18px;
-            line-height: 1.8;
+            font-size: 22px;
        }
     }
   </style>
@@ -618,21 +550,8 @@
         <span class="platform-emoji instagram">📸</span>
       </a>
     </div>
-    <a href="#" id="aboutLink" class="handwritten font-caveat">about!</a>
+    <a href="about.html" id="aboutLink">about!</a>
   </div>
-
-  <div id="aboutOverlay" class="about-overlay">
-    <div class="notebook">
-        <a href="#" class="back-link">← back</a>
-        <div class="notebook-content">
-            <p>Growing up in Western Michigan's shifting seasons, River Adams found his musical path through his sister's piano lessons, middle school saxophone, and eventually an old guitar in his grandparents basement. Those early years with music as his constant companion established a creative rhythm that would become as essential as breathing.</p>
-            <p>His sound draws from those sun filled Lake Michigan summers—echoes of Jack Johnson's coastal grooves, John Mayer's melodic sensibility, and MGMT's experimental edge. After briefly studying computer science at Michigan State, Adams realized his calling lay elsewhere and made the move to Los Angeles in 2017, diving headfirst into California's music scene.</p>
-            <p>Living in a creative house, he connected with collaborators like AFEEGO and Maedrix while teaching himself the art of production and recording. When Covid lockdown hit, Adams embarked on a transformative road trip from LA to Seattle, finding new creative fuel in the changing landscapes and unfamiliar cities along the way. Four solo EPs and two albums later—all self-recorded, mixed, and mastered—Adams has carved out his own sonic territory. Now he's pushing further into uncharted waters, experimenting with AI and new digital mediums to expand what music can be.</p>
-            <p>You'll find him somewhere between the outdoors and his computer, either laying down tracks or exploring whatever digital canvas holds his next creative breakthrough. His music still carries the warmth of those formative Michigan summers, filtered through years of evolution and an instinct for what's coming next.</p>
-        </div>
-    </div>
-  </div>
-
   <script>
     // DOM Elements
     const emoji = document.getElementById('emoji');
@@ -649,11 +568,6 @@
     const floatingImage = document.getElementById('floatingImage');
     const videoContainer = document.getElementById('videoContainer');
     const afeegoVideo = document.getElementById('afeegoVideo');
-    // NEW: About overlay elements
-    const aboutLink = document.getElementById('aboutLink');
-    const aboutOverlay = document.getElementById('aboutOverlay');
-    const backButton = aboutOverlay.querySelector('.back-link');
-
     // State Variables
     let currentAudio = null;
     let currentPlayingTrack = null;
@@ -772,7 +686,8 @@
             carousel.style.display = 'block';
             topRightImages.style.display = 'flex';
             platformLinks.style.display = 'flex';
-            aboutLink.style.display = 'block'; // NEW: Show about link
+            /* NEW: This one line makes the 'about!' link appear */
+            document.getElementById('aboutLink').style.display = 'block';
             createSlideshow();
             initCarousel();
             initFloatingImage();
@@ -881,31 +796,31 @@
               } else {
                 currentAudio.pause();
                 document.querySelector('.track.playing')?.classList.remove('playing');
-              }
-              return;
-            }
-            if (currentAudio) currentAudio.pause();
-            if (track.name.includes("AFEEGO") && !afeegoVideoPlayed) {
-              const video = document.getElementById('afeegoVideo');
-              const videoContainer = document.getElementById('afeegoVideoContainer');
-              video.currentTime = 0;
-              videoContainer.style.display = 'block';
-              afeegoVideoPlayed = true;
-              video.onended = () => {
-                videoContainer.style.display = 'none';
-                playTrack(track, index, trackElement);
-              };
-              try {
-                await video.play();
-                return;
-              } catch (e) {
-                console.error("Video play failed:", e);
-                videoContainer.style.display = 'none';
-              }
-            }
-            playTrack(track, index, trackElement);
+            	}
+            	return;
+            }
+          	if (currentAudio) currentAudio.pause();
+          	if (track.name.includes("AFEEGO") && !afeegoVideoPlayed) {
+            	const video = document.getElementById('afeegoVideo');
+            	const videoContainer = document.getElementById('afeegoVideoContainer');
+            	video.currentTime = 0;
+            	videoContainer.style.display = 'block';
+            	afeegoVideoPlayed = true;
+            	video.onended = () => {
+              	videoContainer.style.display = 'none';
+              	playTrack(track, index, trackElement);
+            	};
+            	try {
+              	await video.play();
+              	return;
+            	} catch (e) {
+              	console.error("Video play failed:", e);
+            	videoContainer.style.display = 'none';
+            	}
+          	}
+          	playTrack(track, index, trackElement);
           } catch (e) {
-            console.error("Playback error:", e);
+          	console.error("Playback error:", e);
           }
         });
       });
@@ -983,7 +898,7 @@
           velocityX += dx * returnSpring;
           velocityY += dy * returnSpring;
           
-          // Apply friction to dampen the movement for a smooth, snappy stop
+.venv         // Apply friction to dampen the movement for a smooth, snappy stop
           velocityX *= throwFriction;
           velocityY *= throwFriction;
           
@@ -1084,23 +999,6 @@
         showGlitchText();
       }, 300);
     });
-
-    // NEW: Event listeners for the About Overlay
-    aboutLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        aboutOverlay.style.display = 'grid';
-    });
-    backButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        aboutOverlay.style.display = 'none';
-    });
-    aboutOverlay.addEventListener('click', (e) => {
-        // If the user clicks on the dark backdrop, close the overlay
-        if(e.target === aboutOverlay) {
-            aboutOverlay.style.display = 'none';
-        }
-    });
-
   </script>
   <div id="afeegoVideoContainer">
     <video id="afeegoVideo" width="320" height="180" controls>
