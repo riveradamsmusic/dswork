@@ -434,6 +434,102 @@
 	  transform: scale(1.1);
 	}
 	
+	.notebook-page {
+	  position: fixed;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  width: 85%;
+	  max-width: 600px;
+	  height: 70%;
+	  max-height: 500px;
+	  background: linear-gradient(135deg, #f9f7f4 0%, #f1ede6 100%);
+	  border: 1px solid #d4c5b0;
+	  box-shadow: 
+	    0 8px 32px rgba(0,0,0,0.3),
+	    inset 0 1px 0 rgba(255,255,255,0.8);
+	  border-radius: 8px;
+	  display: none;
+	  z-index: 50;
+	  overflow: hidden;
+	  position: relative;
+	}
+
+	.notebook-content {
+	  position: relative;
+	  width: 100%;
+	  height: 100%;
+	  padding: 40px 50px;
+	  box-sizing: border-box;
+	}
+
+	.notebook-lines {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  opacity: 0.3;
+	  background-image: 
+	    linear-gradient(transparent 39px, #e8dcc0 39px, #e8dcc0 41px, transparent 41px),
+	    linear-gradient(90deg, #ff6b6b 79px, #ff6b6b 81px, transparent 81px);
+	  background-size: 100% 42px, 100% 100%;
+	  background-position: 0 40px, 0 0;
+	}
+
+	.handwritten-text {
+	  position: relative;
+	  z-index: 2;
+	  font-family: 'Caveat', cursive;
+	  font-size: 22px;
+	  line-height: 1.8;
+	  color: #2c3e50;
+	  transform: rotate(-0.5deg);
+	}
+
+	.handwritten-text p {
+	  margin: 0 0 20px 0;
+	  transform: rotate(0.2deg);
+	  text-indent: 20px;
+	}
+
+	.handwritten-text p:nth-child(2n) {
+	  transform: rotate(-0.1deg);
+	  margin-left: 5px;
+	}
+
+	.handwritten-text p:nth-child(3n) {
+	  transform: rotate(0.1deg);
+	  margin-left: -3px;
+	}
+
+	.signature {
+	  text-align: right;
+	  font-size: 28px !important;
+	  margin-top: 30px !important;
+	  margin-right: 40px;
+	  color: #34495e !important;
+	  text-indent: 0 !important;
+	}
+
+	@media screen and (max-width: 768px) {
+	  .notebook-page {
+	    width: 95%;
+	    height: 80%;
+	  }
+	  .notebook-content {
+	    padding: 30px 25px;
+	  }
+	  .handwritten-text {
+	    font-size: 18px;
+	    line-height: 1.6;
+	  }
+	  .signature {
+	    font-size: 24px !important;
+	    margin-right: 20px;
+	  }
+	}
+	
     /* Smoke Trail Effect */
     .smoke-trail {
       position: absolute;
@@ -573,6 +669,19 @@
 	</div>
 	<div class="back-button" id="backButton">
 	  <span>back</span>
+	</div>
+	<div class="notebook-page" id="notebookPage">
+	  <div class="notebook-content">
+	    <div class="notebook-lines"></div>
+	    <div class="handwritten-text">
+	      <p>Hey there! Thanks for checking out my music...</p>
+	      <p>I'm River Adams, and I've been making beats and writing songs since I was just a kid with a dream and a laptop.</p>
+	      <p>Every track you hear comes from late nights in my home studio, pouring my heart into melodies that speak to the soul.</p>
+	      <p>Music isn't just what I do - it's who I am. From hip-hop to experimental sounds, I love pushing boundaries.</p>
+	      <p>Hope my sounds can be the soundtrack to your best moments. Keep vibing! ✨</p>
+	      <p class="signature">- River</p>
+	    </div>
+	  </div>
 	</div>
   </div>
   <script>
@@ -1034,6 +1143,7 @@
   
 	  // Show back button
 	  document.getElementById('backButton').style.display = 'block';
+	  document.getElementById('notebookPage').style.display = 'block';
   
 	  // Stop any playing audio
 	  if (currentAudio) {
@@ -1055,6 +1165,8 @@
   
 	  // Hide back button
 	  document.getElementById('backButton').style.display = 'none';
+	  document.getElementById('notebookPage').style.display = 'none';
+	  
 	});
   </script>
   <div id="afeegoVideoContainer">
