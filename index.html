@@ -439,10 +439,12 @@
 	  top: 50%;
 	  left: 50%;
 	  transform: translate(-50%, -50%);
-	  width: 85%;
+	  width: 85vw;
 	  max-width: 600px;
-	  height: 70%;
+	  height: 70vh;
 	  max-height: 500px;
+	  min-width: 300px;
+	  min-height: 400px;
 	  background: linear-gradient(135deg, #f9f7f4 0%, #f1ede6 100%);
 	  border: 1px solid #d4c5b0;
 	  box-shadow: 
@@ -452,7 +454,6 @@
 	  display: none;
 	  z-index: 50;
 	  overflow: hidden;
-	  position: relative;
 	}
 
 	.notebook-content {
@@ -514,19 +515,33 @@
 
 	@media screen and (max-width: 768px) {
 	  .notebook-page {
-	    width: 95%;
-	    height: 80%;
+	    width: 95vw;
+	    height: 80vh;
+	    min-height: 350px;
 	  }
 	  .notebook-content {
-	    padding: 30px 25px;
+	    padding: 20px 15px;
 	  }
 	  .handwritten-text {
-	    font-size: 18px;
-	    line-height: 1.6;
+	    font-size: 16px;
+	    line-height: 1.5;
 	  }
 	  .signature {
-	    font-size: 24px !important;
-	    margin-right: 20px;
+	    font-size: 20px !important;
+	    margin-right: 15px;
+	  }
+	}
+	
+	@media screen and (max-width: 480px) {
+	  .notebook-page {
+	    width: 98vw;
+	    height: 85vh;
+	  }
+	  .notebook-content {
+	    padding: 15px 10px;
+	  }
+	  .handwritten-text {
+	    font-size: 14px;
 	  }
 	}
 	
