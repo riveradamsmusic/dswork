@@ -1114,121 +1114,134 @@
       }, 1500);
     }
     // Floating Image Functions
-    function initFloatingImage() {
-      floatingImage.style.display = 'block';
-      
-      // --- MODIFICATION START ---
-      // Define the starting position and boomerang physics constants
-      const startX = window.innerWidth * 0.1;
-      const startY = window.innerHeight * 0.2;
-      const returnSpring = 0.04; // The "pull" strength of the boomerang
-      const throwFriction = 0.97; // How quickly the initial throw and return motion dampens
+	function initFloatingImage() {
+	  floatingImage.style.display = 'block';
+  
+	  // --- MODIFICATION START ---
+	  // Define boomerang physics constants
+	  const returnSpring = 0.04; // The "pull" strength of the boomerang
+	  const throwFriction = 0.97; // How quickly the initial throw and return motion dampens
 
-      // Set initial position
-      currentX = startX;
-      currentY = startY;
-      floatingImage.style.left = `${currentX}px`;
-      floatingImage.style.top = `${currentY}px`;
-      
-      function updateFloatingImage() {
-        if (!isDraggingFloatingImage) {
-          // Calculate the distance to the start position (the "pull" of the spring)
-          const dx = startX - currentX;
-          const dy = startY - currentY;
-          
-          // Apply the spring force to the velocity, pulling it back
-          velocityX += dx * returnSpring;
-          velocityY += dy * returnSpring;
-          
-          // Apply friction to dampen the movement for a smooth, snappy stop
-          velocityX *= throwFriction;
-          velocityY *= throwFriction;
-          
-          // Update the position with the new velocity
-          currentX += velocityX;
-          currentY += velocityY;
-          
-          floatingImage.style.left = `${currentX}px`;
-          floatingImage.style.top = `${currentY}px`;
+	  // Function to calculate the anchor position based on current window size
+	  function getAnchorPosition() {
+	    return {
+	      x: window.innerWidth * 0.1,
+	      y: window.innerHeight * 0.2
+	    };
+	  }
 
-          // Create smoke trail when moving
-          if (Math.abs(velocityX) > 1 || Math.abs(velocityY) > 1) {
-            createSmokeTrail(
-              currentX + floatingImage.offsetWidth / 2,
-              currentY + floatingImage.offsetHeight / 2
-            );
-          }
-        }
-        animationFrameId = requestAnimationFrame(updateFloatingImage);
-      }
-      // --- MODIFICATION END ---
+	  // Set initial position
+	  let anchor = getAnchorPosition();
+	  currentX = anchor.x;
+	  currentY = anchor.y;
+	  floatingImage.style.left = `${currentX}px`;
+	  floatingImage.style.top = `${currentY}px`;
+  
+	  // Add window resize listener to update anchor position
+	  function handleResize() {
+	    anchor = getAnchorPosition();
+	  }
+	  window.addEventListener('resize', handleResize);
+  
+	  function updateFloatingImage() {
+	    if (!isDraggingFloatingImage) {
+	      // Calculate the distance to the current anchor position
+	      const dx = anchor.x - currentX;
+	      const dy = anchor.y - currentY;
+      
+	      // Apply the spring force to the velocity, pulling it back
+	      velocityX += dx * returnSpring;
+	      velocityY += dy * returnSpring;
+      
+	      // Apply friction to dampen the movement for a smooth, snappy stop
+	      velocityX *= throwFriction;
+	      velocityY *= throwFriction;
+      
+	      // Update the position with the new velocity
+	      currentX += velocityX;
+	      currentY += velocityY;
+      
+	      floatingImage.style.left = `${currentX}px`;
+	      floatingImage.style.top = `${currentY}px`;
 
-      let throwVector = { x: 0, y: 0 };
-      
-      function handleFirstInteraction() {
-        const flickInstruction = document.getElementById('flickInstruction');
-        // flickInstruction.style.display = 'none'; // This line is commented out to keep the instruction visible.
-        floatingImage.removeEventListener('mousedown', handleFirstInteraction);
-        floatingImage.removeEventListener('touchstart', handleFirstInteraction);
-      }
+	      // Create smoke trail when moving
+	      if (Math.abs(velocityX) > 1 || Math.abs(velocityY) > 1) {
+	        createSmokeTrail(
+	          currentX + floatingImage.offsetWidth / 2,
+	          currentY + floatingImage.offsetHeight / 2
+	        );
+	      }
+	    }
+	    animationFrameId = requestAnimationFrame(updateFloatingImage);
+	  }
+	  // --- MODIFICATION END ---
 
-      floatingImage.addEventListener('mousedown', handleFirstInteraction);
-      floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: false });
-      
-      floatingImage.addEventListener('mousedown', handleDragStart);
-      floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
-      
-      document.addEventListener('mousemove', handleDragMove);
-      document.addEventListener('touchmove', handleDragMove, { passive: false });
-      
-      document.addEventListener('mouseup', handleDragEnd);
-      document.addEventListener('touchend', handleDragEnd);
-      
-      function handleDragStart(e) {
-        if (isDraggingFloatingImage) return;
-        isDraggingFloatingImage = true;
-        floatingImage.classList.add('grabbing');
-        throwVector = { x: 0, y: 0 };
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-        if (clientX && clientY) {
-          lastX = clientX;
-          lastY = clientY;
-        }
-        if (e.cancelable) e.preventDefault();
-      }
-      
-      function handleDragMove(e) {
-        if (!isDraggingFloatingImage) return;
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-        if (!clientX || !clientY) return;
-        throwVector.x = clientX - lastX;
-        throwVector.y = clientY - lastY;
-        currentX += throwVector.x;
-        currentY += throwVector.y;
-        floatingImage.style.left = `${currentX}px`;
-        floatingImage.style.top = `${currentY}px`;
-        lastX = clientX;
-        lastY = clientY;
-        if (e.cancelable) e.preventDefault();
-      }
-      
-      function handleDragEnd() {
-        if (!isDraggingFloatingImage) return;
-        isDraggingFloatingImage = false;
-        floatingImage.classList.remove('grabbing');
-        
-        // The "throwPower" is now integrated into the velocity from the flick
-        const throwPower = 1.5;
-        if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
-          velocityX = throwVector.x * throwPower;
-          velocityY = throwVector.y * throwPower;
-        }
-      }
-      
-      updateFloatingImage();
-    }
+	  let throwVector = { x: 0, y: 0 };
+  
+	  function handleFirstInteraction() {
+	    const flickInstruction = document.getElementById('flickInstruction');
+	    // flickInstruction.style.display = 'none'; // This line is commented out to keep the instruction visible.
+	    floatingImage.removeEventListener('mousedown', handleFirstInteraction);
+	    floatingImage.removeEventListener('touchstart', handleFirstInteraction);
+	  }
+
+	  floatingImage.addEventListener('mousedown', handleFirstInteraction);
+	  floatingImage.addEventListener('touchstart', handleFirstInteraction, { passive: false });
+  
+	  floatingImage.addEventListener('mousedown', handleDragStart);
+	  floatingImage.addEventListener('touchstart', handleDragStart, { passive: false });
+  
+	  document.addEventListener('mousemove', handleDragMove);
+	  document.addEventListener('touchmove', handleDragMove, { passive: false });
+  
+	  document.addEventListener('mouseup', handleDragEnd);
+	  document.addEventListener('touchend', handleDragEnd);
+  
+	  function handleDragStart(e) {
+	    if (isDraggingFloatingImage) return;
+	    isDraggingFloatingImage = true;
+	    floatingImage.classList.add('grabbing');
+	    throwVector = { x: 0, y: 0 };
+	    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+	    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+	    if (clientX && clientY) {
+	      lastX = clientX;
+	      lastY = clientY;
+	    }
+	    if (e.cancelable) e.preventDefault();
+	  }
+  
+	  function handleDragMove(e) {
+	    if (!isDraggingFloatingImage) return;
+	    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+	    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+	    if (!clientX || !clientY) return;
+	    throwVector.x = clientX - lastX;
+	    throwVector.y = clientY - lastY;
+	    currentX += throwVector.x;
+	    currentY += throwVector.y;
+	    floatingImage.style.left = `${currentX}px`;
+	    floatingImage.style.top = `${currentY}px`;
+	    lastX = clientX;
+	    lastY = clientY;
+	    if (e.cancelable) e.preventDefault();
+	  }
+  
+	  function handleDragEnd() {
+	    if (!isDraggingFloatingImage) return;
+	    isDraggingFloatingImage = false;
+	    floatingImage.classList.remove('grabbing');
+    
+	    // The "throwPower" is now integrated into the velocity from the flick
+	    const throwPower = 1.5;
+	    if (Math.abs(throwVector.x) > 1 || Math.abs(throwVector.y) > 1) {
+	      velocityX = throwVector.x * throwPower;
+	      velocityY = throwVector.y * throwPower;
+	    }
+	  }
+  
+	  updateFloatingImage();
+	}
     // Event Listeners
     emojiWrapper.addEventListener('click', async () => {
       if (!audioContext) {
