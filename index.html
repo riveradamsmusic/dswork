@@ -1256,12 +1256,7 @@
 	  document.getElementById('backButton').style.display = 'block';
 	  document.getElementById('notebookPage').style.display = 'block';
   
-	  // Stop any playing audio
-	  if (currentAudio) {
-	    currentAudio.pause();
-	    currentPlayingTrack = null;
-	    cleanupCharacterAnimation();
-	  }
+	  
 	});
 
 	document.getElementById('backButton').addEventListener('click', () => {
